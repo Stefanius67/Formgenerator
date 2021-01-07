@@ -132,6 +132,15 @@ class FormGenerator extends FormElement
     }
     
     /**
+     * Get the global flags.
+     * @return int
+     */
+    public function getGlobalFlags() : int
+    {
+        return $this->wGlobalFlags;
+    }
+    
+    /**
      * Set the target
      * @param string $strFormTarget
      */
@@ -251,15 +260,9 @@ class FormGenerator extends FormElement
             }
         }
         if ($oElement->bCreateScript) {
-            if (!is_array($this->aScriptElements)) {
-                $this->aScriptElements = array();
-            }
             $this->aScriptElements[] = $oElement;
         }
         if ($oElement->bCreateStyle) {
-            if (!is_array($this->aStyleElements)) {
-                $this->aStyleElements = array();
-            }
             $this->aStyleElements[] = $oElement;
         }
     }
@@ -288,7 +291,8 @@ class FormGenerator extends FormElement
         }
         $strHTML .= $this->buildStyle();
         $strHTML .= ' method="post" id=' . $this->strID . ' onsubmit="return ' . $this->strOnSubmit . '">' . PHP_EOL;
-        for ($i = 0; $i < count($this->aChild); $i++) {
+        $iCnt = count($this->aChild);
+        for ($i = 0; $i < $iCnt; $i++) {
             $strHTML .= $this->aChild[$i]->GetHTML();
         }
         
@@ -344,10 +348,12 @@ class FormGenerator extends FormElement
         $aArrays = array('aMand', 'aDate', 'aTime', 'aInt', 'aCur');
         
         $strScript  = 'function ValidateForm() {' . PHP_EOL;
-        for ($j = 0; $j < count($aArrays); $j++) {
+        $iArrays = count($aArrays);
+        for ($j = 0; $j < $iArrays; $j++) {
             $sep = '';
             $strScript .= '    var ' . $aArrays[$j] . ' = new Array(';
-            for ($i = 0; $i < count($this->aValidate[$aArrays[$j]]); $i++) {
+            $iCnt = count($this->aValidate[$aArrays[$j]]);
+            for ($i = 0; $i < $iCnt; $i++) {
                 $strScript .= $sep .  '"' . $this->aValidate[$aArrays[$j]][$i] . '"';
                 $sep = ', ';
             }
@@ -358,10 +364,8 @@ class FormGenerator extends FormElement
         $strScript .= '    return ValidateInput2(aMand, aDate, aTime, aInt, aCur);' . PHP_EOL;
         $strScript .= '}' . PHP_EOL;
         
-        if (is_array($this->aScriptElements)) {
-            foreach ($this->aScriptElements as $oElement) {
-                $strScript .= $oElement->getScript();
-            }
+        foreach ($this->aScriptElements as $oElement) {
+            $strScript .= $oElement->getScript();
         }
         return $strScript;
     }
@@ -378,10 +382,8 @@ class FormGenerator extends FormElement
         if ($this->iWidth > 0) {
             $strStyle  = "body { width: " . $this->iWidth . "px;}" . PHP_EOL;
         }
-        if (is_array($this->aStyleElements)) {
-            foreach ($this->aStyleElements as $oElement) {
-                $strStyle .= $oElement->getStyle();
-            }
+        foreach ($this->aStyleElements as $oElement) {
+            $strStyle .= $oElement->getStyle();
         }
         return $strStyle;   
     }

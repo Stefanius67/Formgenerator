@@ -66,7 +66,8 @@ class FormDiv extends FormElement
         $strHTML .= $this->buildStyle();
         $strHTML .= $this->buildAttributes();
         $strHTML .= ">" . PHP_EOL;
-        for ($i = 0; $i < count($this->aChild); $i++) {
+        $iCnt = count($this->aChild);
+        for ($i = 0; $i < $iCnt; $i++) {
             $strHTML .= $this->aChild[$i]->GetHTML();
         }
         $strHTML .= '</div>' . PHP_EOL;

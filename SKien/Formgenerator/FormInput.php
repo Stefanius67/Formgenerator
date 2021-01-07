@@ -162,7 +162,7 @@ class FormInput extends FormElement
         if (($this->wFlags & self::ADD_SELBTN) != 0) {
             $strImg = $this->strSelectImg;
             $strTitle = $this->strSelectImgTitle;
-            if (empty($strImg)) {
+            if (empty($strImg) && $this->oFG !== null) {
                 $strImg = $this->oFG->getImagePath() . '16x16/search.png';
             }
             $strHTML .= '<img class="' . $strClass . '" src="' . $strImg . '" alt="Auswahl"';

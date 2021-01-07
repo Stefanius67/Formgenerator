@@ -64,7 +64,8 @@ class FormLine extends FormElement
         $strHTML .= '       <label';
         $strHTML .= $this->buildStyle();
         $strHTML .= '>' . $this->strLabel . '</label>' . PHP_EOL;
-        for ($i = 0; $i < count($this->aChild); $i++) {
+        $iCnt = count($this->aChild);
+        for ($i = 0; $i < $iCnt; $i++) {
             $strHTML .= $this->aChild[$i]->getHTML();
         }
         $strHTML .= '       <br style="clear:both;" />' . PHP_EOL;

@@ -42,7 +42,6 @@ class FormSelect extends FormInput
             if ($iSize != 1) {
                 trigger_error('SELECT_BTN must have size of 1!', E_USER_WARNING);
             }
-            $iSize = 1;
         }
         $this->strSelectBtnText = 'Auswählen';
     }
@@ -104,7 +103,7 @@ class FormSelect extends FormInput
      * set text for selectbutton.
      * @param string $strSelectBtnText
      */
-    function setSelectBtnText(string $strSelectBtnText) : void 
+    public function setSelectBtnText(string $strSelectBtnText) : void 
     {
         if (($this->wFlags & self::SELECT_BTN) == 0) {
             trigger_error('SELECT_BTN flag must be set!', E_USER_NOTICE);

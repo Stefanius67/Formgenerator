@@ -101,7 +101,7 @@ trait FormHelperFromSQL
     protected function curFromSQL(string $strCur, bool $bCurSymbol = true) : string 
     {
         $strOut = number_format(floatval($strCur), 2, ',','.');
-        if ($bCurSymbol == true) {
+        if ($bCurSymbol) {
             $strOut .= ' &euro;';
         }
         return $strOut;

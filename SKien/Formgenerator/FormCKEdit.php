@@ -151,26 +151,28 @@ class FormCKEdit extends FormTextArea
             $strAllowedContent = "'" . $this->strAllowedContent . "'";
         }
         
-        $strScript  = "var editor = null;" . PHP_EOL;
-        $strScript .= "function LoadEditor() {" . PHP_EOL;
-        $strScript .= "    // get initial size of textarea to replace" . PHP_EOL;
-        $strScript .= "    var oTA = document.getElementById('" . $this->strName . "');" . PHP_EOL;
-        $strScript .= "    var iHeight = 80;" . PHP_EOL;
-        $strScript .= "    if (oTA) {" . PHP_EOL;
-        $strScript .= "        iHeight = oTA.offsetHeight;" . PHP_EOL;
-        $strScript .= "        iWidth = oTA.offsetWidth;" . PHP_EOL;
-        $strScript .= "    }" . PHP_EOL;
-        $strScript .= "    // create and Initialize HTML-Editor" . PHP_EOL;
-        $strScript .= "    editor = CKEDITOR.replace('" . $this->strName . "' , {" . PHP_EOL;
-        $strScript .= "            contentsCss : '" . $this->strContentsCss . "'," . PHP_EOL;
-        $strScript .= "            bodyId : '" . $this->strBodyID . "'," . PHP_EOL;
-        $strScript .= "            removePlugins : 'elementspath'," . PHP_EOL;
-        $strScript .= "            toolbar: " . json_encode($aToolbar) . ", ";
-        $strScript .= "            toolbarCanCollapse : false," . PHP_EOL;
-        $strScript .= "            pasteFilter : 'plain-text'," . PHP_EOL;
-        $strScript .= "            allowedContent : " . $strAllowedContent . "," . PHP_EOL;
-        $strScript .= "            resize_enabled : false" . PHP_EOL;
-        $strScript .= "        });" . PHP_EOL;
+        $strScript  = 
+            "var editor = null;" . PHP_EOL .
+            "function LoadEditor()" . PHP_EOL .
+            "{" . PHP_EOL .
+            "    // get initial size of textarea to replace" . PHP_EOL .
+            "    var oTA = document.getElementById('" . $this->strName . "');" . PHP_EOL .
+            "    var iHeight = 80;" . PHP_EOL .
+            "    if (oTA) {" . PHP_EOL .
+            "        iHeight = oTA.offsetHeight;" . PHP_EOL .
+            "        iWidth = oTA.offsetWidth;" . PHP_EOL .
+            "    }" . PHP_EOL .
+            "    // create and Initialize HTML-Editor" . PHP_EOL .
+            "    editor = CKEDITOR.replace('" . $this->strName . "' , {" . PHP_EOL .
+            "            contentsCss : '" . $this->strContentsCss . "'," . PHP_EOL .
+            "            bodyId : '" . $this->strBodyID . "'," . PHP_EOL .
+            "            removePlugins : 'elementspath'," . PHP_EOL .
+            "            toolbar: " . json_encode($aToolbar) . ", " .
+            "            toolbarCanCollapse : false," . PHP_EOL .
+            "            pasteFilter : 'plain-text'," . PHP_EOL .
+            "            allowedContent : " . $strAllowedContent . "," . PHP_EOL .
+            "            resize_enabled : false" . PHP_EOL .
+            "        });" . PHP_EOL;
         
         // commands for custom buttons
         if (is_array($this->aCustomBtn) && count($this->aCustomBtn) > 0) {
@@ -244,13 +246,55 @@ class FormCKEdit extends FormTextArea
     public function getToolbarDef() : array
     {
         $aToolbar = array();
+        $this->addBasicStyleBtns($aToolbar);
+        $this->addParagraphBtns($aToolbar);
+        $this->addLinkBtns($aToolbar);
+        $this->addImageSnippetBtns($aToolbar);
+        $this->addColorBtns($aToolbar);
+        $this->addStyleSelect($aToolbar);
+        $this->addTemplateSelect($aToolbar);
+        $this->addPlaceholderSelect($aToolbar);
+        $this->addSourceBtn($aToolbar);
+        
+        return $aToolbar;
+    }
     
+    /**
+     * Add button group for basic styles. 
+     * @param array $aToolbar reference to the toolbar array
+     */
+    protected function addBasicStyleBtns(array &$aToolbar) : void
+    {
         if (($this->lToolbar & self::TB_BASIC_STYLES) != 0)
             $aToolbar[] = array('name' => 'basicstyles',   'items' => array('Bold','Italic','Underline','Subscript','Superscript','-','RemoveFormat'));
+    }
+    
+    /**
+     * Add button group for paragraph formating. 
+     * @param array $aToolbar reference to the toolbar array
+     */
+    protected function addParagraphBtns(array &$aToolbar) : void
+    {
         if (($this->lToolbar & self::TB_PARAGRAPH) != 0)
             $aToolbar[] = array('name' => 'paragraph',     'items' => array('NumberedList','BulletedList','-','Outdent', 'Indent','-','JustifyLeft','JustifyCenter','JustifyRight'));
+    }
+    
+    /**
+     * Add button group for links. 
+     * @param array $aToolbar reference to the toolbar array
+     */
+    protected function addLinkBtns(array &$aToolbar) : void
+    {
         if (($this->lToolbar & self::TB_LINKS) != 0)
             $aToolbar[] = array('name' => 'links',         'items' => array('Link','Unlink'));
+    }
+    
+    /**
+     * Add button group for images and snippets 
+     * @param array $aToolbar reference to the toolbar array
+     */
+    protected function addImageSnippetBtns(array &$aToolbar) : void
+    {
         if (($this->lToolbar & (self::TB_IMAGE | self::TB_SNIPPET)) != 0) {
             $aInsert = array();
             if (($this->lToolbar & self::TB_IMAGE) != 0)
@@ -259,17 +303,56 @@ class FormCKEdit extends FormTextArea
                 $aInsert[] = 'CodeSnippet';
             $aToolbar[] = array('name' => 'insert',        'items' => $aInsert);
         }
+    }
+    
+    /**
+     * Add button group for colors 
+     * @param array $aToolbar reference to the toolbar array
+     */
+    protected function addColorBtns(array &$aToolbar) : void
+    {
         if (($this->lToolbar & self::TB_COLOR) != 0)
             $aToolbar[] = array('name' => 'color',         'items' => array('TextColor','BGColor'));
+    }
+    
+    /**
+     * Add select list for styles 
+     * @param array $aToolbar reference to the toolbar array
+     */
+    protected function addStyleSelect(array &$aToolbar) : void
+    {
         if (($this->lToolbar & self::TB_STYLES_SELECT) != 0)
             $aToolbar[] = array('items' => array('Styles'));
+    }
+    
+    /**
+     * Add select list for templates 
+     * @param array $aToolbar reference to the toolbar array
+     */
+    protected function addTemplateSelect(array &$aToolbar) : void
+    {
         if (($this->lToolbar & self::TB_TEMPLATES) != 0)
             $aToolbar[] = array('items' => array('Templates'));
+    }
+    
+    /**
+     * Add select list for placeholders 
+     * @param array $aToolbar reference to the toolbar array
+     */
+    protected function addPlaceholderSelect(array &$aToolbar) : void
+    {
         if (($this->lToolbar & self::TB_PLACEHOLDERS) != 0)
             $aToolbar[] = array('items' => array('placeholder_select'));
+    }
+    
+    /**
+     * Add button to switch in the source mode 
+     * @param array $aToolbar reference to the toolbar array
+     */
+    protected function addSourceBtn(array &$aToolbar) : void
+    {
         if (($this->lToolbar & self::TB_SOURCE) != 0)
             $aToolbar[] = array('name' => 'document',      'items' => array('Source'));
     
-        return $aToolbar;
     }
 }

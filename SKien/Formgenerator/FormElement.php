@@ -126,7 +126,11 @@ class FormElement
     {
         $oElement->setParent($this);
         $this->aChild[] = $oElement;
-        $this->oFG->addElement($oElement);
+        if ($this->oFG !== null ) {
+            $this->oFG->addElement($oElement);
+        } else {
+            trigger_error('No FormGenerator object set!', E_USER_ERROR);
+        }
         
         return $oElement;
     }
@@ -141,8 +145,10 @@ class FormElement
     {
         $this->oParent = $oParent;
         $this->oFG = $oParent->oFG;
-        if ($this->oFG->wGlobalFlags != 0) {
-            $this->addFlags($this->oFG->wGlobalFlags);
+        if ($this->oFG !== null ) {
+            $this->addFlags($this->oFG->getGlobalFlags());
+        } else {
+            trigger_error('No FormGenerator object set!', E_USER_ERROR);
         }
     }
     
@@ -336,7 +342,8 @@ class FormElement
     public function getHTML() : string
     {
         $strHTML = '';
-        for ($i = 0; $i < count($this->aChild); $i++) {
+        $iCnt = count($this->aChild);
+        for ($i = 0; $i < $iCnt; $i++) {
             $strHTML .= $this->aChild[$i]->GetHTML();
         }
         return $strHTML;

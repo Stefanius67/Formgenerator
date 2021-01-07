@@ -36,7 +36,7 @@ class FormInt extends FormInput
      * @param int $iMin - set to null, if no limitation wanted
      * @param int $iMax - set to null, if no limitation wanted
      */
-    public function setMinMax(int $iMin, int $iMax) : void 
+    public function setMinMax(?int $iMin, ?int $iMax) : void 
     {
         if ($iMin !== null) {
             $this->aAttrib['min'] = $iMin;

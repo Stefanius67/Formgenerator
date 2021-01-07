@@ -89,7 +89,8 @@ class FormFieldSet extends FormElement
             }
             $strHTML .= '</legend>' . PHP_EOL;
         }
-        for ($i = 0; $i < count($this->aChild); $i++) {
+        $iCnt = count($this->aChild);
+        for ($i = 0; $i < $iCnt; $i++) {
             $strHTML .= $this->aChild[$i]->GetHTML();
         }
         $strHTML .= '</fieldset>' . PHP_EOL;
