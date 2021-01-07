@@ -66,6 +66,18 @@ class FormElement
     const   BOLD                    = 0x0400000;
     /** replace '<br/>' / '<br> with CR */
     const   REPLACE_BR_CR           = 0x0800000;
+
+    // TODO: Find a more general way of defining standard images. (possibly via a config)
+    /** standard delete image */
+    const IMG_DELETE            =  1;
+    /** standard delete image */
+    const IMG_SEARCH            =  2;
+    /** standard image for date picker */
+    const IMG_DATE_PICKER       =  3;
+    /** standard image for time picker */
+    const IMG_TIME_PICKER       =  4;
+    /** standard image for dtu insert (DTU: Date,Time,User) */
+    const IMG_DTU               =  5;
     
     /** @var FormGenerator the FormGenerator this element belongs to     */
     protected ?FormGenerator $oFG = null;
@@ -476,6 +488,33 @@ class FormElement
             $strTab = ' tabindex="' . $iTab . '"';
         }
         return $strTab;
+    }
+    
+    /**
+     * Get filename for predifined standard images
+     * @param int $iImage
+     * @return string
+     */
+    protected function getStdImage(int $iImage) : string
+    {
+        // TODO: Find a more general way of defining standard images. (possibly via a config)
+        $strPath = '../images/';
+        if ($this->oFG !== null) {
+            $strPath = $this->oFG->getImagePath();
+        }
+        $aImage = array(
+            self::IMG_DELETE                => '16x16/admin_delete.png',
+            self::IMG_SEARCH                => '16x16/search.png',
+            self::IMG_DATE_PICKER           => '16x16/datepicker.png',
+            self::IMG_TIME_PICKER           => '16x16/timepicker.png',
+            self::IMG_DTU                   => '16x16/admin_dtu.png',
+        );
+        
+        $strImg = '';
+        if (isset($aImage[$iImage])) {
+            $strImg = $strPath . $aImage[$iImage];
+        }
+        return $strImg;
     }
     
     /**

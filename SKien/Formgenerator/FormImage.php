@@ -15,14 +15,8 @@ namespace SKien\Formgenerator;
  */
 class FormImage extends FormElement
 {
-    // TODO: Find a more general way of defining standard images. (possibly via a config)
-    /** standard delete image */
-    const IMG_DELETE            =  1;
-    /** standard image for date picker */
-    const IMG_DATE_PICKER       =  2;
-    
-    /** @var string image to display     */
-    protected string $strImg;
+    /** @var string|int image to display     */
+    protected $img;
     /** @var string CSS styles     */
     protected string $strStyle;
     /** @var string JS onclick() handler     */
@@ -31,15 +25,15 @@ class FormImage extends FormElement
     /**
      * Create image element. 
      * @param string $strName
-     * @param string|int $img   image to display or index to a standard image
+     * @param string|int $img       image to display or index to a standard image
      * @param string $strOnClick    JS onclick() handler
-     * @param string $strStyle  default ''
-     * @param string $strTitle  default ''
+     * @param string $strStyle      CSS style (default '')
+     * @param string $strTitle      tooltip title (default '')
      */
     public function __construct(string $strName, $img, string $strOnClick, string $strStyle = '', string $strTitle = '') 
     {
         $this->strName = $strName;
-        $this->strImg = is_numeric($img) ? $this->getStdImage(intval($img)) : $img;
+        $this->img = $img;
         $this->strOnClick = $strOnClick;
         $this->setTitle($strTitle);
 
@@ -59,8 +53,10 @@ class FormImage extends FormElement
     {
         $strHTML = $this->buildContainerDiv();
         
+        $strImg = is_numeric($this->img) ? $this->getStdImage(intval($this->img)) : $this->img;
+        
         $strAlt = 'Grafik'; 
-        $strHTML .= '<img src="' . $this->strImg . '" alt="' . $strAlt . '"';
+        $strHTML .= '<img src="' . $strImg . '" alt="' . $strAlt . '"';
         if (!empty($this->strName)) {
             $strHTML .= ' id="' . $this->strName . '"';
         }
@@ -74,25 +70,5 @@ class FormImage extends FormElement
         $strHTML .= '></div>' . PHP_EOL;
         
         return $strHTML;
-    }
-    
-    /**
-     * Get filename for predifined standard images
-     * @param int $iImage
-     * @return string
-     */
-    protected function getStdImage(int $iImage) : string
-    {
-        // TODO: Find a more general way of defining standard images. (possibly via a config)
-        $aImage = array( 
-            self::IMG_DELETE          => '../images/16x16/admin_delete.png', 
-            self::IMG_DATE_PICKER     => '../images/16x16/datepicker.png',
-        );
-        
-        $strImg = '';
-        if (isset($aImage[$iImage])) {
-            $strImg = $aImage[$iImage];
-        }
-        return $strImg;
     }
 }

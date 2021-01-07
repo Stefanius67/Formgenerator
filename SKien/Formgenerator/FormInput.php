@@ -162,8 +162,8 @@ class FormInput extends FormElement
         if (($this->wFlags & self::ADD_SELBTN) != 0) {
             $strImg = $this->strSelectImg;
             $strTitle = $this->strSelectImgTitle;
-            if (empty($strImg) && $this->oFG !== null) {
-                $strImg = $this->oFG->getImagePath() . '16x16/search.png';
+            if (empty($strImg)) {
+                $strImg = $this->getStdImage(self::IMG_SEARCH);
             }
             $strHTML .= '<img class="' . $strClass . '" src="' . $strImg . '" alt="Auswahl"';
             if (!empty($strTitle)) {
@@ -172,7 +172,7 @@ class FormInput extends FormElement
             if (!empty($this->strBrowseServer)) {
                 $strHTML .= " onclick=\"BrowseServer('" . $this->strName . "','','" . $this->strBrowseServer . "');\">";
                 if (($this->wFlags & self::READ_ONLY) != 0) {
-                    $strHTML .= '<img class="picker" src="' . $this->oFG->getImagePath() . '16x16/admin_delete.png" alt="L&ouml;schen" title="L&ouml;schen" ';
+                    $strHTML .= '<img class="picker" src="' . $this->getStdImage(self::IMG_DELETE) . '" alt="L&ouml;schen" title="L&ouml;schen" ';
                     $strHTML .= " onclick=\"ResetInput('" . $this->strName . "');\">";
                 }
             } else {
@@ -205,17 +205,17 @@ class FormInput extends FormElement
         
         // some additional elements
         if (($this->wFlags & self::ADD_DTU) != 0) {
-            $strHTML .= '<img class="picker" src="' . $this->oFG->getImagePath() . '16x16/admin_dtu.png"  alt="[X]"';
+            $strHTML .= '<img class="picker" src="' . $this->getStdImage(self::IMG_DTU) . '"  alt="[X]"';
             $strHTML .= ' id="' . $this->strName . 'DTU"';
             $strHTML .= ' title="aktuelle Datum Uhrzeit / Benutzername eintragen"';
             $strHTML .= ' onclick="OnInsertDateTimeUser(' . "'" . $this->strName . "'" . ');">';
         } else if (($this->wFlags & self::ADD_DATE_PICKER) != 0) {
-            $strHTML .= '<img class="picker" src="' . $this->oFG->getImagePath() . '16x16/datepicker.png" alt="[X]"';
+            $strHTML .= '<img class="picker" src="' . $this->getStdImage(self::IMG_DATE_PICKER) . '" alt="[X]"';
             $strHTML .= ' id="' . $this->strName . 'DP"';
             $strHTML .= ' title="Datum auswählen"';
             $strHTML .= ' onclick="OnDatePicker(' . "'" . $this->strName . "'" . ');">';
         } else if (($this->wFlags & self::ADD_TIME_PICKER) != 0) {
-            $strHTML .= '<img class="picker" src="' . $this->oFG->getImagePath() . '16x16/timepicker.png"  alt="[X]"';
+            $strHTML .= '<img class="picker" src="' . $this->getStdImage(self::IMG_TIME_PICKER) . '"  alt="[X]"';
             $strHTML .= ' id="' . $this->strName . 'TP"';
             $strHTML .= ' title="Uhrzeit auswählen"';
             $strHTML .= ' onclick="OnTimePicker(' . "'" . $this->strName . "'" . ');">';
@@ -236,7 +236,6 @@ class FormInput extends FormElement
     
     /**
      * set image and title for select-button (leave strImg blank for default)
-     * default image is 16x16/search.png
      * @param string $strImg
      * @param string $strTitle (default = '')
      */
