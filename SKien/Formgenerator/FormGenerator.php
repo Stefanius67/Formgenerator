@@ -17,7 +17,7 @@ use SKien\Formgenerator\FormElement as FE;
  */
 class FormGenerator extends FormElement
 {
-    use FormHelperFromSQL;
+    use GetFromSQL;
     
     /** save/submit button */
     const BTN_SAVE      = 'save';

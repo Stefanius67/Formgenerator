@@ -17,7 +17,7 @@ namespace SKien\Formgenerator;
  */
 class FormTime extends FormInput
 {
-    use FormHelperFromSQL;
+    use GetFromSQL;
     
     /**
      * Creates input field for time values.

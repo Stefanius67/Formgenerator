@@ -25,7 +25,7 @@ namespace SKien\Formgenerator;
  */
 class FormDate extends FormInput
 {
-    use FormHelperFromSQL;
+    use GetFromSQL;
     
     /**
      * Creates input field for date values.

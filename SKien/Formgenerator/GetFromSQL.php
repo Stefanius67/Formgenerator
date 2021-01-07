@@ -12,7 +12,7 @@ namespace SKien\Formgenerator;
  * @author Stefanius <s.kien@online.de>
  * @copyright MIT License - see the LICENSE file for details
 */
-trait FormHelperFromSQL
+trait GetFromSQL
 {
     /**
      * format date from DB field

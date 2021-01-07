@@ -17,7 +17,7 @@ namespace SKien\Formgenerator;
 */
 class FormCur extends FormInput
 {
-    use FormHelperFromSQL;
+    use GetFromSQL;
     
     /**
      * Creates input field for currency values.
