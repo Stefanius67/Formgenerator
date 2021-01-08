@@ -17,3 +17,5 @@
 ### methode oFG->setSize() wurde durch $oFG->setFormWidth() ersetzt
 > Die Höhe wurde an keiner Stelle gesetzt
 
+### FormCKEditor
+> oEdit->setContentsCss() muss jetzt explizit gesetzt werden

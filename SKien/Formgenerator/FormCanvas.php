@@ -15,32 +15,19 @@ namespace SKien\Formgenerator;
  */
 class FormCanvas extends FormInput
 {
-    /** @var int internal width of the canvas     */
-    protected int $iWidth;
-    /** @var int internal height of the canvas     */
-    protected int $iHeight;
-    
     /**
      * Create o canvas element. 
      * @param string $strID
      * @param int $iWidth
      * @param int $iHeight
-     * @param string $strStyle
      */
-    public function __construct(string $strID, int $iWidth, int $iHeight, string $strStyle = '') 
+    public function __construct(string $strID, int $iWidth, int $iHeight) 
     {
         $this->strID = $strID;
-        $this->iWidth = $iWidth;
-        $this->iHeight = $iHeight;
-
-        if (strlen($strStyle) > 0) {
-            trigger_error('use AddStyle() instead of parameter strStyle!', E_USER_DEPRECATED);
-            $this->aStyle = self::parseStyle($strStyle);
-        }
 
         // Note: set attributes for width and height-styles will change internal behaviour of canvas
-        $this->addAttribute('height', (string)$this->iHeight);
-        $this->addAttribute('width', (string)$this->iWidth);
+        $this->addAttribute('height', (string)$iHeight);
+        $this->addAttribute('width', (string)$iWidth);
     }
 
     /**
