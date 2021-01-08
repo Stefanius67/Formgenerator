@@ -26,7 +26,7 @@ class FormCheck extends FormInput
      * @param string $strName   name AND id of the element
      * @param bool $bChecked    initial value
      * @param int $wFlags    (default: 0)
-     * @param string $strValue  value to submit, if checked  (default: '' -> 'on' is submitted)
+     * @param string $strValue  value to submit if checked  (default: '' -> 'on' is submitted)
      * @param string $strSuffix Text after the checkbox (default: '')
      */
     public function __construct(string $strName, bool $bChecked, int $wFlags = 0, string $strValue = '', string $strSuffix = '') 
@@ -52,12 +52,11 @@ class FormCheck extends FormInput
     {
         $strHTML = $this->buildContainerDiv();
         
-        $strHTML .= '<input';
-        $strHTML .= ' type="checkbox"';
+        $strHTML .= '<input type="checkbox"';
         
         // note: because checkboxes don't support readonly-attribute and disabled checkboxes are not posted to
         // reciever, we insert an hidden field with name and id to keep value 'alive'
-        // so we dont set name and id for readonly or disabled checkboxes!
+        // -> so we dont set name and id for readonly or disabled checkbox!
         if (($this->wFlags & (self::READ_ONLY | self::DISABLED)) == 0) {
             $strHTML .= ' name="' . $this->strName . '"';
             $strHTML .= ' id="' . $this->strName . '"';
@@ -88,8 +87,8 @@ class FormCheck extends FormInput
     
     /**
      * Build the markup for the value attribute.
-     * {@inheritDoc}
-     * @see \SKien\Formgenerator\FormInput::buildValue()
+     * For checkboxes value is only set, if it is not empty.
+     * @return string
      */
     protected function buildValue($strValue) : string
     {
