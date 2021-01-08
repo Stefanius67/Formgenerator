@@ -29,7 +29,7 @@ class FormCheck extends FormInput
      * @param string $strValue  value to submit, if checked  (default: '' -> 'on' is submitted)
      * @param string $strSuffix Text after the checkbox (default: '')
      */
-    public function __construct(string $strName, bool $bChecked, int $wFlags = 0, string $strValue='', string $strSuffix='') 
+    public function __construct(string $strName, bool $bChecked, int $wFlags = 0, string $strValue = '', string $strSuffix = '') 
     {
         $this->strName = $strName;
         $this->strValue = $strValue;
@@ -73,7 +73,7 @@ class FormCheck extends FormInput
             $strHTML .= ' type="hidden"';
             $strHTML .= ' name="' . $this->strName . '"';
             $strHTML .= ' id="' . $this->strName . '"';
-            ($this->bChecked) ? $strHTML .= ' value="1"' : $strHTML .= ' value="0"' ;
+            ($this->bChecked) ? $strHTML .= ' value="1"' : $strHTML .= ' value="0"';
         }
         $strHTML .= '>';
         

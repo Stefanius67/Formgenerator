@@ -27,7 +27,7 @@ class FormCanvas extends FormInput
      * @param int $iHeight
      * @param string $strStyle
      */
-    public function __construct(string $strID, int $iWidth, int $iHeight, string $strStyle='') 
+    public function __construct(string $strID, int $iWidth, int $iHeight, string $strStyle = '') 
     {
         $this->strID = $strID;
         $this->iWidth = $iWidth;
@@ -39,8 +39,8 @@ class FormCanvas extends FormInput
         }
 
         // Note: set attributes for width and height-styles will change internal behaviour of canvas
-        $this->addAttribute('height', (string) $this->iHeight);
-        $this->addAttribute('width', (string) $this->iWidth);
+        $this->addAttribute('height', (string)$this->iHeight);
+        $this->addAttribute('width', (string)$this->iWidth);
     }
 
     /**
@@ -50,7 +50,7 @@ class FormCanvas extends FormInput
      */
     public function getHTML() : string
     {
-        $strHTML  =  $this->buildContainerDiv();
+        $strHTML = $this->buildContainerDiv();
 
         $strHTML .= '   <canvas id="' . $this->strID . '"';
         $strHTML .= $this->buildStyle();

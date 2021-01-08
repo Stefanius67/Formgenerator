@@ -33,7 +33,7 @@ class FormHeader extends FormElement
      */
     public function getHTML() : string
     {
-        $strHTML  = '<h2>' . $this->strText . '</h2>' . PHP_EOL;
+        $strHTML = '<h2>' . $this->strText . '</h2>' . PHP_EOL;
         return $strHTML;
     }
 }

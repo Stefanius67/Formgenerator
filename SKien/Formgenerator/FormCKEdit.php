@@ -314,7 +314,7 @@ class FormCKEdit extends FormTextArea
         if (($this->lToolbar & self::TB_LINKS) != 0) {
             $aToolbar[] = [
                 'name' => 'links',
-                'items' => ['Link','Unlink']
+                'items' => ['Link', 'Unlink']
             ];
         }
     }
@@ -344,7 +344,7 @@ class FormCKEdit extends FormTextArea
     protected function addColorBtns(array &$aToolbar) : void
     {
         if (($this->lToolbar & self::TB_COLOR) != 0) {
-            $aToolbar[] = ['name' => 'color', 'items' => ['TextColor','BGColor']];
+            $aToolbar[] = ['name' => 'color', 'items' => ['TextColor', 'BGColor']];
         }
     }
     

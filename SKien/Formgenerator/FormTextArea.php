@@ -52,11 +52,11 @@ class FormTextArea extends FormInput
         $strHTML  = $this->buildContainerDiv();
         
         $strHTML .= '<textarea';
-        $strHTML .= ' class="' .    $this->strClass . '"';
-        $strHTML .= ' name="' .     $this->strName . '"';
-        $strHTML .= ' id="' .       $this->strName . '"';
-        $strHTML .= ' cols="' .     $this->iCols . '"';
-        $strHTML .= ' rows="' .     $this->iRows . '"';
+        $strHTML .= ' class="' . $this->strClass . '"';
+        $strHTML .= ' name="' . $this->strName . '"';
+        $strHTML .= ' id="' . $this->strName . '"';
+        $strHTML .= ' cols="' . $this->iCols . '"';
+        $strHTML .= ' rows="' . $this->iRows . '"';
         $strHTML .= $this->buildStyle();
         $strHTML .= $this->buildAttributes();
         $strHTML .= $this->buildTab($this->iTab);

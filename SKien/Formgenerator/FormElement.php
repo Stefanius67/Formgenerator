@@ -69,15 +69,15 @@ class FormElement
 
     // TODO: Find a more general way of defining standard images. (possibly via a config)
     /** standard delete image */
-    const IMG_DELETE            =  1;
+    const IMG_DELETE            = 1;
     /** standard delete image */
-    const IMG_SEARCH            =  2;
+    const IMG_SEARCH            = 2;
     /** standard image for date picker */
-    const IMG_DATE_PICKER       =  3;
+    const IMG_DATE_PICKER       = 3;
     /** standard image for time picker */
-    const IMG_TIME_PICKER       =  4;
+    const IMG_TIME_PICKER       = 4;
     /** standard image for dtu insert (DTU: Date,Time,User) */
-    const IMG_DTU               =  5;
+    const IMG_DTU               = 5;
     
     /** @var FormGenerator the FormGenerator this element belongs to     */
     protected ?FormGenerator $oFG = null;
@@ -429,8 +429,9 @@ class FormElement
         if ($this->aAttrib != null) {
             foreach ($this->aAttrib as $strName => $strValue) {
                 $strAttrib .= ' ' . $strName;
-                if (strlen($strValue) > 0)
+                if (strlen($strValue) > 0) {
                     $strAttrib .= '="' . $strValue . '"';
+                }
             }
         }
         return $strAttrib;

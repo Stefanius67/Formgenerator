@@ -35,7 +35,7 @@ class FormFieldSet extends FormElement
      * @param string $strID
      * @param int $iType
      */
-    public function __construct(string $strLegend, string $strID='', int $iType = self::TEXT) 
+    public function __construct(string $strLegend, string $strID = '', int $iType = self::TEXT) 
     {
         $this->strLegend = $strLegend;
         $this->strID = $strID;
@@ -58,7 +58,7 @@ class FormFieldSet extends FormElement
      * @param string $strLabel (default: '&nbsp;')
      * @return \SKien\Formgenerator\FormLine
      */
-    public function addLine(string $strLabel='&nbsp;') : FormLine
+    public function addLine(string $strLabel = '&nbsp;') : FormLine
     {
         $oFL = new FormLine($strLabel);
         $this->add($oFL);

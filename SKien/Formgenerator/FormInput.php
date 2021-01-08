@@ -239,7 +239,7 @@ class FormInput extends FormElement
      * @param string $strImg
      * @param string $strTitle (default = '')
      */
-    public function setSelectImg(string $strImg, string $strTitle='') : void 
+    public function setSelectImg(string $strImg, string $strTitle = '') : void 
     {
         $this->strSelectImg = $strImg;
         $this->strSelectImgTitle = $strTitle;

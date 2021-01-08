@@ -48,15 +48,15 @@ class FormStatic extends FormElement
         }
         if (($this->wFlags & self::ERROR) != 0) {
             // TODO: change from style='color: #FF0000' to class 'formerror'
-            $this->addStyle('color', '#FF0000') ;
+            $this->addStyle('color', '#FF0000');
         }
         if (($this->wFlags & self::ALIGN_RIGHT) != 0) {
             $this->addStyle('text-align', 'right') ;
         } else if (($this->wFlags & self::ALIGN_CENTER) != 0) {
-            $this->addStyle('text-align', 'center') ;
+            $this->addStyle('text-align', 'center');
         }
         if (($this->wFlags & self::BOLD) != 0) {
-            $this->addStyle('font-weight', 'bold') ;
+            $this->addStyle('font-weight', 'bold');
         }
         if (($this->wFlags & self::INFO) != 0) {
             $this->strClass = 'forminfo';
