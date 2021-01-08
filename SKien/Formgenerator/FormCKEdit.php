@@ -2,60 +2,77 @@
 namespace SKien\Formgenerator;
 
 /**
- * HTML input using CKEditor
+ * WYSIWYG - HTML input using CKEditor.
+ * currently used/supportet CKEditor Version is 4.6.2
+ * 
+ * TODO: check, if it make sense to migrate to CKeditor 5 or 'only' update to newest 4.X 
+ * @link https://ckeditor.com/docs/ckeditor5/latest/builds/guides/migrate.html 
  *
- * history:
- * date         version
- * 2020-05-12   initial version
+ * #### History
+ * - *2020-05-12*   initial version
+ * - *2021-01-07*   PHP 7.4
+ * - *2021-01-09*   added support of icons for custom buttons and table, special char and iframe - Button
  *
  * @package Formgenerator
- * @version 1.0.0
+ * @version 1.1.0
  * @author Stefanius <s.kien@online.de>
  * @copyright MIT License - see the LICENSE file for details
  */
 class FormCKEdit extends FormTextArea
 {
     /** 'Source' - Button   */
-    const   TB_SOURCE           = 0x00000002;
+    public const TB_SOURCE           = 0x00000002;
     /** Basic Styles:  Bold, Italic, Underline, Subscript, Superscript, RemoveFormat    */
-    const   TB_BASIC_STYLES     = 0x00000004;
+    public const TB_BASIC_STYLES     = 0x00000004;
     /** Paragraph Formation: NumberedList, BulletedList, Outdent, Indent, JustifyLeft, -Center, -Right' */
-    const   TB_PARAGRAPH        = 0x00000008;
+    public const TB_PARAGRAPH        = 0x00000008;
     /** Links: link, Unlink */
-    const   TB_LINKS            = 0x00000010;
+    public const TB_LINKS            = 0x00000010;
     /** Insert Image    */
-    const   TB_IMAGE            = 0x00000020;
+    public const TB_IMAGE            = 0x00000020;
     /** Colors: Text-, Backgroundcolor  */
-    const   TB_COLOR            = 0x00000040;
+    public const TB_COLOR            = 0x00000040;
     /** Table funtions insert and delete rows   */
-    /* not working so far !!
-     const  tbTable             = 0x00000080; */
+    public const TB_TABLE            = 0x00000080;
     /** SelectBox for defined Styles    */
-    const   TB_STYLES_SELECT    = 0x00000100;
+    public const TB_STYLES_SELECT    = 0x00000100;
     /** Select predefined Templates */
-    const   TB_TEMPLATES        = 0x00000200;
+    public const TB_TEMPLATES        = 0x00000200;
     /** SelectBox for Placeholders  */
-    const   TB_PLACEHOLDERS     = 0x00000400;
+    public const TB_PLACEHOLDERS     = 0x00000400;
     /** Insert Codesnippet  */
-    const   TB_SNIPPET          = 0x00000800;
+    public const TB_SNIPPET          = 0x00000800;
+    /** Insert Special Chars  */
+    public const TB_SPECIAL_CHAR     = 0x00001000;
+    /** Insert Iframe  */
+    public const TB_IFRAME           = 0x00002000;
     
     /** small toolbar (only basic styles)   */
-    const   TB_SMALL    = 0x00000004; // self::TB_BASIC_STYLES;
-    /** toolbar for content edit (no colors, templates and snippets)   */
-    const   TB_CONTENT  = 0xfffff5bd; // 0xffffffff & ~( self::TB_COLOR | self::TB_TEMPLATES | self::TB_SNIPPET | TB_SOURCE);
+    public const TB_SMALL    = 0x00000004; // TB_BASIC_STYLES;
+    /** insert objects   */
+    public const TB_INSERT   = 0x000038A0; // TB_IMAGE | TB_TABLE | TB_SNIPPET | TB_SPECIAL_CHAR | TB_IFRAME
+    /** toolbar for content edit (no colors, templates and objects)   */
+    public const TB_CONTENT  = 0xfffff53d; // 0xffffffff & ~(TB_COLOR | TB_TEMPLATES | TB_INSERT | TB_SOURCE);
     /** full toolbar (no templates)   */
-    const   TB_FULL     = 0xfffffdfd; // 0xffffffff & ~(self::TB_TEMPLATES | TB_SOURCE);
+    public const TB_FULL     = 0xfffffdfd; // 0xffffffff & ~(TB_TEMPLATES | TB_SOURCE);
+    
+    /** custom button only with text   */
+    public const BTN_TEXT           = 0x01;
+    /** custom button only with icon   */
+    public const BTN_ICON           = 0x02;
+    /** custom button with text and icon  */
+    public const BTN_TEXT_ICON      = 0x03;
     
     /** @var string the CSS file used inside the editarea    */
-    protected string $strContentsCss;
+    protected string $strContentsCss = '';
     /** @var string the id of the editarea   */
     protected string $strBodyID;
     /** @var string the content for the editor as JSON   */
     protected ?string $strJsonData = null;
     /** @var array custom button definition ["func" => <buttonhandler>, "name" => <buttonname>]    */
-    protected ?array $aCustomBtn = null;
+    protected array $aCustomBtn = [];
     /** @var string allowed content    */
-    protected ?string $strAllowedContent;
+    protected string $strAllowedContent = '';
     /** @var int toolbar mask    */
     protected int $lToolbar;
     
@@ -69,6 +86,7 @@ class FormCKEdit extends FormTextArea
      */
     public function __construct(string $strName, string $strValue, int $iRows, string $strWidth = '95%', int $wFlags = 0) 
     {
+        // TODO: explain differences when using FormInput::SET_JSON_DATA
         if (($wFlags & FormInput::SET_JSON_DATA) != 0) {
             $this->strJsonData = $strValue;
             $strValue = '';
@@ -77,9 +95,7 @@ class FormCKEdit extends FormTextArea
         parent::__construct($strName, $strValue, 0, $iRows + 2, $strWidth, $wFlags);
         $this->bCreateScript = true;
         $this->bCreateStyle = true;
-        $this->strContentsCss = '../style/ckeditarea.css';
         $this->strBodyID = 'editarea';
-        $this->strAllowedContent = null;
         $this->lToolbar = self::TB_CONTENT;
     } 
 
@@ -106,16 +122,24 @@ class FormCKEdit extends FormTextArea
     
     /**
      * Add custom button to the beginning of the toolbar.
+     * If icon specified take care it the path is absolute or relative to the script that
+     * containing this CKEditor.
      * @param string $strName       Name (Text) of the Button
      * @param string $strFunction   JS-Function to handle click (func gets editor as paramter)
+     * @param string $strIcon       Icon for the button
+     * @param int $iType            Type of the button (FormCKEdit::BTN_TEXT, FormCKEdit::BTN_ICON or FormCKEdit::BTN_TXET_ICON)
      */
-    public function addCustomButton(string $strName, string $strFunction) : void 
+    public function addCustomButton(string $strName, string $strFunction, string $strIcon = '', int $iType = self::BTN_TEXT) : void 
     {
-        if (!is_array($this->aCustomBtn)) {
-            $this->aCustomBtn = array();
+        if (empty($strIcon)) {
+            $iType = self::BTN_TEXT;
         }
-        
-        $this->aCustomBtn[] = array('func' => $strFunction, 'name' => $strName);
+        $this->aCustomBtn[] = [
+            'func' => $strFunction, 
+            'name' => $strName,
+            'icon' => $strIcon,
+            'type' => $iType,
+        ];
     }
     
     /**
@@ -136,23 +160,11 @@ class FormCKEdit extends FormTextArea
      */
     public function getScript() : string 
     {
-        $aToolbar = [];
-        if (is_array($this->aCustomBtn) && count($this->aCustomBtn) > 0) {
-            reset($this->aCustomBtn);
-            foreach ($this->aCustomBtn as $aBtn) {
-                $aToolbar[] = array('items' => array($aBtn['func']));
-            }
-        }
-        $aToolbar = array_merge($aToolbar, $this->getToolbarDef());
+        // define a global instance of the editor
+        $strScript = "var editor = null;" . PHP_EOL;
         
-        // just everything allowed ...
-        $strAllowedContent = "true";
-        if (strlen($this->strAllowedContent) > 0) {
-            $strAllowedContent = "'" . $this->strAllowedContent . "'";
-        }
-        
-        $strScript = 
-            "var editor = null;" . PHP_EOL .
+        // this function must be called in the html.body.onload() event!
+        $strScript .= 
             "function LoadEditor()" . PHP_EOL .
             "{" . PHP_EOL .
             "    // get initial size of textarea to replace" . PHP_EOL .
@@ -161,32 +173,12 @@ class FormCKEdit extends FormTextArea
             "    if (oTA) {" . PHP_EOL .
             "        iHeight = oTA.offsetHeight;" . PHP_EOL .
             "        iWidth = oTA.offsetWidth;" . PHP_EOL .
-            "    }" . PHP_EOL .
-            "    // create and Initialize HTML-Editor" . PHP_EOL .
-            "    editor = CKEDITOR.replace('" . $this->strName . "' , {" . PHP_EOL .
-            "            contentsCss : '" . $this->strContentsCss . "'," . PHP_EOL .
-            "            bodyId : '" . $this->strBodyID . "'," . PHP_EOL .
-            "            removePlugins : 'elementspath'," . PHP_EOL .
-            "            toolbar: " . json_encode($aToolbar) . ", " .
-            "            toolbarCanCollapse : false," . PHP_EOL .
-            "            pasteFilter : 'plain-text'," . PHP_EOL .
-            "            allowedContent : " . $strAllowedContent . "," . PHP_EOL .
-            "            resize_enabled : false" . PHP_EOL .
-            "        });" . PHP_EOL;
+            "    }" . PHP_EOL;
         
-        // commands for custom buttons
-        if (is_array($this->aCustomBtn) && count($this->aCustomBtn) > 0) {
-            reset($this->aCustomBtn);
-            foreach ($this->aCustomBtn as $aBtn) {
-                $strButton = $aBtn['func'];
-                $strCommand = 'cmd_' . $strButton;
-                $strName = $aBtn['name'];
-                $strScript .= "    editor.addCommand('" . $strCommand . "', { exec: function(editor) { " . $strButton . "(editor);  } });" . PHP_EOL;
-                $strScript .= "    editor.ui.addButton('" . $strButton . "', { label: '" . $strName . "', command: '" . $strCommand . "' });" . PHP_EOL;
-            }
-        }
+        $strScript .= $this->buildEditorCreateScript();
+        $strScript .= $this->buildCustomBtnScript();
+        
         // resize to desired size
-        $strScript .= PHP_EOL;
         $strScript .= "    CKEDITOR.on('instanceReady', function(event) {" . PHP_EOL;
         $strScript .= "            editor.resize(iWidth, iHeight);" . PHP_EOL;
         $strScript .= "        });" . PHP_EOL;
@@ -202,20 +194,20 @@ class FormCKEdit extends FormTextArea
     }
     
     /**
-     * {@inheritDoc}
-     * @see \SKien\Formgenerator\FormElement::getStyle()
+     * Build CKEditor specific styles.
+     * @return string
      */
     public function getStyle() : string 
     {
+        // If custom toolbar buttons defined, for each button dependent on the his
+        // type (TEXT, ICON, TEXT+ICON) some styles have to be set.
         $strStyle = '';
-        
-        if (is_array($this->aCustomBtn) && count($this->aCustomBtn) > 0) {
-            reset($this->aCustomBtn);
-            foreach ($this->aCustomBtn as $aBtn) {
-                $strBtn = strtolower($aBtn['func']);
-                $strStyle .= '.cke_button__' . $strBtn . '_icon { display: none !important; }' . PHP_EOL;
-                $strStyle .= '.cke_button__' . $strBtn . '_label { display: inline !important; }' . PHP_EOL;
-            }
+        foreach ($this->aCustomBtn as $aBtn) {
+            $strBtn = strtolower($aBtn['func']);
+            $strDisplayLabel = (($aBtn['type'] & self::BTN_TEXT) != 0) ? 'inline' : 'none';
+            $strDisplayIcon = (($aBtn['type'] & self::BTN_ICON) != 0) ? 'inline' : 'none';
+            $strStyle .= '.cke_button__' . $strBtn . '_icon { display: ' . $strDisplayIcon . ' !important; }' . PHP_EOL;
+            $strStyle .= '.cke_button__' . $strBtn . '_label { display: ' . $strDisplayLabel . ' !important; }' . PHP_EOL;
         }
         
         return $strStyle;
@@ -240,16 +232,81 @@ class FormCKEdit extends FormTextArea
     }
     
     /**
+     * Build the script that creates the CKEditor instance.
+     * @return string
+     */
+    protected function buildEditorCreateScript() : string
+    {
+        if (strlen($this->strContentsCss) == 0) {
+            trigger_error('No CSS Stylesheet set!', E_USER_WARNING);
+        }
+        $aCKEditor = [
+            'contentsCss' => $this->strContentsCss,
+            'bodyId' => $this->strBodyID,
+            'removePlugins' => 'elementspath',
+            'toolbar' => $this->buildToolbarDef(),
+            'toolbarCanCollapse' => false,
+            'pasteFilter' => 'plain-text',
+            'allowedContent' => ($this->strAllowedContent ?: true),
+            'resize_enabled' => false,
+        ];
+        $strScript = '    editor = CKEDITOR.replace("' . $this->strName . '", ' . json_encode($aCKEditor) . ');';
+        
+        return $strScript;
+    }
+    
+    /**
+     * Build the script tp define all custom buttons.
+     * @return string
+     */
+    protected function buildCustomBtnScript() : string
+    {
+        $strScript = '';
+        // commands for custom buttons
+        if (is_array($this->aCustomBtn) && count($this->aCustomBtn) > 0) {
+            reset($this->aCustomBtn);
+            foreach ($this->aCustomBtn as $aBtn) {
+                $strScript .= $this->buildBtnScript($aBtn);
+            }
+        }
+        return $strScript;
+    }
+    
+    /**
+     * Build the script to define a custom Button for the CFKEditor Toolbar.
+     * @param array $aBtn
+     * @return string
+     */
+    protected function buildBtnScript(array $aBtn) : string
+    {
+        $strCommand = 'cmd_' . $aBtn['func'];
+        $aCommand = [
+            'exec' => 'function(editor){' . $aBtn['func'] . '(editor);}',
+        ];
+        $aButton = [
+            'label' => $aBtn['name'],
+            'command' => $strCommand,
+            'icon' => $aBtn['icon'],
+        ];
+        
+        $strScript  = "    editor.addCommand('" . $strCommand . "', " . json_encode($aCommand) . ");" . PHP_EOL;
+        $strScript .= "    editor.ui.addButton('" . $aBtn['func'] . "', " . json_encode($aButton) . ");" . PHP_EOL;
+        
+        return $strScript;
+    }
+    
+    /**
      * Returns currently defined toolbar as array for JSON-encoding.
      * @return array
      */
-    public function getToolbarDef() : array
+    protected function buildToolbarDef() : array
     {
-        $aToolbar = array();
+        $aToolbar = [];
+        $this->addCustomBtns($aToolbar);
         $this->addBasicStyleBtns($aToolbar);
         $this->addParagraphBtns($aToolbar);
         $this->addLinkBtns($aToolbar);
-        $this->addImageSnippetBtns($aToolbar);
+        $this->addInsertBtns($aToolbar);
         $this->addColorBtns($aToolbar);
         $this->addStyleSelect($aToolbar);
         $this->addTemplateSelect($aToolbar);
@@ -257,6 +314,17 @@ class FormCKEdit extends FormTextArea
         $this->addSourceBtn($aToolbar);
         
         return $aToolbar;
+    }
+    
+    /**
+     * Add all custom buttons at start of the toolbar.
+     * @param array $aToolbar reference to the toolbar array
+     */
+    protected function addCustomBtns(array &$aToolbar) : void
+    {
+        foreach ($this->aCustomBtn as $aBtn) {
+            $aToolbar[] = ['items' => [$aBtn['func']]];
+        }
     }
     
     /**
@@ -320,18 +388,32 @@ class FormCKEdit extends FormTextArea
     }
     
     /**
-     * Add button group for images and snippets 
+     * Add button group to insert objects.
+     * - Images
+     * - Snippets
+     * - Tables
+     * - Special Chars
+     * - IFrames 
      * @param array $aToolbar reference to the toolbar array
      */
-    protected function addImageSnippetBtns(array &$aToolbar) : void
+    protected function addInsertBtns(array &$aToolbar) : void
     {
-        if (($this->lToolbar & (self::TB_IMAGE | self::TB_SNIPPET)) != 0) {
+        if (($this->lToolbar & self::TB_INSERT) != 0) {
             $aInsert = array();
             if (($this->lToolbar & self::TB_IMAGE) != 0) {
                 $aInsert[] = 'Image';
             }
             if (($this->lToolbar & self::TB_SNIPPET) != 0) {
                 $aInsert[] = 'CodeSnippet';
+            }
+            if (($this->lToolbar & self::TB_TABLE) != 0) {
+                $aInsert[] = 'Table';
+            }
+            if (($this->lToolbar & self::TB_SPECIAL_CHAR) != 0) {
+                $aInsert[] = 'SpecialChar';
+            }
+            if (($this->lToolbar & self::TB_IFRAME) != 0) {
+                $aInsert[] = 'Iframe';
             }
             $aToolbar[] = ['name' => 'insert', 'items' => $aInsert];
         }
