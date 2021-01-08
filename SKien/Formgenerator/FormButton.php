@@ -20,17 +20,18 @@ class FormButton extends FormInput
 
     /**
      * create button element
-     * TODO: option to center button inside of containerdiv! 
      * @param string $strId        button id
      * @param string $strBtnText   button text (value)
      * @param string $strOnClick   onClick() handler
      * @param string $strStyle      CSS style(s) (default: '')
+     * @param int $wFlags       
      */
-    public function __construct(string $strId, string $strBtnText, string $strOnClick, string $strStyle = '') 
+    public function __construct(string $strId, string $strBtnText, string $strOnClick, string $strStyle = '', int $wFlags = 0) 
     {
         $this->strValue = $strBtnText;
         $this->strName = $strId;
         $this->strOnClick = $strOnClick;
+        $this->wFlags = $wFlags;
         
         if (strlen($strStyle) > 0) {
             $this->aStyle = self::parseStyle($strStyle);
@@ -43,7 +44,13 @@ class FormButton extends FormInput
      */
     public function getHTML() : string
     {
-        $strHTML  = $this->buildContainerDiv();
+        $strStyle = '';
+        if (($this->wFlags & self::ALIGN_CENTER) != 0) {
+            $strStyle = 'text-align: center;';
+        } else if (($this->wFlags & self::ALIGN_RIGHT) != 0) {
+            $strStyle = 'text-align: right;';
+        }
+        $strHTML  = $this->buildContainerDiv($strStyle);
 
         $strHTML .= '<input type=button ';
         if (!empty($this->strName)) {

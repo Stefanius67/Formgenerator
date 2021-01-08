@@ -51,7 +51,7 @@ class FormStatic extends FormElement
             $this->addStyle('color', '#FF0000');
         }
         if (($this->wFlags & self::ALIGN_RIGHT) != 0) {
-            $this->addStyle('text-align', 'right') ;
+            $this->addStyle('text-align', 'right');
         } else if (($this->wFlags & self::ALIGN_CENTER) != 0) {
             $this->addStyle('text-align', 'center');
         }

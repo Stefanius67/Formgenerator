@@ -387,17 +387,21 @@ class FormElement
     
     /**
      * Build the 'container' div arround the current element.
+     * Additional styles (alignment, ...) can be passed.
+     * @param string $strStyle
      * @return string
      */
-    protected function buildContainerDiv() : string
+    protected function buildContainerDiv(string $strStyle = '') : string
     {
-        $strWidth = $this->getColWidth();
-        $strHTML  = '       ';
-        $strHTML .= '<div style="float: left;';
-        if (!empty($strWidth)) {
-            $strHTML .= ' width: ' . $strWidth . ';';
+        if (strpos($strStyle, 'float') === false) {
+            $strStyle = 'float: left; ' . $strStyle;
         }
-        $strHTML .= '">';
+        $strWidth = $this->getColWidth();
+        if (!empty($strWidth)) {
+            $strStyle = rtrim($strStyle, ';');
+            $strStyle .= '; width: ' . $strWidth . ';';
+        }
+        $strHTML = '<div style="' . $strStyle . '">';
 
         return $strHTML;
     }
