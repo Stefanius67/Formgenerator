@@ -136,7 +136,7 @@ class FormCKEdit extends FormTextArea
      */
     public function getScript() : string 
     {
-        $aToolbar = array();;
+        $aToolbar = [];
         if (is_array($this->aCustomBtn) && count($this->aCustomBtn) > 0) {
             reset($this->aCustomBtn);
             foreach ($this->aCustomBtn as $aBtn) {
@@ -151,7 +151,7 @@ class FormCKEdit extends FormTextArea
             $strAllowedContent = "'" . $this->strAllowedContent . "'";
         }
         
-        $strScript  = 
+        $strScript = 
             "var editor = null;" . PHP_EOL .
             "function LoadEditor()" . PHP_EOL .
             "{" . PHP_EOL .
@@ -207,7 +207,7 @@ class FormCKEdit extends FormTextArea
      */
     public function getStyle() : string 
     {
-        $strStyle  = '';
+        $strStyle = '';
         
         if (is_array($this->aCustomBtn) && count($this->aCustomBtn) > 0) {
             reset($this->aCustomBtn);
@@ -265,8 +265,20 @@ class FormCKEdit extends FormTextArea
      */
     protected function addBasicStyleBtns(array &$aToolbar) : void
     {
-        if (($this->lToolbar & self::TB_BASIC_STYLES) != 0)
-            $aToolbar[] = array('name' => 'basicstyles',   'items' => array('Bold','Italic','Underline','Subscript','Superscript','-','RemoveFormat'));
+        if (($this->lToolbar & self::TB_BASIC_STYLES) != 0) {
+            $aToolbar[] = [
+                'name' => 'basicstyles', 
+                'items' => [
+                    'Bold',
+                    'Italic',
+                    'Underline',
+                    'Subscript',
+                    'Superscript',
+                    '-',
+                    'RemoveFormat',
+                ]
+            ];
+        }
     }
     
     /**
@@ -275,8 +287,22 @@ class FormCKEdit extends FormTextArea
      */
     protected function addParagraphBtns(array &$aToolbar) : void
     {
-        if (($this->lToolbar & self::TB_PARAGRAPH) != 0)
-            $aToolbar[] = array('name' => 'paragraph',     'items' => array('NumberedList','BulletedList','-','Outdent', 'Indent','-','JustifyLeft','JustifyCenter','JustifyRight'));
+        if (($this->lToolbar & self::TB_PARAGRAPH) != 0) {
+            $aToolbar[] = [
+                'name' => 'paragraph',
+                'items' => [
+                    'NumberedList',
+                    'BulletedList',
+                    '-',
+                    'Outdent', 
+                    'Indent',
+                    '-',
+                    'JustifyLeft',
+                    'JustifyCenter',
+                    'JustifyRight',
+                ]
+            ];
+        }
     }
     
     /**
@@ -285,8 +311,12 @@ class FormCKEdit extends FormTextArea
      */
     protected function addLinkBtns(array &$aToolbar) : void
     {
-        if (($this->lToolbar & self::TB_LINKS) != 0)
-            $aToolbar[] = array('name' => 'links',         'items' => array('Link','Unlink'));
+        if (($this->lToolbar & self::TB_LINKS) != 0) {
+            $aToolbar[] = [
+                'name' => 'links',
+                'items' => ['Link','Unlink']
+            ];
+        }
     }
     
     /**
@@ -297,11 +327,13 @@ class FormCKEdit extends FormTextArea
     {
         if (($this->lToolbar & (self::TB_IMAGE | self::TB_SNIPPET)) != 0) {
             $aInsert = array();
-            if (($this->lToolbar & self::TB_IMAGE) != 0)
+            if (($this->lToolbar & self::TB_IMAGE) != 0) {
                 $aInsert[] = 'Image';
-            if (($this->lToolbar & self::TB_SNIPPET) != 0)
+            }
+            if (($this->lToolbar & self::TB_SNIPPET) != 0) {
                 $aInsert[] = 'CodeSnippet';
-            $aToolbar[] = array('name' => 'insert',        'items' => $aInsert);
+            }
+            $aToolbar[] = ['name' => 'insert', 'items' => $aInsert];
         }
     }
     
@@ -311,8 +343,9 @@ class FormCKEdit extends FormTextArea
      */
     protected function addColorBtns(array &$aToolbar) : void
     {
-        if (($this->lToolbar & self::TB_COLOR) != 0)
-            $aToolbar[] = array('name' => 'color',         'items' => array('TextColor','BGColor'));
+        if (($this->lToolbar & self::TB_COLOR) != 0) {
+            $aToolbar[] = ['name' => 'color', 'items' => ['TextColor','BGColor']];
+        }
     }
     
     /**
@@ -321,8 +354,9 @@ class FormCKEdit extends FormTextArea
      */
     protected function addStyleSelect(array &$aToolbar) : void
     {
-        if (($this->lToolbar & self::TB_STYLES_SELECT) != 0)
-            $aToolbar[] = array('items' => array('Styles'));
+        if (($this->lToolbar & self::TB_STYLES_SELECT) != 0) {
+            $aToolbar[] = ['items' => ['Styles']];
+        }
     }
     
     /**
@@ -331,8 +365,9 @@ class FormCKEdit extends FormTextArea
      */
     protected function addTemplateSelect(array &$aToolbar) : void
     {
-        if (($this->lToolbar & self::TB_TEMPLATES) != 0)
-            $aToolbar[] = array('items' => array('Templates'));
+        if (($this->lToolbar & self::TB_TEMPLATES) != 0) {
+            $aToolbar[] = ['items' => ['Templates']];
+        }
     }
     
     /**
@@ -341,8 +376,9 @@ class FormCKEdit extends FormTextArea
      */
     protected function addPlaceholderSelect(array &$aToolbar) : void
     {
-        if (($this->lToolbar & self::TB_PLACEHOLDERS) != 0)
-            $aToolbar[] = array('items' => array('placeholder_select'));
+        if (($this->lToolbar & self::TB_PLACEHOLDERS) != 0) {
+            $aToolbar[] = ['items' => ['placeholder_select']];
+        }
     }
     
     /**
@@ -351,8 +387,8 @@ class FormCKEdit extends FormTextArea
      */
     protected function addSourceBtn(array &$aToolbar) : void
     {
-        if (($this->lToolbar & self::TB_SOURCE) != 0)
-            $aToolbar[] = array('name' => 'document',      'items' => array('Source'));
-    
+        if (($this->lToolbar & self::TB_SOURCE) != 0) {
+            $aToolbar[] = ['name' => 'document', 'items' => ['Source']];
+        }
     }
 }

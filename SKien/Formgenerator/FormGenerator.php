@@ -347,14 +347,14 @@ class FormGenerator extends FormElement
     {
         $aArrays = array('aMand', 'aDate', 'aTime', 'aInt', 'aCur');
         
-        $strScript  = 'function ValidateForm() {' . PHP_EOL;
+        $strScript = 'function ValidateForm() {' . PHP_EOL;
         $iArrays = count($aArrays);
         for ($j = 0; $j < $iArrays; $j++) {
             $sep = '';
             $strScript .= '    var ' . $aArrays[$j] . ' = new Array(';
             $iCnt = count($this->aValidate[$aArrays[$j]]);
             for ($i = 0; $i < $iCnt; $i++) {
-                $strScript .= $sep .  '"' . $this->aValidate[$aArrays[$j]][$i] . '"';
+                $strScript .= $sep . '"' . $this->aValidate[$aArrays[$j]][$i] . '"';
                 $sep = ', ';
             }
             $strScript .= ');' . PHP_EOL;

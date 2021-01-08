@@ -138,7 +138,7 @@ class FormElement
     {
         $oElement->setParent($this);
         $this->aChild[] = $oElement;
-        if ($this->oFG !== null ) {
+        if ($this->oFG !== null) {
             $this->oFG->addElement($oElement);
         } else {
             trigger_error('No FormGenerator object set!', E_USER_ERROR);
@@ -157,7 +157,7 @@ class FormElement
     {
         $this->oParent = $oParent;
         $this->oFG = $oParent->oFG;
-        if ($this->oFG !== null ) {
+        if ($this->oFG !== null) {
             $this->addFlags($this->oFG->getGlobalFlags());
         } else {
             trigger_error('No FormGenerator object set!', E_USER_ERROR);
@@ -180,7 +180,7 @@ class FormElement
      * @param array $aColWidth
      * @param string $strDim
      */
-    public function setColWidth(array $aColWidth, string $strDim='%') : void 
+    public function setColWidth(array $aColWidth, string $strDim = '%') : void 
     {
         $this->aColWidth = $aColWidth;
         $this->strWidthDim = $strDim;
@@ -192,7 +192,7 @@ class FormElement
      * @param int $iCol  requested col, if -1 current col is used
      * @return string       colwidth including dimension
      */
-    public function getColWidth(int $iCol=-1) : string 
+    public function getColWidth(int $iCol = -1) : string 
     {
         $strWidth = '';
         if ($iCol < 0) {
@@ -295,7 +295,7 @@ class FormElement
      * @param string $strName
      * @param string $strValue
      */
-    public function addAttribute(string $strName, string $strValue='') : void 
+    public function addAttribute(string $strName, string $strValue = '') : void 
     {
         $strName = strtolower($strName);
         if ($this->aAttrib == null) {

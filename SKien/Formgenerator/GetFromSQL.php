@@ -100,7 +100,7 @@ trait GetFromSQL
      */
     protected function curFromSQL(string $strCur, bool $bCurSymbol = true) : string 
     {
-        $strOut = number_format(floatval($strCur), 2, ',','.');
+        $strOut = number_format(floatval($strCur), 2, ',', '.');
         if ($bCurSymbol) {
             $strOut .= ' &euro;';
         }
