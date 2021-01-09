@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace SKien\Formgenerator;
 
 /**
@@ -19,11 +21,11 @@ class FormButton extends FormInput
     protected string $strOnClick;
 
     /**
-     * create button element
+     * Create button element.
      * @param string $strId        button id
      * @param string $strBtnText   button text (value)
      * @param string $strOnClick   onClick() handler
-     * @param string $strStyle      CSS style(s) (default: '')
+     * @param string $strStyle     CSS style(s) (default: '')
      * @param int $wFlags       
      */
     public function __construct(string $strId, string $strBtnText, string $strOnClick, string $strStyle = '', int $wFlags = 0) 
@@ -39,7 +41,7 @@ class FormButton extends FormInput
     }
 
     /**
-     * build the HTML-notation for the button
+     * Build the HTML-notation for the button.
      * @return string
      */
     public function getHTML() : string

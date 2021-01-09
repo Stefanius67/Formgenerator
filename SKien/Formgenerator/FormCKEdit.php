@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace SKien\Formgenerator;
 
 /**
@@ -297,6 +299,7 @@ class FormCKEdit extends FormTextArea
     
     /**
      * Returns currently defined toolbar as array for JSON-encoding.
+     * @link https://ckeditor.com/latest/samples/toolbarconfigurator/index.html
      * @return array
      */
     protected function buildToolbarDef() : array
