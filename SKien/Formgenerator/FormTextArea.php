@@ -44,7 +44,7 @@ class FormTextArea extends FormInput
      */
     public function getHTML() : string
     {
-        $strHTML = $this->buildContainerDiv();
+        $this->processFlags();
         
         $this->strID = $this->strID ?: $this->strName;
         
@@ -57,6 +57,7 @@ class FormTextArea extends FormInput
             $strValue = str_replace('<br />', "\n", $strValue);
         }
         
+        $strHTML = $this->buildContainerDiv();
         $strHTML .= '<textarea';
         $strHTML .= ' name="' . $this->strName . '"';
         $strHTML .= $this->buildClass();

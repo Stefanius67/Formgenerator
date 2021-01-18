@@ -62,42 +62,6 @@ class FormInput extends FormElement
     public function addFlags($wFlags) : void
     {
         $this->oFlags->add($wFlags);
-
-        // TODO: move the processing of the flags in separate function (FormFlags ?) called at beginning of getHTML
-        // so we have not to take care on the order some flags are set in the constructors!
-        if ($this->oFlags->isSet(FormFlags::HIDDEN)) {
-            $this->strType = 'hidden';
-        }
-        
-        $this->strClass = 'inputOK';
-        if ($this->oFlags->isSet(FormFlags::MANDATORY)) {
-            $this->strClass = 'inputMand';
-            $this->addAttribute('required');
-        }
-        if ($this->oFlags->isSet(FormFlags::READ_ONLY)) {
-            $this->addAttribute('readonly');
-        } else if ($this->oFlags->isSet(FormFlags::DISABLED)) {
-            $this->addAttribute('disabled');
-        }
-        
-        if ($this->oFlags->isSet(FormFlags::ALIGN_RIGHT)) {
-            $this->strClass .= '_R';
-        }
-        if ($this->oFlags->isSet(FormFlags::ADD_COLOR_PICKER)) {
-            $this->strClass .= ' jscolor {hash:true}';
-        }
-        if ($this->oFlags->isSet(FormFlags::PASSWORD)) {
-            $this->strType = 'password';
-        }
-        if ($this->oFlags->isSet(FormFlags::FILE)) {
-            $this->strType = 'file';
-            if ($this->oFlags->isSet(FormFlags::HIDDEN)) {
-                $this->addStyle('visibility', 'hidden');
-            }
-        }
-        if ($this->oFlags->isSet(FormFlags::ADD_EUR)) {
-            $this->strSuffix = 'EUR';
-        }
     }
     
     /**
@@ -134,6 +98,7 @@ class FormInput extends FormElement
      */
     public function getHTML() : string
     {
+        $this->processFlags();
         $this->setSize();
         $strHTML = $this->buildContainerDiv();
         
@@ -186,6 +151,45 @@ class FormInput extends FormElement
     }
     
     /**
+     * Process the current flags before the HTML is generated.
+     */
+    protected function processFlags() : void
+    {
+        $this->setTypeFromFlags();
+        
+        if ($this->oFlags->isSet(FormFlags::MANDATORY)) {
+            $this->addAttribute('required');
+        }
+        if ($this->oFlags->isSet(FormFlags::READ_ONLY)) {
+            $this->addAttribute('readonly');
+        } else if ($this->oFlags->isSet(FormFlags::DISABLED)) {
+            $this->addAttribute('disabled');
+        }
+        if ($this->oFlags->isSet(FormFlags::ADD_EUR)) {
+            $this->strSuffix = 'EUR';
+        }
+    }
+
+    /**
+     * Set the type depending on some flags
+     */
+    protected function setTypeFromFlags() : void
+    {
+        if ($this->oFlags->isSet(FormFlags::HIDDEN)) {
+            $this->strType = 'hidden';
+        }
+        if ($this->oFlags->isSet(FormFlags::PASSWORD)) {
+            $this->strType = 'password';
+        }
+        if ($this->oFlags->isSet(FormFlags::FILE)) {
+            $this->strType = 'file';
+            if ($this->oFlags->isSet(FormFlags::HIDDEN)) {
+                $this->addStyle('visibility', 'hidden');
+            }
+        }
+    }
+    
+    /**
      * Set the size of the element.
      * If property $size contains numeric value, the HTML attrib 'size' is set, in case of a
      * string a width information including dimension (px, em, ...) is assumed.
@@ -193,12 +197,34 @@ class FormInput extends FormElement
      */
     protected function setSize() : void
     {
+        if ($this->oFlags->isSet(FormFlags::HIDDEN)) {
+            $this->size = '';
+        }
         if ((is_numeric($this->size)) && ($this->size > 0)) {
             $this->addAttribute('size', (string)$this->size);
         } else if (!empty($this->size)) {
             // size given as string including dimension
             $this->addStyle('width', $this->size);
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see \SKien\Formgenerator\FormElement::buildClass()
+     */
+    protected function buildClass() : string
+    {
+        if (!empty($this->strClass)) {
+            $this->strClass .= ' ';
+        }
+        $this->strClass .= ($this->oFlags->isSet(FormFlags::MANDATORY)) ? ' inputMand' : ' inputOK';
+        if ($this->oFlags->isSet(FormFlags::ALIGN_RIGHT)) {
+            $this->strClass .= '_R';
+        }
+        if ($this->oFlags->isSet(FormFlags::ADD_COLOR_PICKER)) {
+            $this->strClass .= ' jscolor {hash:true}';
+        }
+        return parent::buildClass();
     }
     
     /**

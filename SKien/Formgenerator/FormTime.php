@@ -19,8 +19,6 @@ namespace SKien\Formgenerator;
  */
 class FormTime extends FormInput
 {
-    use GetFromSQL;
-    
     /**
      * Creates input field for time values.
      * @param string $strName

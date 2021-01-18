@@ -43,15 +43,14 @@ class FormCheck extends FormInput
      */
     public function getHTML() : string 
     {
-        $strHTML = $this->buildContainerDiv();
-        
+        $this->processFlags();
         $bChecked = $this->oFG->oData->getValue($this->strName);
         if ($bChecked) {
             $this->addAttribute('checked');
         }
         
+        $strHTML = $this->buildContainerDiv();
         $strHTML .= '<input type="checkbox"';
-        
         $strHTML .= $this->buildStyle();
         $strHTML .= $this->buildAttributes();
         $strHTML .= $this->buildTab();

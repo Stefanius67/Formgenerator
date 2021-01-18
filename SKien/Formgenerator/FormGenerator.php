@@ -79,7 +79,7 @@ class FormGenerator extends FormContainer
         $this->strOnSubmit = "ValidateForm();";
         $this->strOnCancel = "javascript:history.back();";
         $this->strImgPath = '../images/';
-        $this->strAction = $_SERVER['PHP_SELF'] . '?'. $_SERVER['QUERY_STRING'];
+        $this->strAction = $_SERVER['PHP_SELF'] . '?' . $_SERVER['QUERY_STRING'];
     }
     
     /**

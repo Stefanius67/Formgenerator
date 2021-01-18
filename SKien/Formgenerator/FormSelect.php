@@ -49,6 +49,8 @@ class FormSelect extends FormInput
      */
     public function getHTML() : string
     {
+        $this->processFlags();
+        
         $strSelect = $this->oFG->oData->getValue($this->strName);
         $aOptions = $this->oFG->oData->getSelectOptions($this->strName);
         

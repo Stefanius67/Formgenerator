@@ -178,7 +178,7 @@ class FormCKEdit extends FormTextArea
         $strScript .= "        });" . PHP_EOL;
         
         // if data to edit provided in JSON format, set it
-        // TODO: explain differences when using FormInput::SET_JSON_DATA
+        // TODO: explain differences when using FormFlag::SET_JSON_DATA
         if ($this->oFlags->isSet(FormFlags::SET_JSON_DATA)) {
             $strJsonData = $this->oFG->oData->getValue($this->strName);
             if (strlen($strJsonData) > 0) {

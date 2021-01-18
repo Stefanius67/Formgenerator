@@ -29,8 +29,8 @@ class FormInt extends FormInput
         parent::__construct($strName, $iSize, $wFlags);
         $this->strValidate = 'aInt';
         
-        // if readonly or hidden, dont set the 'number' type...
-        if (!$this->oFlags->isSet(FormFlags::READ_ONLY | FormFlags::HIDDEN)) {
+        // if readonly, dont set the 'number' type...
+        if (!$this->oFlags->isSet(FormFlags::READ_ONLY)) {
             $this->strType = 'number';
         }
     }
