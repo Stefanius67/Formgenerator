@@ -27,8 +27,7 @@ class FormColor extends FormInput
      */
     public function __construct(string $strName, int $wFlags = 0) 
     {
-        $iSize = ($wFlags & self::HIDDEN) == 0 ? 10 : -1;
-        $wFlags |= self::ADD_COLOR_PICKER;
-        parent::__construct($strName, $iSize, $wFlags);
+        $wFlags |= FormFlags::ADD_COLOR_PICKER;
+        parent::__construct($strName, 10, $wFlags); // TODO: default size config
     }
 }

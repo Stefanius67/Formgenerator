@@ -15,7 +15,7 @@ namespace SKien\Formgenerator;
  * @author Stefanius <s.kien@online.de>
  * @copyright MIT License - see the LICENSE file for details
  */
-class FormFieldSet extends FormElement
+class FormFieldSet extends FormContainer
 {
     /** legend of the fieldset contains text    */
     const   TEXT    = 0;

@@ -17,7 +17,7 @@ namespace SKien\Formgenerator;
  * @author Stefanius <s.kien@online.de>
  * @copyright MIT License - see the LICENSE file for details
  */
-class FormDiv extends FormElement
+class FormDiv extends FormContainer
 {
     const   NONE    = -1;
     const   CLEAR   = 0;

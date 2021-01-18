@@ -44,14 +44,14 @@ class FormTextArea extends FormInput
      */
     public function getHTML() : string
     {
-        $strHTML  = $this->buildContainerDiv();
+        $strHTML = $this->buildContainerDiv();
         
         $this->strID = $this->strID ?: $this->strName;
         
         $strValue = $this->oFG->oData->getValue($this->strName);
         
         // CR only relevant for Textareas ...
-        if (($this->wFlags & self::REPLACE_BR_CR) != 0) {
+        if ($this->oFlags->isSet(FormFlags::REPLACE_BR_CR)) {
             $strValue = str_replace('<br>', "\n", $strValue);
             $strValue = str_replace('<br/>', "\n", $strValue);
             $strValue = str_replace('<br />', "\n", $strValue);

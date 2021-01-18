@@ -28,8 +28,7 @@ class FormTime extends FormInput
      */
     public function __construct(string $strName, int $wFlags = 0) 
     {
-        ($wFlags & self::HIDDEN) == 0 ? $iSize = 10 : $iSize = -1;
-        parent::__construct($strName, $iSize, $wFlags);
+        parent::__construct($strName, 10, $wFlags);
         $this->strValidate = 'aTime';
     }
 }

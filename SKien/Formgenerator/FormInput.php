@@ -37,26 +37,18 @@ class FormInput extends FormElement
      */
     public function __construct(string $strName, $size, int $wFlags = 0) 
     {
-        parent::__construct();
+        $this->oFlags = new FormFlags($wFlags);
         $this->strName = $strName;
         $this->size = $size;
         $this->iTab = -1;
         $this->strValidate = 'aEdit';
-        $this->wFlags = $wFlags;
-        if (strlen($this->strType) == 0) {
-            $this->strType = 'text';
-        }
-        if (($wFlags & self::HIDDEN) != 0) {
-            $this->strType = 'hidden';
-        }
-        $this->addFlags($wFlags);
+        $this->strType = 'text';
         $this->strSelectImg = '';
         $this->strSelectImgTitle = '';
         $this->strBrowseServer = '';
         $this->strSuffix = '';
-        if (($wFlags & self::ADD_EUR) != 0) {
-            $this->strSuffix = 'EUR';
-        }
+        
+        $this->addFlags($wFlags);
     }
     
     /**
@@ -69,33 +61,42 @@ class FormInput extends FormElement
      */
     public function addFlags($wFlags) : void
     {
-        $this->wFlags |= $wFlags;
+        $this->oFlags->add($wFlags);
 
+        // TODO: move the processing of the flags in separate function (FormFlags ?) called at beginning of getHTML
+        // so we have not to take care on the order some flags are set in the constructors!
+        if ($this->oFlags->isSet(FormFlags::HIDDEN)) {
+            $this->strType = 'hidden';
+        }
+        
         $this->strClass = 'inputOK';
-        if (($this->wFlags & self::MANDATORY) != 0) {
+        if ($this->oFlags->isSet(FormFlags::MANDATORY)) {
             $this->strClass = 'inputMand';
             $this->addAttribute('required');
         }
-        if (($this->wFlags & self::READ_ONLY) != 0) {
+        if ($this->oFlags->isSet(FormFlags::READ_ONLY)) {
             $this->addAttribute('readonly');
-        } else if (($this->wFlags & self::DISABLED) != 0) {
+        } else if ($this->oFlags->isSet(FormFlags::DISABLED)) {
             $this->addAttribute('disabled');
         }
         
-        if (($this->wFlags & self::ALIGN_RIGHT) != 0) {
+        if ($this->oFlags->isSet(FormFlags::ALIGN_RIGHT)) {
             $this->strClass .= '_R';
         }
-        if (($this->wFlags & self::ADD_COLOR_PICKER) != 0) {
+        if ($this->oFlags->isSet(FormFlags::ADD_COLOR_PICKER)) {
             $this->strClass .= ' jscolor {hash:true}';
         }
-        if (($this->wFlags & self::PASSWORD) != 0) {
+        if ($this->oFlags->isSet(FormFlags::PASSWORD)) {
             $this->strType = 'password';
         }
-        if (($this->wFlags & self::FILE) != 0) {
+        if ($this->oFlags->isSet(FormFlags::FILE)) {
             $this->strType = 'file';
-            if (($this->wFlags & self::HIDDEN) != 0) {
+            if ($this->oFlags->isSet(FormFlags::HIDDEN)) {
                 $this->addStyle('visibility', 'hidden');
             }
+        }
+        if ($this->oFlags->isSet(FormFlags::ADD_EUR)) {
+            $this->strSuffix = 'EUR';
         }
     }
     
@@ -134,7 +135,7 @@ class FormInput extends FormElement
     public function getHTML() : string
     {
         $this->setSize();
-        $strHTML  = $this->buildContainerDiv();
+        $strHTML = $this->buildContainerDiv();
         
         $this->strID = $this->strID ?: $this->strName;
         
@@ -150,17 +151,17 @@ class FormInput extends FormElement
         $strHTML .= '>';
         
         // some additional elements
-        if (($this->wFlags & self::ADD_DTU) != 0) {
+        if ($this->oFlags->isSet(FormFlags::ADD_DTU)) {
             $strHTML .= '<img class="picker" src="' . $this->getStdImage(self::IMG_DTU) . '"  alt="[X]"';
             $strHTML .= ' id="' . $this->strName . 'DTU"';
             $strHTML .= ' title="aktuelle Datum Uhrzeit / Benutzername eintragen"';
             $strHTML .= ' onclick="OnInsertDateTimeUser(' . "'" . $this->strName . "'" . ');">';
-        } else if (($this->wFlags & self::ADD_DATE_PICKER) != 0) {
+        } else if ($this->oFlags->isSet(FormFlags::ADD_DATE_PICKER)) {
             $strHTML .= '<img class="picker" src="' . $this->getStdImage(self::IMG_DATE_PICKER) . '" alt="[X]"';
             $strHTML .= ' id="' . $this->strName . 'DP"';
             $strHTML .= ' title="Datum auswählen"';
             $strHTML .= ' onclick="OnDatePicker(' . "'" . $this->strName . "'" . ');">';
-        } else if (($this->wFlags & self::ADD_TIME_PICKER) != 0) {
+        } else if ($this->oFlags->isSet(FormFlags::ADD_TIME_PICKER)) {
             $strHTML .= '<img class="picker" src="' . $this->getStdImage(self::IMG_TIME_PICKER) . '"  alt="[X]"';
             $strHTML .= ' id="' . $this->strName . 'TP"';
             $strHTML .= ' title="Uhrzeit auswählen"';
@@ -181,7 +182,7 @@ class FormInput extends FormElement
      */
     public function hasTab() : bool
     {
-        return (($this->wFlags & (self::HIDDEN | self::READ_ONLY | self::DISABLED)) == 0);
+        return (!$this->oFlags->isSet(FormFlags::HIDDEN | FormFlags::READ_ONLY | FormFlags::DISABLED));
     }
     
     /**
@@ -208,7 +209,7 @@ class FormInput extends FormElement
     {
         $strHTML = '';
         if (!empty($this->strSuffix)) {
-            if (($this->wFlags & self::READ_ONLY) != 0) {
+            if ($this->oFlags->isSet(FormFlags::READ_ONLY)) {
                 $strHTML .= '&nbsp;<span class="readonly">' . $this->strSuffix . '</span>';
             } else {
                 $strHTML .= '&nbsp;' . $this->strSuffix;
@@ -225,7 +226,7 @@ class FormInput extends FormElement
     protected function buildSelectImage(string $strClass = 'picker') : string
     {
         $strHTML = '';
-        if (($this->wFlags & self::ADD_SELBTN) != 0) {
+        if ($this->oFlags->isSet(FormFlags::ADD_SELBTN)) {
             $strImg = $this->strSelectImg;
             $strTitle = $this->strSelectImgTitle;
             if (empty($strImg)) {
@@ -237,7 +238,7 @@ class FormInput extends FormElement
             }
             if (!empty($this->strBrowseServer)) {
                 $strHTML .= " onclick=\"BrowseServer('" . $this->strName . "','','" . $this->strBrowseServer . "');\">";
-                if (($this->wFlags & self::READ_ONLY) != 0) {
+                if ($this->oFlags->isSet(FormFlags::READ_ONLY)) {
                     $strHTML .= '<img class="picker" src="' . $this->getStdImage(self::IMG_DELETE) . '" alt="L&ouml;schen" title="L&ouml;schen" ';
                     $strHTML .= " onclick=\"ResetInput('" . $this->strName . "');\">";
                 }

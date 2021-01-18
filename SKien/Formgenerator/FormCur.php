@@ -27,7 +27,8 @@ class FormCur extends FormInput
      */
     public function __construct(string $strName, int $iSize, int $wFlags = 0) 
     {
-        $wFlags |= self::ALIGN_RIGHT;
+        // we always want to have right aligned integer fields (TODO: control this through config!)
+        $wFlags |= FormFlags::ALIGN_RIGHT;
         parent::__construct($strName, $iSize, $wFlags);
         $this->strValidate = 'aCur';
     }

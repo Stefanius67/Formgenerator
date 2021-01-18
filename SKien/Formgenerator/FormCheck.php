@@ -17,6 +17,7 @@ namespace SKien\Formgenerator;
  */
 class FormCheck extends FormInput
 {
+    // TODO: check if FormInput base is needed
     /**
      * Create a checkbox.
      * As default, the value 'on' is submitted for a checked element. This value can be 
@@ -28,10 +29,10 @@ class FormCheck extends FormInput
      */
     public function __construct(string $strName, int $wFlags = 0, string $strSuffix = '') 
     {
+        $this->oFlags = new FormFlags($wFlags);
         $this->strName = $strName;
-        $this->wFlags = $wFlags;
         $this->strSuffix = $strSuffix;
-        if (($this->wFlags & (self::READ_ONLY | self::DISABLED)) != 0) {
+        if ($this->oFlags->isSet(FormFlags::READ_ONLY | FormFlags::DISABLED)) {
             $this->addAttribute('disabled');
         }
     }
@@ -51,25 +52,25 @@ class FormCheck extends FormInput
         
         $strHTML .= '<input type="checkbox"';
         
-        // note: because checkboxes don't support readonly-attribute and disabled checkboxes are not posted to
-        // reciever, we insert an hidden field with name and id to keep value 'alive'
-        // -> so we dont set name and id for readonly or disabled checkbox!
-        if (($this->wFlags & (self::READ_ONLY | self::DISABLED)) == 0) {
-            $strHTML .= ' name="' . $this->strName . '"';
-            $strHTML .= ' id="' . $this->strName . '"';
-        }
         $strHTML .= $this->buildStyle();
         $strHTML .= $this->buildAttributes();
         $strHTML .= $this->buildTab();
         $strHTML .= $this->buildValue();
-
-        // see comment beyond for name and id...
-        if (($this->wFlags & (self::READ_ONLY | self::DISABLED)) != 0) {
+        
+        // NOTE: because checkboxes don't support readonly-attribute and disabled checkboxes 
+        // are not posted to reciever, we insert an hidden field with name and id to keep 
+        // value 'alive'
+        // -> so we dont set name and id for readonly or disabled checkbox!
+        if ($this->oFlags->isSet(FormFlags::READ_ONLY | FormFlags::DISABLED)) {
             $strHTML .= '><input';
             $strHTML .= ' type="hidden"';
             $strHTML .= ' name="' . $this->strName . '"';
             $strHTML .= ' id="' . $this->strName . '"';
-            ($bChecked) ? $strHTML .= ' value="1"' : $strHTML .= ' value="0"';
+            $strValue = $this->oFG->oData->getBtnValue($this->strName) ?: 'on';
+            $strHTML .= ($bChecked) ? ' value="' . $strValue . '"' : $strHTML .= ' value="off"';
+        } else {
+            $strHTML .= ' name="' . $this->strName . '"';
+            $strHTML .= ' id="' . $this->strName . '"';
         }
         $strHTML .= '>';
         

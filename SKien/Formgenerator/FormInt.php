@@ -24,12 +24,15 @@ class FormInt extends FormInput
      */
     public function __construct(string $strName, int $iSize, int $wFlags = 0) 
     {
-        if (($wFlags & self::READ_ONLY) == 0) {
-            $this->strType = 'number';
-        }
-        $wFlags |= self::ALIGN_RIGHT;
+        // we always want to have right aligned integer fields (TODO: control this through config!)
+        $wFlags |= FormFlags::ALIGN_RIGHT;
         parent::__construct($strName, $iSize, $wFlags);
         $this->strValidate = 'aInt';
+        
+        // if readonly or hidden, dont set the 'number' type...
+        if (!$this->oFlags->isSet(FormFlags::READ_ONLY | FormFlags::HIDDEN)) {
+            $this->strType = 'number';
+        }
     }
     
     /**

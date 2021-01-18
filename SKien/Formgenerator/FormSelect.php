@@ -34,7 +34,7 @@ class FormSelect extends FormInput
     public function __construct(string $strName, int $iSize = 1, int $wFlags = 0)
     {
         parent::__construct($strName, $iSize, $wFlags);
-        if (($this->wFlags & self::SELECT_BTN) != 0) {
+        if ($this->oFlags->isSet(FormFlags::SELECT_BTN)) {
             $this->strClass .= ' sbSelect';
             if ($iSize != 1) {
                 trigger_error('SELECT_BTN must have size of 1!', E_USER_WARNING);
@@ -52,7 +52,7 @@ class FormSelect extends FormInput
         $strSelect = $this->oFG->oData->getValue($this->strName);
         $aOptions = $this->oFG->oData->getSelectOptions($this->strName);
         
-        $strWidth = $this->getColWidth();
+        $strWidth = ($this->oParent ? $this->oParent->getColWidth() : '');
         $strHTML  = '';
         $strHTML .= '       ';
         $strHTML .= '<div style="float: left; position: relative;';
@@ -60,7 +60,7 @@ class FormSelect extends FormInput
             $strHTML .= ' width: ' . $strWidth . ';';
         }
         $strHTML .= '">';
-        if (($this->wFlags & self::SELECT_BTN) != 0) {
+        if ($this->oFlags->isSet(FormFlags::SELECT_BTN)) {
             $strHTML .= '<button class="sbBtn">' . $this->strSelectBtnText . '</button>';
         }
         $strHTML .= '<select';
@@ -105,7 +105,7 @@ class FormSelect extends FormInput
      */
     public function setSelectBtnText(string $strSelectBtnText) : void 
     {
-        if (($this->wFlags & self::SELECT_BTN) == 0) {
+        if (!$this->oFlags->isSet(FormFlags::SELECT_BTN)) {
             trigger_error('SELECT_BTN flag must be set!', E_USER_NOTICE);
         }
         $this->strSelectBtnText = $strSelectBtnText;

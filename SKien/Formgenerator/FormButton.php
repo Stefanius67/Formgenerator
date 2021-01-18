@@ -17,6 +17,7 @@ namespace SKien\Formgenerator;
  */
 class FormButton extends FormInput
 {
+    // TODO: check if FormInput base is needed
     /** @var string button text     */
     protected string $strBtnText;
     /** @var string onClick() JS handler     */
@@ -35,10 +36,10 @@ class FormButton extends FormInput
      */
     public function __construct(string $strId, string $strBtnText, string $strOnClick, string $strStyle = '', int $wFlags = 0) 
     {
+        $this->oFlags = new FormFlags($wFlags);
         $this->strBtnText = $strBtnText;
         $this->strID = $strId;
         $this->strOnClick = $strOnClick;
-        $this->wFlags = $wFlags;
         
         if (strlen($strStyle) > 0) {
             $this->aStyle = self::parseStyle($strStyle);
@@ -52,9 +53,9 @@ class FormButton extends FormInput
     public function getHTML() : string
     {
         $strStyle = '';
-        if (($this->wFlags & self::ALIGN_CENTER) != 0) {
+        if ($this->oFlags->isSet(FormFlags::ALIGN_CENTER)) {
             $strStyle = 'text-align: center;';
-        } else if (($this->wFlags & self::ALIGN_RIGHT) != 0) {
+        } else if ($this->oFlags->isSet(FormFlags::ALIGN_RIGHT)) {
             $strStyle = 'text-align: right;';
         }
         $strHTML  = $this->buildContainerDiv($strStyle);

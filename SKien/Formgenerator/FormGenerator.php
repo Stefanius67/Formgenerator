@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace SKien\Formgenerator;
 
-use SKien\Formgenerator\FormElement as FE;
-
 /**
  * Container for all form elements.
  *
@@ -17,7 +15,7 @@ use SKien\Formgenerator\FormElement as FE;
  * @author Stefanius <s.kien@online.de>
  * @copyright MIT License - see the LICENSE file for details
  */
-class FormGenerator extends FormElement
+class FormGenerator extends FormContainer
 {
     use GetFromSQL;
     
@@ -45,16 +43,14 @@ class FormGenerator extends FormElement
     protected string $strOnCancel = '';
     /** @var int explicit width of the form in pixel  */
     protected int $iWidth = -1;
-    /** @var int global flags for all form elements  */
-    protected int $wGlobalFlags = 0;
+    /** @var FormFlags global flags for all form elements  */
+    protected FormFlags $oGlobalFlags;
     /** @var array elements that creates dynamic script */
     protected array $aScriptElements = [];
     /** @var array elements that creates dynamic CSS styles */
     protected array $aStyleElements = [];
     /** @var string path to the images  */
     protected string $strImgPath;
-    /** @var string receiver of the form-action  */
-    protected string $strActionReceiver;
     /** @var string URL params for the form action  */
     protected string $strAction;
     /** @var string form target  */
@@ -76,14 +72,14 @@ class FormGenerator extends FormElement
     {
         $this->oFG = $this;
         $this->oData = $oData ?? new NullFormData();
+        $this->oGlobalFlags = new FormFlags();
         $this->strID = $strID;
         $this->aValidate = array('aMand' => array(), 'aEdit' => array(), 'aDate' => array(), 'aInt' => array(), 'aCur' => array(), 'aTime' => array());
         $this->aBtnText = array('save' => 'Speichern', 'cancel' => 'Abbrechen', 'close' => 'Schließen');
         $this->strOnSubmit = "ValidateForm();";
         $this->strOnCancel = "javascript:history.back();";
         $this->strImgPath = '../images/';
-        $this->strAction = $_SERVER['QUERY_STRING'];
-        $this->strActionReceiver = $_SERVER['PHP_SELF'] . '?';
+        $this->strAction = $_SERVER['PHP_SELF'] . '?'. $_SERVER['QUERY_STRING'];
     }
     
     /**
@@ -94,25 +90,6 @@ class FormGenerator extends FormElement
     public function setAction(string $strAction) : void
     {
         $this->strAction = $strAction;
-    }
-
-    /**
-     * Set the receiver of the formaction.
-     * If not changed here, the current script ($_SERVER['PHP_SELF']) will
-     * receive the form action.
-     * @param string $strActionReceiver
-     */
-    public function setActionReceiver(string $strActionReceiver) : void 
-    {
-        // remove trailing '?' if exist
-        $strActionReceiver = rtrim($strActionReceiver, '?');
-        if (strpos($strActionReceiver, '?') !== false) {
-            // URL params already exist - continue with '&'
-            $strActionReceiver .= '&';
-        } else {
-            $strActionReceiver .= '?';
-        }
-        $this->strActionReceiver = $strActionReceiver;
     }
 
     /**
@@ -138,7 +115,7 @@ class FormGenerator extends FormElement
      */
     public function getGlobalFlags() : int
     {
-        return $this->wGlobalFlags;
+        return $this->oGlobalFlags->getFlags();
     }
     
     /**
@@ -168,7 +145,11 @@ class FormGenerator extends FormElement
     public function setReadOnly(bool $bReadOnly) : void 
     {
         $this->bReadOnly = $bReadOnly;
-        $bReadOnly ? $this->wGlobalFlags |= self::DISABLED : $this->wGlobalFlags &= ~self::DISABLED;
+        if ($bReadOnly) {
+            $this->oGlobalFlags->add(FormFlags::DISABLED);
+        } else {
+            $this->oGlobalFlags->remove(FormFlags::DISABLED);
+        }
     }
 
     /**
@@ -254,9 +235,11 @@ class FormGenerator extends FormElement
         if ($oElement->hasTab()) {
             $oElement->setTab(++$this->iLastTab);
         }
-        if (!empty($oElement->strValidate) && ($oElement->wFlags & FE::HIDDEN) == 0) {
-            array_push($this->aValidate[$oElement->strValidate], $oElement->strName);
-            if (($oElement->wFlags & FE::MANDATORY) != 0) {
+        if (!$oElement->oFlags->isSet(FormFlags::HIDDEN)) {
+            if (!empty($oElement->strValidate)) {
+                array_push($this->aValidate[$oElement->strValidate], $oElement->strName);
+            }
+            if ($oElement->oFlags->isSet(FormFlags::MANDATORY)) {
                 array_push($this->aValidate['aMand'], $oElement->strName);
             }
         }
@@ -279,7 +262,6 @@ class FormGenerator extends FormElement
         $strHTML .= '<form';
         if (!empty($this->strAction)) {
             $strHTML .= ' action="';
-            $strHTML .= $this->strActionReceiver;
             $strHTML .= $this->strAction . '"';
         }
         if (!empty($this->strFormTarget)) {

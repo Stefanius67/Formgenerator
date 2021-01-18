@@ -18,57 +18,8 @@ namespace SKien\Formgenerator;
  * @author Stefanius <s.kien@online.de>
  * @copyright MIT License - see the LICENSE file for details
  */
-class FormElement
+abstract class FormElement
 {
-    /** text-align:left (default)   */
-    const   ALIGN_LEFT              = 0x000000;
-    /** mandatory field. added to mandatory-list for JS validation    */
-    const   MANDATORY               = 0x000001;
-    /** hidden field    */
-    const   HIDDEN                  = 0x000002;
-    /** readonly field  */
-    const   READ_ONLY               = 0x000004;
-    /** text-align:right    */
-    const   ALIGN_RIGHT             = 0x000008;
-    /** field is extended with DTU (Date-Time-User) Button  */
-    const   ADD_DTU                 = 0x000010;
-    /** field is extendet with selectbutton (click calls javascript function OnSelect(strField) with fieldname    */
-    const   ADD_SELBTN              = 0x000020;
-    /** static field is displayed as hint (smaller font, darkgrey)  */
-    const   HINT                    = 0x000040;
-    /** static field is displayed as error (red text)   */
-    const   ERROR                   = 0x000080;
-    /** button with selectlist  */
-    const   SELECT_BTN              = 0x000100;
-    /** field is disabled   */
-    const   DISABLED                = 0x000400;
-    /** display static field as info (see stylesheet: .info)    */
-    const   INFO                    = 0x000800;
-    /** text-align:center   */
-    const   ALIGN_CENTER            = 0x001000;
-    /** field is extended with Cal-Button for datepicker    */
-    const   ADD_DATE_PICKER         = 0x002000;
-    /** field is extended with Clock-Button for timepicker  */
-    const   ADD_TIME_PICKER         = 0x004000;
-    /** suppress zero-values    */
-    const   NO_ZERO                 = 0x008000;
-    /** suppress zero-values    */
-    const   PASSWORD                = 0x010000;
-    /** file input  */
-    const   FILE                    = 0x020000;
-    /** add EUR - Suffix    */
-    const   ADD_EUR                 = 0x040000;
-    /** trim content (leading / trailing blanks)    */
-    const   TRIM                    = 0x080000;
-    /** field invokes color picker on click */
-    const   ADD_COLOR_PICKER        = 0x0100000;
-    /** set data for CKEdit through JS  */
-    const   SET_JSON_DATA           = 0x0200000;
-    /** font-weight: bold   */
-    const   BOLD                    = 0x0400000;
-    /** replace '<br/>' / '<br> with CR */
-    const   REPLACE_BR_CR           = 0x0800000;
-
     // TODO: Find a more general way of defining standard images. (possibly via a config)
     /** standard delete image */
     const IMG_DELETE            = 1;
@@ -83,14 +34,8 @@ class FormElement
     
     /** @var FormGenerator the FormGenerator this element belongs to     */
     protected FormGenerator $oFG;
-    /** @var FormElement the parent element - only FormGenerator has no parent     */
-    protected ?FormElement $oParent = null;
-    /** @var array all direct child elements     */
-    protected array $aChild = array();
-    /** @var array the width information for the cols inside this element     */
-    protected ?array $aColWidth = null;
-    /** @var string dimension of the width values ('%', 'px', 'em')     */
-    protected string $strWidthDim = '%';
+    /** @var FormContainer the parent element - only FormGenerator must has no parent     */
+    protected ?FormContainer $oParent = null;
     /** @var int tab position of the element if it can get focus     */
     protected int $iTab = -1;
     /** @var int col inside current line     */
@@ -103,8 +48,8 @@ class FormElement
     protected string $strClass = '';
     /** @var string validation for the element     */
     protected string $strValidate = '';
-    /** @var int flags that specify the appearance and behaviour     */
-    protected int $wFlags = 0;
+    /** @var FormFlags flags that specify the appearance and behaviour     */
+    protected FormFlags $oFlags;
     /** @var array attributes of the element     */
     protected ?array $aAttrib = null;
     /** @var array (CSS) styles of the element     */
@@ -115,14 +60,6 @@ class FormElement
     protected bool $bCreateStyle = false;
 
     /**
-     * nothing to initialize so far.
-     * Keep it in code because derived classes call the parent constructor. 
-     */
-    public function __construct()
-    {
-    }
-    
-    /**
      * Return the FormGenerator this element belongs to.
      * @return FormGenerator
      */
@@ -132,26 +69,12 @@ class FormElement
     }
 
     /**
-     * Add a child to this element.
-     * @param FormElement $oElement
-     * @return FormElement
-     */
-    public function add(FormElement $oElement) : FormElement
-    {
-        $oElement->setParent($this);
-        $this->aChild[] = $oElement;
-        $this->oFG->addElement($oElement);
-        
-        return $oElement;
-    }
-
-    /**
      * Set the parent of this element.
      * The Formgenerator of the parent is adopted for this element. 
      * If there are global flags set for the FormGenerator, this flags are added.
-     * @param FormElement $oParent
+     * @param FormContainer $oParent
      */
-    public function setParent(FormElement $oParent) : void 
+    public function setParent(FormContainer $oParent) : void 
     {
         $this->oParent = $oParent;
         $this->oFG = $oParent->oFG;
@@ -167,68 +90,6 @@ class FormElement
     public function setCol(int $iCol) : void
     {
         $this->iCol = $iCol;
-    }
-
-    /**
-     * Set width for the cols included in this element.
-     * @param array $aColWidth
-     * @param string $strDim
-     */
-    public function setColWidth(array $aColWidth, string $strDim = '%') : void 
-    {
-        $this->aColWidth = $aColWidth;
-        $this->strWidthDim = $strDim;
-    }
-    
-    /**
-     * Get colwidth for requested element.
-     * If no width set, we try to get the width throught the parent.
-     * @param int $iCol  requested col, if -1 current col is used
-     * @return string       colwidth including dimension
-     */
-    public function getColWidth(int $iCol = -1) : string 
-    {
-        $strWidth = '';
-        if ($iCol < 0) {
-            $iCol = $this->iCol;
-        }
-        if ($this->aColWidth != null && $iCol < count($this->aColWidth) && $this->aColWidth[$iCol] >= 0) {
-            $strWidth = $this->aColWidth[$iCol] . $this->strWidthDim;
-        } else if ($this->oParent != null) {
-            $strWidth = $this->oParent->getColWidth($iCol);
-        }
-        return $strWidth;
-    }
-
-    /**
-     * Add a new div as child.
-     * @param int $iWidth   width of the div in percent
-     * @param int $iAlign   align (FormDiv::NONE, FormDiv::LEFT, FormDiv::RIGHT, FormDiv::CLEAR)
-     * @param string $strID ID of the div
-     * @return \SKien\Formgenerator\FormDiv created div element
-     */
-    public function addDiv(int $iWidth = 0, int $iAlign = FormDiv::CLEAR, string $strID = '') : FormDiv
-    {
-        $oDiv = new FormDiv($iWidth, $iAlign);
-        $oDiv->SetID($strID);
-        $this->add($oDiv);
-    
-        return $oDiv;
-    }
-    
-    /**
-     * Add a new fieldset to the element.
-     * @param string $strLegend text or image of the legend
-     * @param string $strID
-     * @param int $iType type of the legend (FormFieldSet::TEXT or FormFieldSet::IMAGE)
-     * @return \SKien\Formgenerator\FormFieldSet
-     */
-    public function addFieldSet(string $strLegend, string $strID = '', $iType = FormFieldSet::TEXT) : FormFieldSet
-    {
-        $oFS = new FormFieldSet($strLegend, $strID, $iType);
-        $this->add($oFS);
-    
-        return $oFS;
     }
     
     /**
@@ -280,7 +141,7 @@ class FormElement
      */
     public function addFlags(int $wFlags) : void 
     {
-        $this->wFlags |= $wFlags;
+        $this->oFlags->add($wFlags);
     }
     
     /**
@@ -342,20 +203,6 @@ class FormElement
     }
     
     /**
-     * Build the HTML-notation for the element and/or all child elements.
-     * @return string
-     */
-    public function getHTML() : string
-    {
-        $strHTML = '';
-        $iCnt = count($this->aChild);
-        for ($i = 0; $i < $iCnt; $i++) {
-            $strHTML .= $this->aChild[$i]->GetHTML();
-        }
-        return $strHTML;
-    }
-    
-    /**
      * Get JS script related to this element.
      * This method gives each element the chance to add special JS script to the 
      * current page. <br/>
@@ -378,6 +225,11 @@ class FormElement
     {
         return '';
     }
+
+    /**
+     * @return string
+     */
+    abstract public function getHTML() : string;
     
     /**
      * Build the 'container' div arround the current element.
@@ -390,7 +242,7 @@ class FormElement
         if (strpos($strStyle, 'float') === false) {
             $strStyle = 'float: left; ' . $strStyle;
         }
-        $strWidth = $this->getColWidth();
+        $strWidth = ($this->oParent ? $this->oParent->getColWidth() : '');
         if (!empty($strWidth)) {
             $strStyle = rtrim($strStyle, ';');
             $strStyle .= '; width: ' . $strWidth . ';';
@@ -445,10 +297,10 @@ class FormElement
         $strHTML = '';
         $strValue = $this->oFG->oData->getValue($this->strName);
         
-        if (($this->wFlags & self::TRIM) != 0) {
+        if ($this->oFlags->isSet(FormFlags::TRIM)) {
             $strValue = trim($strValue);
         }
-        if (($this->wFlags & self::NO_ZERO) == 0 || ($strValue != 0 && $strValue != '0')) {
+        if (!$this->oFlags->isSet(FormFlags::NO_ZERO) || ($strValue != 0 && $strValue != '0')) {
             $strHTML = ' value="' . str_replace('"', '&quot;', $strValue) . '"';
         }
         return $strHTML;

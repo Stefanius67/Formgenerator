@@ -27,8 +27,8 @@ class FormStatic extends FormElement
      */
     public function __construct($strText, $wFlags = 0) 
     {
+        $this->oFlags = new FormFlags($wFlags);
         $this->strText = $strText;
-        $this->wFlags = $wFlags;
     }
     
     /**
@@ -39,27 +39,27 @@ class FormStatic extends FormElement
     {
         // no container div!
         $this->addStyle('float', 'left');
-        $strWidth = $this->getColWidth();
+        $strWidth = ($this->oParent ? $this->oParent->getColWidth() : '');
         if (!empty($strWidth)) {
             $this->addStyle('width', $strWidth);
         }
-        if (($this->wFlags & self::ALIGN_RIGHT) != 0) {
+        if ($this->oFlags->isSet(FormFlags::ALIGN_RIGHT)) {
             $this->addStyle('text-align', 'right');
-        } else if (($this->wFlags & self::ALIGN_CENTER) != 0) {
+        } else if ($this->oFlags->isSet(FormFlags::ALIGN_CENTER)) {
             $this->addStyle('text-align', 'center');
         }
-        if (($this->wFlags & self::BOLD) != 0) {
+        if ($this->oFlags->isSet(FormFlags::BOLD)) {
             $this->addStyle('font-weight', 'bold');
         }
         // don't overwrite class if explicit set
-        if (strlen($this->strClass) !== 0) {
-            if (($this->wFlags & self::ERROR) != 0) {
+        if (strlen($this->strClass)) {
+            if ($this->oFlags->isSet(FormFlags::ERROR)) {
                 $this->strClass = 'error';
             }
-            if (($this->wFlags & self::HINT) != 0) {
+            if ($this->oFlags->isSet(FormFlags::HINT)) {
                 $this->strClass = 'hint';
             }
-            if (($this->wFlags & self::INFO) != 0) {
+            if ($this->oFlags->isSet(FormFlags::INFO)) {
                 $this->strClass = 'forminfo';
             }
         }

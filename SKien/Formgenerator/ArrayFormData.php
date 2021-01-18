@@ -16,8 +16,8 @@ class ArrayFormData extends AbstractFormData
      */
     public function __construct(array $aData, array $aSelectOptions = [])
     {
-       $this->aValues = $aData;
-       $this->aSelectOptions = $aSelectOptions;
+        $this->aValues = $aData;
+        $this->aSelectOptions = $aSelectOptions;
     }
 }
 
