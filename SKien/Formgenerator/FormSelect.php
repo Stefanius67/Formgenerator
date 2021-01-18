@@ -17,8 +17,6 @@ namespace SKien\Formgenerator;
  */
 class FormSelect extends FormInput
 {
-    /** @var array select options    */
-    protected array $aOption;
     /** @var string text for selectbutton     */
     protected string $strSelectBtnText; 
     
@@ -30,15 +28,12 @@ class FormSelect extends FormInput
      * @see FormSelect::setSelectBtnText()
      *  
      * @param string $strName    name and id
-     * @param string $strValue   value of element     
-     * @param array $aOption     select options (key: text, value: value)
      * @param int $iSize         size of list. 1 => dropdown list (default: 1)
      * @param int $wFlags        flags (default: 0)
      */
-    public function __construct(string $strName, string $strValue, array $aOption, int $iSize = 1, int $wFlags = 0)
+    public function __construct(string $strName, int $iSize = 1, int $wFlags = 0)
     {
-        parent::__construct($strName, $strValue, $iSize, $wFlags);
-        $this->aOption = $aOption;
+        parent::__construct($strName, $iSize, $wFlags);
         if (($this->wFlags & self::SELECT_BTN) != 0) {
             $this->strClass .= ' sbSelect';
             if ($iSize != 1) {
@@ -54,6 +49,9 @@ class FormSelect extends FormInput
      */
     public function getHTML() : string
     {
+        $strSelect = $this->oFG->oData->getValue($this->strName);
+        $aOptions = $this->oFG->oData->getSelectOptions($this->strName);
+        
         $strWidth = $this->getColWidth();
         $strHTML  = '';
         $strHTML .= '       ';
@@ -74,18 +72,18 @@ class FormSelect extends FormInput
         }
         $strHTML .= $this->buildStyle();
         $strHTML .= $this->buildAttributes();
-        $strHTML .= $this->buildTab($this->iTab);
+        $strHTML .= $this->buildTab();
         $strHTML .= '>' . PHP_EOL;
 
-        if (count($this->aOption) > 0) {
-            reset($this->aOption);
-            foreach ($this->aOption as $strOption => $strValue) {
+        if (count($aOptions) > 0) {
+            foreach ($aOptions as $strOption => $strValue) {
                 $strHTML .= '           ';
                 $strHTML .= '<option ';
+                // TODO: define const for the separator value 
                 if (is_numeric($strValue) && $strValue == -1000) {
                     $strHTML .= ' disabled class="separator" value=""></option>' . PHP_EOL;
                 } else {
-                    if ($strValue == $this->strValue) {
+                    if ($strValue == $strSelect) {
                         $strHTML .= 'selected ';
                     }
                     $strHTML .= 'value="' . $strValue . '">' . $strOption . '</option>' . PHP_EOL;

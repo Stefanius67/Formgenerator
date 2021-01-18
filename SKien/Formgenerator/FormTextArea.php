@@ -25,21 +25,14 @@ class FormTextArea extends FormInput
     /**
      * Create a textarea element.
      * @param string $strName
-     * @param string $strValue
      * @param int $iCols
      * @param int $iRows
      * @param string $strWidth
      * @param int $wFlags
      */
-    public function __construct(string $strName, string $strValue, int $iCols, int $iRows, string $strWidth = '95%', int $wFlags = 0) 
+    public function __construct(string $strName, int $iCols, int $iRows, string $strWidth = '95%', int $wFlags = 0) 
     {
-        // CR only relevant for Textareas ... 
-        if (($wFlags & self::REPLACE_BR_CR) != 0) {
-            $strValue = str_replace('<br>', "\n", $strValue);
-            $strValue = str_replace('<br/>', "\n", $strValue);
-            $strValue = str_replace('<br />', "\n", $strValue);
-        }
-        parent::__construct($strName, $strValue, -1, $wFlags);
+        parent::__construct($strName, -1, $wFlags);
         $this->iCols = $iCols;
         $this->iRows = $iRows;
         $this->addStyle('width', $strWidth);
@@ -53,16 +46,27 @@ class FormTextArea extends FormInput
     {
         $strHTML  = $this->buildContainerDiv();
         
+        $this->strID = $this->strID ?: $this->strName;
+        
+        $strValue = $this->oFG->oData->getValue($this->strName);
+        
+        // CR only relevant for Textareas ...
+        if (($this->wFlags & self::REPLACE_BR_CR) != 0) {
+            $strValue = str_replace('<br>', "\n", $strValue);
+            $strValue = str_replace('<br/>', "\n", $strValue);
+            $strValue = str_replace('<br />', "\n", $strValue);
+        }
+        
         $strHTML .= '<textarea';
-        $strHTML .= ' class="' . $this->strClass . '"';
         $strHTML .= ' name="' . $this->strName . '"';
-        $strHTML .= ' id="' . $this->strName . '"';
+        $strHTML .= $this->buildClass();
+        $strHTML .= $this->buildID();
         $strHTML .= ' cols="' . $this->iCols . '"';
         $strHTML .= ' rows="' . $this->iRows . '"';
         $strHTML .= $this->buildStyle();
         $strHTML .= $this->buildAttributes();
-        $strHTML .= $this->buildTab($this->iTab);
-        $strHTML .= '>' . $this->strValue . '</textarea>';
+        $strHTML .= $this->buildTab();
+        $strHTML .= '>' . $strValue . '</textarea>';
         $strHTML .= $this->buildSelectImage('picker_top');
         
         $strHTML .= '</div>' . PHP_EOL;

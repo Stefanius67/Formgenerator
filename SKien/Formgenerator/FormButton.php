@@ -17,11 +17,16 @@ namespace SKien\Formgenerator;
  */
 class FormButton extends FormInput
 {
+    /** @var string button text     */
+    protected string $strBtnText;
     /** @var string onClick() JS handler     */
     protected string $strOnClick;
 
     /**
      * Create button element.
+     * Note: <br/>
+     * Alignment self::ALIGN_CENTER / self::ALIGN_RIGHT set through the $wFlags dont affect the
+     * alignment of the text within the button but the alignment of the button within the col! 
      * @param string $strId        button id
      * @param string $strBtnText   button text (value)
      * @param string $strOnClick   onClick() handler
@@ -30,8 +35,8 @@ class FormButton extends FormInput
      */
     public function __construct(string $strId, string $strBtnText, string $strOnClick, string $strStyle = '', int $wFlags = 0) 
     {
-        $this->strValue = $strBtnText;
-        $this->strName = $strId;
+        $this->strBtnText = $strBtnText;
+        $this->strID = $strId;
         $this->strOnClick = $strOnClick;
         $this->wFlags = $wFlags;
         
@@ -55,15 +60,13 @@ class FormButton extends FormInput
         $strHTML  = $this->buildContainerDiv($strStyle);
 
         $strHTML .= '<input type=button ';
-        if (!empty($this->strName)) {
-            $strHTML .= ' id="' . $this->strName . '"';
-        }
+        $strHTML .= $this->buildID();
         $strHTML .= $this->buildStyle();
         $strHTML .= $this->buildAttributes();
         if (!empty($this->strOnClick)) {
             $strHTML .= ' onclick="' . $this->strOnClick . ';" ';
         }
-        $strHTML .= 'value="' . $this->strValue . '"></div>' . PHP_EOL;
+        $strHTML .= 'value="' . $this->strBtnText . '"></div>' . PHP_EOL;
 
         return $strHTML;
     }

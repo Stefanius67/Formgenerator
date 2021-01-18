@@ -17,32 +17,22 @@ namespace SKien\Formgenerator;
  */
 class FormCheck extends FormInput
 {
-    /**@var bool state of the checkbox  */
-    protected bool $bChecked;
-
     /**
      * Create a checkbox.
      * As default, the value 'on' is submitted for a checked element. This value can be 
-     * changed by setting the param $strValue. <br/>
+     * changed by setting a btnValue for the elementname in the FormData. <br/>
      * <b>Note: HTML does not submit any value for unchecked checkboxes !!!.</b>
      * @param string $strName   name AND id of the element
-     * @param bool $bChecked    initial value
      * @param int $wFlags    (default: 0)
-     * @param string $strValue  value to submit if checked  (default: '' -> 'on' is submitted)
      * @param string $strSuffix Text after the checkbox (default: '')
      */
-    public function __construct(string $strName, bool $bChecked, int $wFlags = 0, string $strValue = '', string $strSuffix = '') 
+    public function __construct(string $strName, int $wFlags = 0, string $strSuffix = '') 
     {
         $this->strName = $strName;
-        $this->strValue = $strValue;
-        $this->bChecked = $bChecked;
         $this->wFlags = $wFlags;
         $this->strSuffix = $strSuffix;
         if (($this->wFlags & (self::READ_ONLY | self::DISABLED)) != 0) {
             $this->addAttribute('disabled');
-        }
-        if ($this->bChecked) {
-            $this->addAttribute('checked');
         }
     }
     
@@ -53,6 +43,11 @@ class FormCheck extends FormInput
     public function getHTML() : string 
     {
         $strHTML = $this->buildContainerDiv();
+        
+        $bChecked = $this->oFG->oData->getValue($this->strName);
+        if ($bChecked) {
+            $this->addAttribute('checked');
+        }
         
         $strHTML .= '<input type="checkbox"';
         
@@ -65,8 +60,8 @@ class FormCheck extends FormInput
         }
         $strHTML .= $this->buildStyle();
         $strHTML .= $this->buildAttributes();
-        $strHTML .= $this->buildTab($this->iTab);
-        $strHTML .= $this->buildValue($this->strValue);
+        $strHTML .= $this->buildTab();
+        $strHTML .= $this->buildValue();
 
         // see comment beyond for name and id...
         if (($this->wFlags & (self::READ_ONLY | self::DISABLED)) != 0) {
@@ -74,7 +69,7 @@ class FormCheck extends FormInput
             $strHTML .= ' type="hidden"';
             $strHTML .= ' name="' . $this->strName . '"';
             $strHTML .= ' id="' . $this->strName . '"';
-            ($this->bChecked) ? $strHTML .= ' value="1"' : $strHTML .= ' value="0"';
+            ($bChecked) ? $strHTML .= ' value="1"' : $strHTML .= ' value="0"';
         }
         $strHTML .= '>';
         
@@ -89,14 +84,15 @@ class FormCheck extends FormInput
     
     /**
      * Build the markup for the value attribute.
-     * For checkboxes value is only set, if it is not empty.
+     * For checkboxes value comes from the getBtnValue().
      * @return string
      */
-    protected function buildValue($strValue) : string
+    protected function buildValue() : string
     {
         $strHTML = '';
+        $strValue = $this->oFG->oData->getBtnValue($this->strName);
         if (!empty($strValue)) {
-            $strHTML .= ' value="' . $strValue . '"';
+            $strHTML = ' value="' . $strValue . '"';
         }
         return $strHTML;
     }

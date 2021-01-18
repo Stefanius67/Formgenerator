@@ -24,18 +24,12 @@ class FormTime extends FormInput
     /**
      * Creates input field for time values.
      * @param string $strName
-     * @param string $strValue
      * @param int $wFlags
      */
-    public function __construct(string $strName, string $strValue, int $wFlags = 0) 
+    public function __construct(string $strName, int $wFlags = 0) 
     {
-        if (strlen($strValue) > 8) {
-            $strValue = $this->tsFromSQL('H:i', $strValue);
-        } else {
-            $strValue = $this->timeFromSQL('H:i', $strValue);
-        }
         ($wFlags & self::HIDDEN) == 0 ? $iSize = 10 : $iSize = -1;
-        parent::__construct($strName, $strValue, $iSize, $wFlags);
+        parent::__construct($strName, $iSize, $wFlags);
         $this->strValidate = 'aTime';
     }
 }

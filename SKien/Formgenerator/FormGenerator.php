@@ -59,23 +59,24 @@ class FormGenerator extends FormElement
     protected string $strAction;
     /** @var string form target  */
     protected string $strFormTarget = '';
-    /** @var FormElement hidden element containing the referer of this form */
-    protected ?FormElement $oReferer = null;
     /** @var bool hide the submit/cancel/close buttons  */
     protected bool $bHideButtons = false;
     /** @var array text for the submit/cancel/close buttons  */
     protected array $aBtnText;
     /** @var array array to hold elements for validation  */
     protected array $aValidate;
+    /** @var FormDataInterface data provider     */
+    public FormDataInterface $oData;
     
     /**
      * Create a FormGenerator.
      * Set some values to default.
      */
-    public function __construct() 
+    public function __construct(?FormDataInterface $oData, string $strID = 'FormGenerator') 
     {
         $this->oFG = $this;
-        $this->strID = 'auto_form';
+        $this->oData = $oData ?? new NullFormData();
+        $this->strID = $strID;
         $this->aValidate = array('aMand' => array(), 'aEdit' => array(), 'aDate' => array(), 'aInt' => array(), 'aCur' => array(), 'aTime' => array());
         $this->aBtnText = array('save' => 'Speichern', 'cancel' => 'Abbrechen', 'close' => 'Schließen');
         $this->strOnSubmit = "ValidateForm();";
@@ -83,8 +84,6 @@ class FormGenerator extends FormElement
         $this->strImgPath = '../images/';
         $this->strAction = $_SERVER['QUERY_STRING'];
         $this->strActionReceiver = $_SERVER['PHP_SELF'] . '?';
-        $strReferer = $_SERVER['HTTP_REFERER'] ?? '';
-        $this->oReferer = $this->add(new FormInput('urlReferer', $strReferer, -1, self::HIDDEN));
     }
     
     /**

@@ -19,20 +19,16 @@ namespace SKien\Formgenerator;
 */
 class FormCur extends FormInput
 {
-    use GetFromSQL;
-    
     /**
      * Creates input field for currency values.
      * @param string $strName
-     * @param float $dblValue
      * @param int $iSize
      * @param int $wFlags    default value = 0
      */
-    public function __construct(string $strName, float $dblValue, int $iSize, int $wFlags = 0) 
+    public function __construct(string $strName, int $iSize, int $wFlags = 0) 
     {
-        $strValue = $this->curFromSQL((string)$dblValue, false);
         $wFlags |= self::ALIGN_RIGHT;
-        parent::__construct($strName, $strValue, $iSize, $wFlags);
+        parent::__construct($strName, $iSize, $wFlags);
         $this->strValidate = 'aCur';
     }
 }

@@ -82,7 +82,7 @@ class FormElement
     const IMG_DTU               = 5;
     
     /** @var FormGenerator the FormGenerator this element belongs to     */
-    protected ?FormGenerator $oFG = null;
+    protected FormGenerator $oFG;
     /** @var FormElement the parent element - only FormGenerator has no parent     */
     protected ?FormElement $oParent = null;
     /** @var array all direct child elements     */
@@ -140,11 +140,7 @@ class FormElement
     {
         $oElement->setParent($this);
         $this->aChild[] = $oElement;
-        if ($this->oFG !== null) {
-            $this->oFG->addElement($oElement);
-        } else {
-            trigger_error('No FormGenerator object set!', E_USER_ERROR);
-        }
+        $this->oFG->addElement($oElement);
         
         return $oElement;
     }
@@ -159,11 +155,7 @@ class FormElement
     {
         $this->oParent = $oParent;
         $this->oFG = $oParent->oFG;
-        if ($this->oFG !== null) {
-            $this->addFlags($this->oFG->getGlobalFlags());
-        } else {
-            trigger_error('No FormGenerator object set!', E_USER_ERROR);
-        }
+        $this->addFlags($this->oFG->getGlobalFlags());
     }
     
     /**
@@ -445,16 +437,21 @@ class FormElement
     
     /**
      * Build the markup for the value attribute.
-     * @param mixed $value
+     * Retrieve value for the element from the FormData. 
      * @return string Empty string if no value set, complete attribute if set
      */
-    protected function buildValue($value) : string
+    protected function buildValue() : string
     {
-        $strValue = '';
-        if (!empty($value)) {
-            $strValue = ' value="' . $value . '"';
+        $strHTML = '';
+        $strValue = $this->oFG->oData->getValue($this->strName);
+        
+        if (($this->wFlags & self::TRIM) != 0) {
+            $strValue = trim($strValue);
         }
-        return $strValue;
+        if (($this->wFlags & self::NO_ZERO) == 0 || ($strValue != 0 && $strValue != '0')) {
+            $strHTML = ' value="' . str_replace('"', '&quot;', $strValue) . '"';
+        }
+        return $strHTML;
     }
 
     /**
@@ -485,14 +482,13 @@ class FormElement
     
     /**
      * Build the markup for the tabindex attribute.
-     * @param int $iTab
      * @return string Empty string if $iTab = 0, complete attribute if set
      */
-    protected function buildTab(int $iTab) : string
+    protected function buildTab() : string
     {
         $strTab = '';
-        if ($iTab > 0) {
-            $strTab = ' tabindex="' . $iTab . '"';
+        if ($this->iTab > 0) {
+            $strTab = ' tabindex="' . $this->iTab . '"';
         }
         return $strTab;
     }

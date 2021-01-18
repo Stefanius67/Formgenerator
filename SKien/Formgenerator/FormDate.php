@@ -27,24 +27,15 @@ namespace SKien\Formgenerator;
  */
 class FormDate extends FormInput
 {
-    use GetFromSQL;
-    
     /**
      * Creates input field for date values.
      * @param string $strName
-     * @param string $strValue
      * @param int $wFlags
      */
-    public function __construct(string $strName, string $strValue, int $wFlags = 0) 
+    public function __construct(string $strName, int $wFlags = 0) 
     {
-        // $this->strType = 'date'; see comment in header !!!!
-        $strDate = $this->dateFromSQL('d.m.Y', $strValue);
-        if ($strDate == '') {
-            // can be DATE or DATETIME / TIMESTAMP value...  so try again with 'long' format
-            $strDate = $this->tsFromSQL('d.m.Y', $strValue);
-        }
         ($wFlags & self::HIDDEN) == 0 ? $iSize = 10 : $iSize = -1;
-        parent::__construct($strName, $strDate, $iSize, $wFlags);
+        parent::__construct($strName, $iSize, $wFlags);
         $this->strValidate = 'aDate';
     }
 }

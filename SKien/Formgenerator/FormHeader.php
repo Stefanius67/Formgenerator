@@ -19,14 +19,18 @@ class FormHeader extends FormElement
 {
     /** @var string text for the header     */
     protected string $strText;
+    /** @var int level of the HTML header element     */
+    protected int $iLevel; 
     
     /**
      * Create header element (<h2> header)
      * @param string $strText
+     * @param number $iLevel
      */
-    public function __construct(string $strText) 
+    public function __construct(string $strText, $iLevel = 2) 
     {
         $this->strText = $strText;
+        $this->iLevel = $iLevel;
     }
     
     /**
@@ -35,7 +39,7 @@ class FormHeader extends FormElement
      */
     public function getHTML() : string
     {
-        $strHTML = '<h2>' . $this->strText . '</h2>' . PHP_EOL;
+        $strHTML = '<h' . $this->iLevel . '>' . $this->strText . '</h' . $this->iLevel . '>' . PHP_EOL;
         return $strHTML;
     }
 }

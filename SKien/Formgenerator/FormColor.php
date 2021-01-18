@@ -5,8 +5,9 @@ namespace SKien\Formgenerator;
 
 /**
  * Element to select Color
- * TODO:
- * How can the JS-script be referenced here!
+ * Uses the JSColor - picker from https://jscolor.com/
+ * 
+ * needs jscolor.js or jscolor.min.js
  *
  * #### History
  * - *2020-05-12*   initial version
@@ -20,15 +21,14 @@ namespace SKien\Formgenerator;
 class FormColor extends FormInput
 {
     /**
-     * creates input field for color values
+     * Creates input field for color values.
      * @param string $strName
-     * @param string $strValue
      * @param int $wFlags    default 0
      */
-    public function __construct(string $strName, string $strValue, int $wFlags = 0) 
+    public function __construct(string $strName, int $wFlags = 0) 
     {
         $iSize = ($wFlags & self::HIDDEN) == 0 ? 10 : -1;
         $wFlags |= self::ADD_COLOR_PICKER;
-        parent::__construct($strName, $strValue, $iSize, $wFlags);
+        parent::__construct($strName, $iSize, $wFlags);
     }
 }

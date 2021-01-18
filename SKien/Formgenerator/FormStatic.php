@@ -29,8 +29,6 @@ class FormStatic extends FormElement
     {
         $this->strText = $strText;
         $this->wFlags = $wFlags;
-        $this->strID = '';
-        $this->strClass = '';
     }
     
     /**
@@ -45,13 +43,6 @@ class FormStatic extends FormElement
         if (!empty($strWidth)) {
             $this->addStyle('width', $strWidth);
         }
-        if (($this->wFlags & self::HINT) != 0) {
-            $this->strClass = 'hint';
-        }
-        if (($this->wFlags & self::ERROR) != 0) {
-            // TODO: change from style='color: #FF0000' to class 'formerror'
-            $this->addStyle('color', '#FF0000');
-        }
         if (($this->wFlags & self::ALIGN_RIGHT) != 0) {
             $this->addStyle('text-align', 'right');
         } else if (($this->wFlags & self::ALIGN_CENTER) != 0) {
@@ -60,8 +51,17 @@ class FormStatic extends FormElement
         if (($this->wFlags & self::BOLD) != 0) {
             $this->addStyle('font-weight', 'bold');
         }
-        if (($this->wFlags & self::INFO) != 0) {
-            $this->strClass = 'forminfo';
+        // don't overwrite class if explicit set
+        if (strlen($this->strClass) !== 0) {
+            if (($this->wFlags & self::ERROR) != 0) {
+                $this->strClass = 'error';
+            }
+            if (($this->wFlags & self::HINT) != 0) {
+                $this->strClass = 'hint';
+            }
+            if (($this->wFlags & self::INFO) != 0) {
+                $this->strClass = 'forminfo';
+            }
         }
         
         $strHTML  = '';

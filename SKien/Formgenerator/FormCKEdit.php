@@ -69,8 +69,6 @@ class FormCKEdit extends FormTextArea
     protected string $strContentsCss = '';
     /** @var string the id of the editarea   */
     protected string $strBodyID;
-    /** @var string the content for the editor as JSON   */
-    protected ?string $strJsonData = null;
     /** @var array custom button definition ["func" => <buttonhandler>, "name" => <buttonname>]    */
     protected array $aCustomBtn = [];
     /** @var string allowed content    */
@@ -81,20 +79,14 @@ class FormCKEdit extends FormTextArea
     /**
      * Creates a WYSIWYG editor.
      * @param string $strName
-     * @param string $strValue
      * @param int $iRows
      * @param string $strWidth
      * @param int $wFlags
      */
-    public function __construct(string $strName, string $strValue, int $iRows, string $strWidth = '95%', int $wFlags = 0) 
+    public function __construct(string $strName, int $iRows, string $strWidth = '95%', int $wFlags = 0) 
     {
-        // TODO: explain differences when using FormInput::SET_JSON_DATA
-        if (($wFlags & FormInput::SET_JSON_DATA) != 0) {
-            $this->strJsonData = $strValue;
-            $strValue = '';
-        }
         // add 2 rows to increase height for toolbar
-        parent::__construct($strName, $strValue, 0, $iRows + 2, $strWidth, $wFlags);
+        parent::__construct($strName, 0, $iRows + 2, $strWidth, $wFlags);
         $this->bCreateScript = true;
         $this->bCreateStyle = true;
         $this->strBodyID = 'editarea';
@@ -186,9 +178,13 @@ class FormCKEdit extends FormTextArea
         $strScript .= "        });" . PHP_EOL;
         
         // if data to edit provided in JSON format, set it
-        if (($this->wFlags & self::SET_JSON_DATA) != 0 && $this->strJsonData != '') {
-            $strScript .= PHP_EOL;
-            $strScript .= '    editor.setData(' . json_encode($this->strJsonData, JSON_PRETTY_PRINT) . ');' . PHP_EOL;
+        // TODO: explain differences when using FormInput::SET_JSON_DATA
+        if (($this->wFlags & self::SET_JSON_DATA) != 0) {
+            $strJsonData = $this->oFG->oData->getValue($this->strName);
+            if (strlen($strJsonData) > 0 ) {
+                $strScript .= PHP_EOL;
+                $strScript .= '    editor.setData(' . json_encode($strJsonData, JSON_PRETTY_PRINT) . ');' . PHP_EOL;
+            }
         }       
         $strScript .= "}" . PHP_EOL;
         

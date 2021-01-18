@@ -57,7 +57,7 @@ class FormImage extends FormElement
         
         $strImg = is_numeric($this->img) ? $this->getStdImage(intval($this->img)) : $this->img;
         
-        $strAlt = 'Grafik'; 
+        $strAlt = 'Image'; 
         $strHTML .= '<img src="' . $strImg . '" alt="' . $strAlt . '"';
         if (!empty($this->strName)) {
             $strHTML .= ' id="' . $this->strName . '"';

@@ -1,11 +1,12 @@
 <?php
-spl_autoload_register(function($strTableClass) {
+function autoRegister(string $strClassName) : void 
+{
     $strInclude = '';
-    if (strpos($strTableClass, '\\') > 1) {
+    if (strpos($strClassName, '\\') > 1) {
         // replace the namespace prefix with the base directory, replace namespace
         // separators with directory separators in the relative class name, append
         // with .php
-        $strInclude = str_replace('\\', DIRECTORY_SEPARATOR, $strTableClass) . '.php';
+        $strInclude = str_replace('\\', DIRECTORY_SEPARATOR, $strClassName) . '.php';
     }
 
     // if the file exists, require it
@@ -15,5 +16,7 @@ spl_autoload_register(function($strTableClass) {
             require $strInclude;
         }
     }
-});
+}
 
+spl_autoload_register('autoRegister');
+        

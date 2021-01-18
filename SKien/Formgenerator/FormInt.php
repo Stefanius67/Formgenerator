@@ -19,17 +19,16 @@ class FormInt extends FormInput
 {
     /**
      * @param string $strName   name of input
-     * @param int $lValue    initial value
      * @param int $iSize     size in digits
      * @param int $wFlags    flags (default = 0)
      */
-    public function __construct(string $strName, int $lValue, int $iSize, int $wFlags = 0) 
+    public function __construct(string $strName, int $iSize, int $wFlags = 0) 
     {
         if (($wFlags & self::READ_ONLY) == 0) {
             $this->strType = 'number';
         }
         $wFlags |= self::ALIGN_RIGHT;
-        parent::__construct($strName, (string)$lValue, $iSize, $wFlags);
+        parent::__construct($strName, $iSize, $wFlags);
         $this->strValidate = 'aInt';
     }
     
