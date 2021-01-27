@@ -26,6 +26,7 @@ class FormLine extends FormContainer
     
     public function __construct(string $strLabel)
     {
+        parent::__construct(0);
         $this->strLabel = $strLabel;
         $this->iCol = 0;
         $this->strID = '';
@@ -57,6 +58,9 @@ class FormLine extends FormContainer
         $strWidth = $this->getColWidth();
         if (!empty($strWidth)) {
             $this->addStyle('width', $strWidth);
+        }
+        if (!isset($this->aStyle['float'])) {
+            $this->addStyle('float', 'left');
         }
         
         $strHTML  = '';

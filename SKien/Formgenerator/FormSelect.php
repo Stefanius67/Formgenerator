@@ -51,10 +51,10 @@ class FormSelect extends FormInput
     {
         $this->processFlags();
         
-        $strSelect = $this->oFG->oData->getValue($this->strName);
-        $aOptions = $this->oFG->oData->getSelectOptions($this->strName);
+        $strSelect = $this->oFG->getData()->getValue($this->strName);
+        $aOptions = $this->oFG->getData()->getSelectOptions($this->strName);
         
-        $strWidth = ($this->oParent ? $this->oParent->getColWidth() : '');
+        $strWidth = ($this->oParent ? $this->oParent->getColWidth($this->iCol) : '');
         $strHTML  = '';
         $strHTML .= '       ';
         $strHTML .= '<div style="float: left; position: relative;';
@@ -74,22 +74,17 @@ class FormSelect extends FormInput
         }
         $strHTML .= $this->buildStyle();
         $strHTML .= $this->buildAttributes();
-        $strHTML .= $this->buildTab();
+        $strHTML .= $this->buildTabindex();
         $strHTML .= '>' . PHP_EOL;
 
         if (count($aOptions) > 0) {
             foreach ($aOptions as $strOption => $strValue) {
                 $strHTML .= '           ';
                 $strHTML .= '<option ';
-                // TODO: define const for the separator value 
-                if (is_numeric($strValue) && $strValue == -1000) {
-                    $strHTML .= ' disabled class="separator" value=""></option>' . PHP_EOL;
-                } else {
-                    if ($strValue == $strSelect) {
-                        $strHTML .= 'selected ';
-                    }
-                    $strHTML .= 'value="' . $strValue . '">' . $strOption . '</option>' . PHP_EOL;
+                if ($strValue == $strSelect) {
+                    $strHTML .= 'selected ';
                 }
+                $strHTML .= 'value="' . $strValue . '">' . $strOption . '</option>' . PHP_EOL;
             }
         } else if ($this->size == 1) {
             // dropdown selectlist without options... 

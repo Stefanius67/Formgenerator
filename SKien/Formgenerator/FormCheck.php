@@ -17,7 +17,6 @@ namespace SKien\Formgenerator;
  */
 class FormCheck extends FormInput
 {
-    // TODO: check if FormInput base is needed
     /**
      * Create a checkbox.
      * As default, the value 'on' is submitted for a checked element. This value can be 
@@ -44,7 +43,7 @@ class FormCheck extends FormInput
     public function getHTML() : string 
     {
         $this->processFlags();
-        $bChecked = $this->oFG->oData->getValue($this->strName);
+        $bChecked = $this->oFG->getData()->getValue($this->strName);
         if ($bChecked) {
             $this->addAttribute('checked');
         }
@@ -53,7 +52,7 @@ class FormCheck extends FormInput
         $strHTML .= '<input type="checkbox"';
         $strHTML .= $this->buildStyle();
         $strHTML .= $this->buildAttributes();
-        $strHTML .= $this->buildTab();
+        $strHTML .= $this->buildTabindex();
         $strHTML .= $this->buildValue();
         
         // NOTE: because checkboxes don't support readonly-attribute and disabled checkboxes 
@@ -65,7 +64,7 @@ class FormCheck extends FormInput
             $strHTML .= ' type="hidden"';
             $strHTML .= ' name="' . $this->strName . '"';
             $strHTML .= ' id="' . $this->strName . '"';
-            $strValue = $this->oFG->oData->getBtnValue($this->strName) ?: 'on';
+            $strValue = $this->oFG->getData()->getBtnValue($this->strName) ?: 'on';
             $strHTML .= ($bChecked) ? ' value="' . $strValue . '"' : $strHTML .= ' value="off"';
         } else {
             $strHTML .= ' name="' . $this->strName . '"';
@@ -90,7 +89,7 @@ class FormCheck extends FormInput
     protected function buildValue() : string
     {
         $strHTML = '';
-        $strValue = $this->oFG->oData->getBtnValue($this->strName);
+        $strValue = $this->oFG->getData()->getBtnValue($this->strName);
         if (!empty($strValue)) {
             $strHTML = ' value="' . $strValue . '"';
         }

@@ -29,6 +29,7 @@ class FormHeader extends FormElement
      */
     public function __construct(string $strText, $iLevel = 2) 
     {
+        parent::__construct(0);
         $this->strText = $strText;
         $this->iLevel = $iLevel;
     }

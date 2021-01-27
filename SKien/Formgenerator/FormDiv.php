@@ -36,6 +36,7 @@ class FormDiv extends FormContainer
      */
     public function __construct(int $iWidth = 0, int $iAlign = self::CLEAR) : void
     {
+        parent::__construct(0);
         $this->iAlign = $iAlign;
         $this->iWidth = $iWidth;
         if ($this->iWidth > 0) {

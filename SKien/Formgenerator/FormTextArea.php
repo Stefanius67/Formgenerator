@@ -48,7 +48,7 @@ class FormTextArea extends FormInput
         
         $this->strID = $this->strID ?: $this->strName;
         
-        $strValue = $this->oFG->oData->getValue($this->strName);
+        $strValue = $this->oFG->getData()->getValue($this->strName);
         
         // CR only relevant for Textareas ...
         if ($this->oFlags->isSet(FormFlags::REPLACE_BR_CR)) {
@@ -66,7 +66,7 @@ class FormTextArea extends FormInput
         $strHTML .= ' rows="' . $this->iRows . '"';
         $strHTML .= $this->buildStyle();
         $strHTML .= $this->buildAttributes();
-        $strHTML .= $this->buildTab();
+        $strHTML .= $this->buildTabindex();
         $strHTML .= '>' . $strValue . '</textarea>';
         $strHTML .= $this->buildSelectImage('picker_top');
         

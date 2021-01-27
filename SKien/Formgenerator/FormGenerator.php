@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace SKien\Formgenerator;
 
+use SKien\Config\ConfigInterface;
+use SKien\Config\NullConfig;
+
 /**
  * Container for all form elements.
  *
@@ -17,26 +20,15 @@ namespace SKien\Formgenerator;
  */
 class FormGenerator extends FormContainer
 {
-    use GetFromSQL;
-    
-    /** save/submit button */
-    const BTN_SAVE      = 'save';
-    /** cancel/discard button */
-    const BTN_CANCEL    = 'cancel';
-    /** close button */
-    const BTN_CLOSE     = 'close';
-    
     /** JS code to close dialog */
     const CMD_CLOSE_DLG = "parent.document.getElementById('dialog').innerHTML = '';";
     
     /** @var int last tab position in the form   */
-    protected int $iLastTab = 0;
-    /** @var string timestamp of last modification  */
-    protected ?string $tsModified = null;
-    /** @var string user of last modification  */
-    protected ?string $strUserModified = null;
+    protected int $iLastTabindex = 0;
     /** @var bool set the whole form to readonly  */
     protected bool $bReadOnly = false;
+    /** @var bool set debug mode to output more information  */
+    protected bool $bDebugMode = false;
     /** @var string JS handler for onsubmit  */
     protected string $strOnSubmit = '';
     /** @var string JS handler for oncancel  */
@@ -55,15 +47,13 @@ class FormGenerator extends FormContainer
     protected string $strAction;
     /** @var string form target  */
     protected string $strFormTarget = '';
-    /** @var bool hide the submit/cancel/close buttons  */
-    protected bool $bHideButtons = false;
-    /** @var array text for the submit/cancel/close buttons  */
-    protected array $aBtnText;
     /** @var array array to hold elements for validation  */
     protected array $aValidate;
     /** @var FormDataInterface data provider     */
-    public FormDataInterface $oData;
-    
+    protected FormDataInterface $oData;
+    /** @var ConfigInterface configuration     */
+    protected ConfigInterface $oConfig;
+
     /**
      * Create a FormGenerator.
      * Set some values to default.
@@ -72,14 +62,47 @@ class FormGenerator extends FormContainer
     {
         $this->oFG = $this;
         $this->oData = $oData ?? new NullFormData();
+        $this->oConfig = new NullConfig();
         $this->oGlobalFlags = new FormFlags();
         $this->strID = $strID;
         $this->aValidate = array('aMand' => array(), 'aEdit' => array(), 'aDate' => array(), 'aInt' => array(), 'aCur' => array(), 'aTime' => array());
-        $this->aBtnText = array('save' => 'Speichern', 'cancel' => 'Abbrechen', 'close' => 'Schließen');
-        $this->strOnSubmit = "ValidateForm();";
+        $this->strOnSubmit = "validateForm();";
         $this->strOnCancel = "javascript:history.back();";
         $this->strImgPath = '../images/';
         $this->strAction = $_SERVER['PHP_SELF'] . '?' . $_SERVER['QUERY_STRING'];
+        $this->bDebugMode = (error_reporting() & (E_USER_ERROR | E_USER_WARNING)) != 0; 
+    }
+    
+    /**
+     * @return \SKien\Formgenerator\FormDataInterface
+     */
+    public function getData() : FormDataInterface
+    {
+        return $this->oData;
+    }
+    
+    /**
+     * @return \SKien\Config\ConfigInterface
+     */
+    public function getConfig() : ConfigInterface
+    {
+        return $this->oConfig;
+    }
+    
+    /**
+     * @param \SKien\Formgenerator\FormDataInterface $oData
+     */
+    public function setData(FormDataInterface $oData) : void
+    {
+        $this->oData = $oData;
+    }
+    
+    /**
+     * @param \SKien\Config\ConfigInterface $oConfig
+     */
+    public function setConfig(ConfigInterface $oConfig) : void
+    {
+        $this->oConfig = $oConfig;
     }
     
     /**
@@ -146,30 +169,33 @@ class FormGenerator extends FormContainer
     {
         $this->bReadOnly = $bReadOnly;
         if ($bReadOnly) {
-            $this->oGlobalFlags->add(FormFlags::DISABLED);
+            $this->oGlobalFlags->add(FormFlags::READ_ONLY);
         } else {
-            $this->oGlobalFlags->remove(FormFlags::DISABLED);
+            $this->oGlobalFlags->remove(FormFlags::READ_ONLY);
         }
-    }
-
-    /**
-     * Don't create formbuttons save/cancel/close
-     * @param bool $bHideButtons
-     */
-    public function hideButtons($bHideButtons = true) : void 
-    {
-        $this->bHideButtons = $bHideButtons;
     }
     
     /**
-     * Set timestamp and user of last modification
-     * @param string $tsModified timestamp from database
-     * @param string $strUserModified
+     * Sets the debug mode to output more information.
+     * Especialy for some elements, that need additional JS it can be helpfull to
+     * turn on the debug mode. 
+     * @param bool $bDebugMode
      */
-    public function setLastModified(string $tsModified, string $strUserModified) : void 
+    public function setDebugMode(bool $bDebugMode) : void
     {
-        $this->tsModified = $tsModified;
-        $this->strUserModified = $strUserModified;
+        // Even if we plan to integrate a logger, we keep the debug mode alive because the 
+        // logger do not cover the JS side (missing scripts, ...) and developers often 
+        // forget to take a look at the Browser console.
+        $this->bDebugMode = $bDebugMode;
+    }
+    
+    /**
+     * Get state of the debug mode.
+     * @return bool
+     */
+    public function getDebugMode() : bool
+    {
+        return $this->bDebugMode;
     }
     
     /**
@@ -181,25 +207,6 @@ class FormGenerator extends FormContainer
     public function setDialog() : void
     {
         $this->setOnCancel(self::CMD_CLOSE_DLG);
-    }
-    
-    /**
-     * Changes default text for selected button
-     * defaults:   
-     * - 'save'     => 'Speichern'
-     * - 'cancel'   => 'Abbrechen'
-     * - 'close'    => 'Schließen'
-     * 
-     * @param string $strBtn   FormGenerator::BTN_SAVE, FormGenerator::BTN_CANCEL or FormGenerator::BTN_CLOSE
-     * @param string $strText
-     */
-    public function setBtnText(string $strBtn, string $strText) : void 
-    {
-        if (isset($this->aBtnText[$strBtn])) {
-            $this->aBtnText[$strBtn] = $strText;
-        } else {
-            trigger_error('invalid Button specified!', E_USER_WARNING);
-        }
     }
     
     /**
@@ -232,9 +239,7 @@ class FormGenerator extends FormContainer
      */
     public function addElement(FormElement $oElement) : void 
     {
-        if ($oElement->hasTab()) {
-            $oElement->setTab(++$this->iLastTab);
-        }
+        $this->iLastTabindex += $oElement->setTabindex($this->iLastTabindex + 1);
         if (!$oElement->oFlags->isSet(FormFlags::HIDDEN)) {
             if (!empty($oElement->strValidate)) {
                 array_push($this->aValidate[$oElement->strValidate], $oElement->strName);
@@ -279,44 +284,10 @@ class FormGenerator extends FormContainer
             $strHTML .= $this->aChild[$i]->GetHTML();
         }
         
-        if (!$this->bHideButtons) {
-            $strHTML .= '<div id=formbuttons>' . PHP_EOL;
-            if (!$this->bReadOnly) {
-                if (!empty($this->strOnSubmit)) {
-                    $strHTML .= '   <input id="btnSubmit" type="submit" tabindex="100" value="' . $this->aBtnText['save'] . '">' . PHP_EOL;
-                }
-                if (!empty($this->strOnCancel)) {
-                    $strHTML .= '   <input id="btnCancel" type="button" tabindex="101" value="' . $this->aBtnText['cancel'] . '" onclick="' . $this->strOnCancel . '">' . PHP_EOL;
-                }
-            } else {
-                $strHTML .= '   <input id="btnClose" type="button" tabindex="101" value="' . $this->aBtnText['close'] . '" onclick="' . $this->strOnCancel . '">' . PHP_EOL;
-            }
-            
-            $strHTML .= '</div>' . PHP_EOL;
-        }
-        $strHTML .= $this->showLastModified();
-        
         $strHTML .= '</form>' . PHP_EOL;
         $strHTML .= '<!-- end autogenerated form -->' . PHP_EOL;
         $strHTML .= PHP_EOL;
         
-        return $strHTML;
-    }
-    
-    /**
-     * Build infos for last modification (if $this->tsModified set)
-     * @return string
-     */
-    protected function showLastModified() : string 
-    {
-        $strHTML = '';
-        if (!empty($this->tsModified)) {
-            $strHTML .= '<h4>letzte &Auml;nderung am <span class="lastmodified">';
-            $strHTML .= $this->tsFromSQL('d.m.Y H:i', $this->tsModified);
-            $strHTML .= '</span> von <span class="lastmodified">';
-            $strHTML .= $this->strUserModified;
-            $strHTML .= '</span></h4>' . PHP_EOL;
-        }
         return $strHTML;
     }
     
@@ -328,9 +299,17 @@ class FormGenerator extends FormContainer
      */
     public function getScript() : string
     {
+        $strScript = '';
+        if ($this->getDebugMode()) {
+            // in debug environment we give alert if scriptfile is missing!
+            $strScript  = "if (typeof FormDataValidator === 'undefined') {";
+            $strScript .= "    alert('You must include <FormDataValidator.js> for Form Validation!');";
+            $strScript .= "}" . PHP_EOL;
+        }
+        
         $aArrays = array('aMand', 'aDate', 'aTime', 'aInt', 'aCur');
         
-        $strScript = 'function ValidateForm() {' . PHP_EOL;
+        $strScript .= 'function validateForm() {' . PHP_EOL;
         $iArrays = count($aArrays);
         for ($j = 0; $j < $iArrays; $j++) {
             $sep = '';
@@ -344,7 +323,8 @@ class FormGenerator extends FormContainer
         }
         
         $strScript .= PHP_EOL;
-        $strScript .= '    return ValidateInput2(aMand, aDate, aTime, aInt, aCur);' . PHP_EOL;
+        $strScript .= '    var FDV = new FormDataValidator(aMand, aDate, aTime, aInt, aCur);' . PHP_EOL;
+        $strScript .= '    return FDV.validate();' . PHP_EOL;
         $strScript .= '}' . PHP_EOL;
         
         foreach ($this->aScriptElements as $oElement) {

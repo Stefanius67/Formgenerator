@@ -24,6 +24,14 @@ class FormContainer extends FormElement
     protected string $strWidthDim = '%';
     
     /**
+     * @param int $wFlags
+     */
+    public function __construct(int $wFlags)
+    {
+        parent::__construct($wFlags);
+    }
+    
+    /**
      * Add a child to this element.
      * @param FormElement $oElement
      * @return FormElement

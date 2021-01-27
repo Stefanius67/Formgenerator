@@ -34,6 +34,7 @@ class FormImage extends FormElement
      */
     public function __construct(string $strName, $img, string $strOnClick, string $strStyle = '', string $strTitle = '') 
     {
+        parent::__construct(0);
         $this->strName = $strName;
         $this->img = $img;
         $this->strOnClick = $strOnClick;

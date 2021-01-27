@@ -36,8 +36,8 @@ abstract class FormElement
     protected FormGenerator $oFG;
     /** @var FormContainer the parent element - only FormGenerator must has no parent     */
     protected ?FormContainer $oParent = null;
-    /** @var int tab position of the element if it can get focus     */
-    protected int $iTab = -1;
+    /** @var int tab index of the element if it can get focus     */
+    protected int $iTabindex = -1;
     /** @var int col inside current line     */
     protected int $iCol = 0;
     /** @var string element name     */
@@ -58,6 +58,14 @@ abstract class FormElement
     protected bool $bCreateScript = false;
     /** @var bool set to true, if element creates some CSS style     */
     protected bool $bCreateStyle = false;
+    
+    /**
+     * @param int $wFlags
+     */
+    public function __construct(int $wFlags)
+    {
+        $this->oFlags = new FormFlags($wFlags);
+    }
 
     /**
      * Return the FormGenerator this element belongs to.
@@ -79,6 +87,7 @@ abstract class FormElement
         $this->oParent = $oParent;
         $this->oFG = $oParent->oFG;
         $this->addFlags($this->oFG->getGlobalFlags());
+        $this->onParentSet();
     }
     
     /**
@@ -113,26 +122,14 @@ abstract class FormElement
     }
     
     /**
-     * Set the tab number of the element.
-     * Element can save given tab number or return false if it has no tabstopp.
+     * Set the tab index of the element.
      * Method is called from the PageGenerator after an element is added to the form.
-     * @param int $iTab
+     * @param int $iTabindex
+     * @return int the number of indexes, the element needs
      */
-    public function setTab(int $iTab) : void
+    public function setTabindex(int $iTabindex) : int
     {
-        $this->iTab = $iTab;
-    }
-
-    /**
-     * Check, if the element has tab stop.
-     * Derived classes have to decide by its own, if a tab stop is needed. Only if
-     * this method returns true, the PageGenerator call the setTab() method with
-     * the next available tab position.
-     * @return bool
-     */
-    public function hasTab() : bool
-    {
-        return false;
+        return 0;
     }
     
     /**
@@ -230,6 +227,15 @@ abstract class FormElement
      * @return string
      */
     abstract public function getHTML() : string;
+
+    /**
+     * Method called, after parent amd formgenerator is set properly.
+     * Enhancing classes can use this method, to initialize properties that
+     * nneds the parent or formgenerator (... configuration, global settings) 
+     */
+    protected function onParentSet() : void
+    {
+    }
     
     /**
      * Build the 'container' div arround the current element.
@@ -242,7 +248,7 @@ abstract class FormElement
         if (strpos($strStyle, 'float') === false) {
             $strStyle = 'float: left; ' . $strStyle;
         }
-        $strWidth = ($this->oParent ? $this->oParent->getColWidth() : '');
+        $strWidth = ($this->oParent ? $this->oParent->getColWidth($this->iCol) : '');
         if (!empty($strWidth)) {
             $strStyle = rtrim($strStyle, ';');
             $strStyle .= '; width: ' . $strWidth . ';';
@@ -334,15 +340,15 @@ abstract class FormElement
     
     /**
      * Build the markup for the tabindex attribute.
-     * @return string Empty string if $iTab = 0, complete attribute if set
+     * @return string Empty string if $iTabindex = 0, complete attribute if set
      */
-    protected function buildTab() : string
+    protected function buildTabindex() : string
     {
-        $strTab = '';
-        if ($this->iTab > 0) {
-            $strTab = ' tabindex="' . $this->iTab . '"';
+        $strTabindex = '';
+        if ($this->iTabindex > 0) {
+            $strTabindex = ' tabindex="' . $this->iTabindex . '"';
         }
-        return $strTab;
+        return $strTabindex;
     }
     
     /**

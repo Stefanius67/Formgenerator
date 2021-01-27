@@ -25,6 +25,7 @@ class FormCanvas extends FormInput
      */
     public function __construct(string $strID, int $iWidth, int $iHeight) 
     {
+        $this->oFlags = new FormFlags();
         $this->strID = $strID;
 
         // Note: set attributes for width and height-styles will change internal behaviour of canvas

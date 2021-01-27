@@ -37,10 +37,9 @@ class FormInput extends FormElement
      */
     public function __construct(string $strName, $size, int $wFlags = 0) 
     {
-        $this->oFlags = new FormFlags($wFlags);
+        parent::__construct($wFlags);
         $this->strName = $strName;
         $this->size = $size;
-        $this->iTab = -1;
         $this->strValidate = 'aEdit';
         $this->strType = 'text';
         $this->strSelectImg = '';
@@ -111,7 +110,7 @@ class FormInput extends FormElement
         $strHTML .= $this->buildID();
         $strHTML .= $this->buildStyle();
         $strHTML .= $this->buildAttributes();
-        $strHTML .= $this->buildTab();
+        $strHTML .= $this->buildTabindex();
         $strHTML .= $this->buildValue();
         $strHTML .= '>';
         
@@ -141,13 +140,18 @@ class FormInput extends FormElement
     }
     
     /**
-     * Input elements don't need tab index if hidden, read-only or disabled
-     * {@inheritDoc}
-     * @see \SKien\Formgenerator\FormElement::hasTab()
+     * Set the tab index of the element.
+     * Method is called from the PageGenerator after an element is added to the form.
+     * @param int $iTabindex
+     * @return int the number of indexes, the element needs
      */
-    public function hasTab() : bool
+    public function setTabindex(int $iTabindex) : int
     {
-        return (!$this->oFlags->isSet(FormFlags::HIDDEN | FormFlags::READ_ONLY | FormFlags::DISABLED));
+        if ($this->oFlags->isSet(FormFlags::HIDDEN | FormFlags::READ_ONLY | FormFlags::DISABLED)) {
+            return 0;
+        }
+        $this->iTabindex = $iTabindex;
+        return 1;
     }
     
     /**
@@ -164,9 +168,6 @@ class FormInput extends FormElement
             $this->addAttribute('readonly');
         } else if ($this->oFlags->isSet(FormFlags::DISABLED)) {
             $this->addAttribute('disabled');
-        }
-        if ($this->oFlags->isSet(FormFlags::ADD_EUR)) {
-            $this->strSuffix = 'EUR';
         }
     }
 
@@ -220,9 +221,6 @@ class FormInput extends FormElement
         $this->strClass .= ($this->oFlags->isSet(FormFlags::MANDATORY)) ? ' inputMand' : ' inputOK';
         if ($this->oFlags->isSet(FormFlags::ALIGN_RIGHT)) {
             $this->strClass .= '_R';
-        }
-        if ($this->oFlags->isSet(FormFlags::ADD_COLOR_PICKER)) {
-            $this->strClass .= ' jscolor {hash:true}';
         }
         return parent::buildClass();
     }

@@ -39,6 +39,7 @@ class FormFieldSet extends FormContainer
      */
     public function __construct(string $strLegend, string $strID = '', int $iType = self::TEXT) 
     {
+        parent::__construct(0);
         $this->strLegend = $strLegend;
         $this->strID = $strID;
         $this->iType = $iType;

@@ -53,11 +53,9 @@ class FormFlags
     /** file input  */
     const   FILE                    = 0x020000;
     /** add EUR - Suffix    */
-    const   ADD_EUR                 = 0x040000;
+    const   ADD_CUR                 = 0x040000;
     /** trim content (leading / trailing blanks)    */
     const   TRIM                    = 0x080000;
-    /** field invokes color picker on click */
-    const   ADD_COLOR_PICKER        = 0x0100000;
     /** set data for CKEdit through JS  */
     const   SET_JSON_DATA           = 0x0200000;
     /** font-weight: bold   */

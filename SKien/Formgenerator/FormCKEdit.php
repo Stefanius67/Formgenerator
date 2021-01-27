@@ -5,15 +5,16 @@ namespace SKien\Formgenerator;
 
 /**
  * WYSIWYG - HTML input using CKEditor.
- * currently used/supportet CKEditor Version is 4.6.2
+ * uses CKEditor Version 4.15
  * 
- * TODO: check, if it make sense to migrate to CKeditor 5 or 'only' update to newest 4.X 
- * @link https://ckeditor.com/docs/ckeditor5/latest/builds/guides/migrate.html 
- *
+ * For more information about download, install and integrate the CKEditor, see
+ * CKEditorIntegration.md 
+ * 
  * #### History
  * - *2020-05-12*   initial version
  * - *2021-01-07*   PHP 7.4
  * - *2021-01-09*   added support of icons for custom buttons and table, special char and iframe - Button
+ * - *2021-01-22*   added some configuration through the parent formgenerator
  *
  * @package Formgenerator
  * @version 1.1.0
@@ -34,7 +35,7 @@ class FormCKEdit extends FormTextArea
     public const TB_IMAGE            = 0x00000020;
     /** Colors: Text-, Backgroundcolor  */
     public const TB_COLOR            = 0x00000040;
-    /** Table funtions insert and delete rows   */
+    /** insert Table   */
     public const TB_TABLE            = 0x00000080;
     /** SelectBox for defined Styles    */
     public const TB_STYLES_SELECT    = 0x00000100;
@@ -75,7 +76,13 @@ class FormCKEdit extends FormTextArea
     protected string $strAllowedContent = '';
     /** @var int toolbar mask    */
     protected int $lToolbar;
-    
+    /** @var string initial folder to expand in filemanager for links   */    
+    protected string $strBrowseFolderLinkURL = '';
+    /** @var string initial folder to expand in filemanager for images   */
+    protected string $strBrowseFolderImageURL = '';
+    /** @var string initial folder to expand in filemanager for image links   */
+    protected string $strBrowseFolderImageLinkURL = '';
+
     /**
      * Creates a WYSIWYG editor.
      * @param string $strName
@@ -83,7 +90,7 @@ class FormCKEdit extends FormTextArea
      * @param string $strWidth
      * @param int $wFlags
      */
-    public function __construct(string $strName, int $iRows, string $strWidth = '95%', int $wFlags = 0) 
+    public function __construct(string $strName, int $iRows, string $strWidth = '100%', int $wFlags = 0) 
     {
         // add 2 rows to increase height for toolbar
         parent::__construct($strName, 0, $iRows + 2, $strWidth, $wFlags);
@@ -146,6 +153,57 @@ class FormCKEdit extends FormTextArea
     }
     
     /**
+     * @param string $strBrowseFolderLinkURL
+     */
+    public function setBrowseFolderLinkURL(string $strBrowseFolderLinkURL) : void
+    {
+        $this->strBrowseFolderLinkURL = $strBrowseFolderLinkURL;
+    }
+    
+    /**
+     * @param string $strBrowseFolderImageURL
+     */
+    public function setBrowseFolderImageURL(string $strBrowseFolderImageURL) : void
+    {
+        $this->strBrowseFolderImageURL = $strBrowseFolderImageURL;
+    }
+    
+    /**
+     * @param string $strBrowseFolderImageLinkURL
+     */
+    public function setBrowseFolderImageLinkURL(string $strBrowseFolderImageLinkURL) : void
+    {
+        $this->strBrowseFolderImageLinkURL = $strBrowseFolderImageLinkURL;
+    }
+    
+    /**
+     * Load some configuratin after parent set.
+     * {@inheritDoc}
+     * @see \SKien\Formgenerator\FormElement::onParentSet()
+     */
+    protected function onParentSet() : void
+    {
+        $this->strBrowseFolderLinkURL = $this->oFG->getConfig()->getString('RichFilemanager.expandFolder.browseLinkURL');
+        $this->strBrowseFolderImageURL = $this->oFG->getConfig()->getString('RichFilemanager.expandFolder.browseImageURL');
+        $this->strBrowseFolderImageLinkURL = $this->oFG->getConfig()->getString('RichFilemanager.expandFolder.browseImageLinkURL', $this->strBrowseFolderLinkURL);
+    }
+    
+    /**
+     * Add the <script> - element to initialize the Editor after the <textarea> to replace. 
+     * {@inheritDoc}
+     * @see \SKien\Formgenerator\FormTextArea::getHTML()
+     */
+    public function getHTML() : string
+    {
+        $strHTML = parent::getHTML();
+        // add call of loadEditor() after the textarea to replace - so we don't have to
+        // take care about the <body onload=""> method!
+        $strHTML .= PHP_EOL . '<script>loadEditor();</script>' . PHP_EOL;
+        
+        return $strHTML;
+    }
+    
+    /**
      * Build the JS script to Load the editor:
      * - contentCSS
      * - bodyID
@@ -154,12 +212,26 @@ class FormCKEdit extends FormTextArea
      */
     public function getScript() : string 
     {
+        $strScript = '';
+        if ($this->oFG->getDebugMode()) {
+            // in debug environment we give alert if scriptfile is missing!
+            $strScript  = "if (typeof CKEDITOR === 'undefined') {";
+            $strScript .= "    alert('You must include <ckeditor.js> to use the FormCKEdit input element!');";
+            $strScript .= "}" . PHP_EOL;
+            if ($this->oFG->getConfig()->getString('RichFilemanager.Path')) {
+                // conector to the rich filemanager needs jQuery...
+                $strScript  = "if (typeof $ === 'undefined') {";
+                $strScript .= "    alert('You must include <jQueryXXX.js> to use the Rich Filemanager connector!');";
+                $strScript .= "}" . PHP_EOL;
+            }
+        }
+        
         // define a global instance of the editor
-        $strScript = "var editor = null;" . PHP_EOL;
+        $strScript .= "var editor = null;" . PHP_EOL;
         
         // this function must be called in the html.body.onload() event!
         $strScript .= 
-            "function LoadEditor()" . PHP_EOL .
+            "function loadEditor()" . PHP_EOL .
             "{" . PHP_EOL .
             "    // get initial size of textarea to replace" . PHP_EOL .
             "    var oTA = document.getElementById('" . $this->strName . "');" . PHP_EOL .
@@ -180,12 +252,13 @@ class FormCKEdit extends FormTextArea
         // if data to edit provided in JSON format, set it
         // TODO: explain differences when using FormFlag::SET_JSON_DATA
         if ($this->oFlags->isSet(FormFlags::SET_JSON_DATA)) {
-            $strJsonData = $this->oFG->oData->getValue($this->strName);
+            $strJsonData = $this->oFG->getData()->getValue($this->strName);
             if (strlen($strJsonData) > 0) {
                 $strScript .= PHP_EOL;
                 $strScript .= '    editor.setData(' . json_encode($strJsonData, JSON_PRETTY_PRINT) . ');' . PHP_EOL;
             }
         }       
+        $strScript .= $this->buildFilemanagerScript();
         $strScript .= "}" . PHP_EOL;
         
         return $strScript;
@@ -206,6 +279,24 @@ class FormCKEdit extends FormTextArea
             $strDisplayIcon = (($aBtn['type'] & self::BTN_ICON) != 0) ? 'inline' : 'none';
             $strStyle .= '.cke_button__' . $strBtn . '_icon { display: ' . $strDisplayIcon . ' !important; }' . PHP_EOL;
             $strStyle .= '.cke_button__' . $strBtn . '_label { display: ' . $strDisplayLabel . ' !important; }' . PHP_EOL;
+        }
+        
+        if ($this->oFG->getConfig()->getString('RichFilemanager.Path')) {
+            $strStyle .= PHP_EOL . 
+                ".fm-modal {" . PHP_EOL .
+                "    z-index: 10011; /** Because CKEditor image dialog was at 10010 */" . PHP_EOL .
+                "    width:80%;" . PHP_EOL .
+                "    height:80%;" . PHP_EOL .
+                "    top: 10%;" . PHP_EOL .
+                "    left:10%;" . PHP_EOL .
+                "    border:0;" . PHP_EOL .
+                "    position:fixed;" . PHP_EOL .
+                // "    -moz-box-shadow: 0px 1px 5px 0px #656565;" . PHP_EOL .
+                // "    -webkit-box-shadow: 0px 1px 5px 0px #656565;" . PHP_EOL .
+                // "    -o-box-shadow: 0px 1px 5px 0px #656565;" . PHP_EOL .
+                // "    box-shadow: 0px 1px 5px 0px #656565;" . PHP_EOL .
+                // "    filter:progid:DXImageTransform.Microsoft.Shadow(color=#656565, Direction=180, Strength=5);" . PHP_EOL .
+                "}";
         }
         
         return $strStyle;
@@ -241,13 +332,17 @@ class FormCKEdit extends FormTextArea
         $aCKEditor = [
             'contentsCss' => $this->strContentsCss,
             'bodyId' => $this->strBodyID,
-            'removePlugins' => 'elementspath',
             'toolbar' => $this->buildToolbarDef(),
             'toolbarCanCollapse' => false,
-            'pasteFilter' => 'plain-text',
+            'uiColor' => $this->oFG->getConfig()->getString('CKEditor.uiColor', '#F8F8F8'),
+            'pasteFilter' => $this->oFG->getConfig()->getString('CKEditor.pasteFilter', 'plain-text'),
+            'colorButton_enableAutomatic' => $this->oFG->getConfig()->getBool('CKEditor.colorbutton.enableAutomatic', true),
+            'colorButton_enableMore' => $this->oFG->getConfig()->getBool('CKEditor.colorbutton.enableMore', true),
             'allowedContent' => ($this->strAllowedContent ?: true),
             'resize_enabled' => false,
         ];
+        $this->buildSelectableColors($aCKEditor);
+        $this->buildPlaceholderSelect($aCKEditor);
         $strScript = '    editor = CKEDITOR.replace("' . $this->strName . '", ' . json_encode($aCKEditor) . ');';
         
         return $strScript;
@@ -313,6 +408,37 @@ class FormCKEdit extends FormTextArea
         $this->addSourceBtn($aToolbar);
         
         return $aToolbar;
+    }
+    
+    /**
+     * Build config settings for the selectable colors.
+     * @param array $aCKEditor
+     */
+    protected function buildSelectableColors(array &$aCKEditor) : void
+    {
+        $aSelectableColors = $this->oFG->getConfig()->getArray('CKEditor.colorbutton.selectableColors');
+        if (($this->lToolbar & self::TB_COLOR) != 0 && count($aSelectableColors) > 0) {
+            $strColors = '';
+            $strSep = '';
+            foreach ($aSelectableColors as $strColor) {
+                $strColors .= $strSep . $strColor;
+                $strSep = ',';
+            }
+            $aCKEditor['colorButton_colors'] = $strColors;
+            $aCKEditor['colorButton_colorsPerRow'] = $this->oFG->getConfig()->getInt('CKEditor.colorbutton.colorsPerRow', 6);
+        }
+    }
+
+    /**
+     * Build config for available placeholders in the placeholder-combobox.
+     * @param array $aCKEditor
+     */
+    protected function buildPlaceholderSelect(array &$aCKEditor) : void
+    {
+        $aPlaceholderselect = $this->oFG->getConfig()->getArray('CKEditor.placeholder');
+        if (($this->lToolbar & self::TB_PLACEHOLDERS) != 0 && count($aPlaceholderselect) > 0) {
+            $aCKEditor['placeholder_select'] = ['placeholders' => $aPlaceholderselect];
+        }
     }
     
     /**
@@ -457,7 +583,7 @@ class FormCKEdit extends FormTextArea
      */
     protected function addPlaceholderSelect(array &$aToolbar) : void
     {
-        if (($this->lToolbar & self::TB_PLACEHOLDERS) != 0) {
+        if (($this->lToolbar & self::TB_PLACEHOLDERS) != 0 && count($this->oFG->getConfig()->getArray('CKEditor.placeholder')) > 0) {
             $aToolbar[] = ['items' => ['placeholder_select']];
         }
     }
@@ -471,5 +597,74 @@ class FormCKEdit extends FormTextArea
         if (($this->lToolbar & self::TB_SOURCE) != 0) {
             $aToolbar[] = ['name' => 'document', 'items' => ['Source']];
         }
+    }
+    
+    /**
+     * Build script to connect the Rich Filemanager (RFM) to the CKEditor.
+     * Path to the RFM must be configured in 'RichFilemanager.Path'
+     * @return string
+     */
+    protected function buildFilemanagerScript() : string
+    {
+        $strRfmPath = $this->oFG->getConfig()->getString('RichFilemanager.Path');
+        if (!$strRfmPath) {
+            return '';
+        }
+        if (!file_exists($_SERVER['DOCUMENT_ROOT'] . $strRfmPath)) {
+            if ($this->oFG->getDebugMode()) {
+                // in debug environment we give alert if scriptfile is missing!
+                return "alert('Can not find Rich Filemanager at <" . $_SERVER['DOCUMENT_ROOT'] . $strRfmPath . ">');" . PHP_EOL;
+            }
+        }
+        $strScript = 
+            "CKEDITOR.on('dialogDefinition', function (event)" . PHP_EOL .
+            "{" . PHP_EOL .
+            "    var editor = event.editor;" . PHP_EOL .
+            "    var dialogDefinition = event.data.definition;" . PHP_EOL .
+            "    var dialogName = event.data.name;" . PHP_EOL .
+            "    var cleanUpFuncRef = CKEDITOR.tools.addFunction(function ()" . PHP_EOL .
+            "    {" . PHP_EOL .
+            "        $('#fm-iframe').remove();" . PHP_EOL .
+            "        $('body').css('overflow-y', 'scroll');" . PHP_EOL .
+            "    });" . PHP_EOL .
+            
+            "    var tabCount = dialogDefinition.contents.length;" . PHP_EOL .
+            "    for (var i = 0; i < tabCount; i++) {" . PHP_EOL .
+            "        var dialogTab = dialogDefinition.contents[i];" . PHP_EOL .
+            "        if (!(dialogTab && typeof dialogTab.get === 'function')) {" . PHP_EOL .
+            "            continue;" . PHP_EOL .
+            "        }" . PHP_EOL .
+                
+            "        var browseButton = dialogTab.get('browse');" . PHP_EOL .
+            "        if (browseButton !== null) {" . PHP_EOL .
+            "            browseButton.hidden = false;" . PHP_EOL .
+            "            var params = " . PHP_EOL .
+            "                '?CKEditorFuncNum=' + CKEDITOR.instances[event.editor.name]._.filebrowserFn +" . PHP_EOL .
+            "                '&CKEditorCleanUpFuncNum=' + cleanUpFuncRef +" . PHP_EOL .
+            "                '&langCode=" . $this->oFG->getConfig()->getString('RichFilemanager.language', 'en') . "' +" . PHP_EOL .
+            "                '&CKEditor=' + event.editor.name;" . PHP_EOL .
+            "            if (dialogName == 'link') {" . PHP_EOL .
+            "                params += '&expandedFolder=" . $this->strBrowseFolderLinkURL . "';" . PHP_EOL .
+            "            } else if (dialogTab.id == 'info') {" . PHP_EOL .
+            "                params += '&filter=image&expandedFolder=" . $this->strBrowseFolderImageURL . "';" . PHP_EOL .
+            "            } else {" . PHP_EOL .
+            "                params += '&expandedFolder=" . $this->strBrowseFolderImageLinkURL . "';" . PHP_EOL .
+            "            }" . PHP_EOL .
+            "            browseButton.filebrowser.params = params;" . PHP_EOL .
+            
+            "            browseButton.onClick = function (dialog, i) {" . PHP_EOL .
+            "                editor._.filebrowserSe = this;" . PHP_EOL .
+            "                var iframe = $(\"<iframe id='fm-iframe' class='fm-modal'/>\").attr({" . PHP_EOL .
+            "                    src: '" . $strRfmPath . "' + dialog.sender.filebrowser.params" . PHP_EOL .
+            "                });" . PHP_EOL .
+                            
+            "                $('body').append(iframe);" . PHP_EOL .
+            "                $('body').css('overflow-y', 'hidden');" . PHP_EOL .
+            "            }" . PHP_EOL .
+            "        }" . PHP_EOL .
+            "    }" . PHP_EOL .
+            "});";
+        
+        return $strScript;
     }
 }

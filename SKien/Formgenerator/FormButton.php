@@ -17,7 +17,6 @@ namespace SKien\Formgenerator;
  */
 class FormButton extends FormInput
 {
-    // TODO: check if FormInput base is needed
     /** @var string button text     */
     protected string $strBtnText;
     /** @var string onClick() JS handler     */

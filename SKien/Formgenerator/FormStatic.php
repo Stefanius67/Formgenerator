@@ -27,8 +27,8 @@ class FormStatic extends FormElement
      */
     public function __construct($strText, $wFlags = 0) 
     {
-        $this->oFlags = new FormFlags($wFlags);
         $this->strText = $strText;
+        parent::__construct($wFlags);
     }
     
     /**
@@ -39,7 +39,7 @@ class FormStatic extends FormElement
     {
         // no container div!
         $this->addStyle('float', 'left');
-        $strWidth = ($this->oParent ? $this->oParent->getColWidth() : '');
+        $strWidth = ($this->oParent ? $this->oParent->getColWidth($this->iCol) : '');
         if (!empty($strWidth)) {
             $this->addStyle('width', $strWidth);
         }
@@ -52,7 +52,7 @@ class FormStatic extends FormElement
             $this->addStyle('font-weight', 'bold');
         }
         // don't overwrite class if explicit set
-        if (strlen($this->strClass)) {
+        if (strlen($this->strClass) == 0) {
             if ($this->oFlags->isSet(FormFlags::ERROR)) {
                 $this->strClass = 'error';
             }
