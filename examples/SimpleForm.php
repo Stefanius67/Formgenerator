@@ -44,7 +44,7 @@ $oFG = new FormGenerator($oData);
 $oFG->setConfig($oConfig);
 // $oFG->setReadOnly(true);
 // $oFG->setDebugMode(true);
-$oFG->setColWidth([20, 80], '%');       // we set colwidth for the whole form
+$oFG->setColWidth([20, 80], '%');
 
 $oFG->add(new FormHeader('With exposed Header...'));
 
@@ -91,7 +91,7 @@ $oFG->add(new FormButtonBox(FormButtonBox::SAVE_CANCEL, FormFlags::ALIGN_RIGHT))
 <script type="text/javascript" src="../script/FormDataValidator.js"></script>
 <script type="text/javascript" src="../script/jscolor.min.js"></script>
 <script>
-<?php echo $oFG->getScript();?>
+<?php echo $oFG->getScript(); ?>
 </script>
 </head>
 <body>

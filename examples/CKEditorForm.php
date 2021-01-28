@@ -15,7 +15,7 @@ $oFG = new FormGenerator(null);
 $oFG->setDebugMode(true);
 $oFG->setConfig($oConfig);
 
-$oFG->setColWidth([100], '%');       // we set colwidth for the whole form
+$oFG->setColWidth([100], '%');
 $oEditor = new FormCKEdit('editor', 20, '100%');
 $oFG->add($oEditor);
 $oEditor->setContentsCss('../style/FormGenerator.css');
@@ -34,10 +34,10 @@ $oBtnBox->addButton('Vorschau', 'btnPreview', FormButtonBox::FIRST);
 <script type="text/javascript" src="https://code.jquery.com/jquery-latest.min.js"></script>
 <script type="text/javascript" src="../ckeditor/ckeditor.js"></script>
 <script>
-<?php echo $oFG->getScript();?>
+<?php echo $oFG->getScript(); ?>
 </script>
 <style>
-<?php echo $oFG->getStyle();?>
+<?php echo $oFG->getStyle(); ?>
 </style>
 </head>
 <body>

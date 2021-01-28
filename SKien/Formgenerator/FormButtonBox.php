@@ -24,10 +24,10 @@ class FormButtonBox extends FormElement
     public const NONE       = 0;
     public const FIRST      = 0;
     public const LAST       = -1;
-    public const OK	        = 0x0001;   // An "OK" button for submit.
-    public const OPEN	    = 0x0002;   // An "Open" button for submit.
+    public const OK         = 0x0001;   // An "OK" button for submit.
+    public const OPEN       = 0x0002;   // An "Open" button for submit.
     public const SAVE       = 0x0004;   // A "Save" button for submit.
-    public const YES	    = 0x0008;   // A "Yes" button for submit.
+    public const YES        = 0x0008;   // A "Yes" button for submit.
     public const NO         = 0x0010;   // A "No" button
     public const CANCEL     = 0x0020;   // A "Cancel" button
     public const CLOSE      = 0x0040;   // A "Close" button
@@ -68,7 +68,7 @@ class FormButtonBox extends FormElement
      */
     public function addButton(string $strText, string $strID, int $iAfterBtn = self::LAST, bool $bSubmit = false) : void
     {
-        $this->aCustomButtons[$iAfterBtn] = ['text' => $strText, 'id' => $strID, 'type' => ($bSubmit ? 'submit' : 'button') ]; 
+        $this->aCustomButtons[$iAfterBtn] = ['text' => $strText, 'id' => $strID, 'type' => ($bSubmit ? 'submit' : 'button')]; 
     }
 
     /**
@@ -131,7 +131,7 @@ class FormButtonBox extends FormElement
             if ($aBtn['type'] == 'submit') {
                 $strHTML .= ' disabled';
             }
-        } else {
+        } else if ($aBtn['type'] != 'submit') {
             $strHTML .= ' onclick="' . $aBtn['id'] . 'Clicked();"';
         }
         $strHTML .= ' value="' . $aBtn['text'] . '"';
@@ -177,19 +177,19 @@ class FormButtonBox extends FormElement
     protected function loadButtonDef() : array
     {
         $aButtonDef = [
-            self::OK => ['text' => 'OK', 'id' => 'btnOK', 'type' => 'submit' ],
-            self::OPEN => ['text' => 'Open', 'id' => 'btnOpen', 'type' => 'button' ],
-            self::SAVE => ['text' => 'Save', 'id' => 'btnSave', 'type' => 'submit' ],
-            self::YES => ['text' => 'Yes', 'id' => 'btnYes', 'type' => 'submit' ],
-            self::NO => ['text' => 'No', 'id' => 'btnNo', 'type' => 'button' ],
-            self::CANCEL => ['text' => 'Cancel', 'id' => 'btnCancel', 'type' => 'button' ],
-            self::CLOSE => ['text' => 'Close', 'id' => 'btnClose', 'type' => 'button' ],
-            self::DISCARD => ['text' => 'Discard', 'id' => 'btnDiscard', 'type' => 'button' ],
-            self::APPLY => ['text' => 'Apply', 'id' => 'btnApply', 'type' => 'submit' ],
-            self::RESET => ['text' => 'Reset', 'id' => 'btnReset', 'type' => 'button' ],
-            self::RETRY => ['text' => 'Retry', 'id' => 'btnRetry', 'type' => 'submit' ],
-            self::IGNORE => ['text' => 'Ignore', 'id' => 'btnIgnore', 'type' => 'button' ],
-            self::BACK => ['text' => 'Back', 'id' => 'btnBack', 'type' => 'button' ],
+            self::OK => ['text' => 'OK', 'id' => 'btnOK', 'type' => 'submit'],
+            self::OPEN => ['text' => 'Open', 'id' => 'btnOpen', 'type' => 'button'],
+            self::SAVE => ['text' => 'Save', 'id' => 'btnSave', 'type' => 'submit'],
+            self::YES => ['text' => 'Yes', 'id' => 'btnYes', 'type' => 'submit'],
+            self::NO => ['text' => 'No', 'id' => 'btnNo', 'type' => 'button'],
+            self::CANCEL => ['text' => 'Cancel', 'id' => 'btnCancel', 'type' => 'button'],
+            self::CLOSE => ['text' => 'Close', 'id' => 'btnClose', 'type' => 'button'],
+            self::DISCARD => ['text' => 'Discard', 'id' => 'btnDiscard', 'type' => 'button'],
+            self::APPLY => ['text' => 'Apply', 'id' => 'btnApply', 'type' => 'submit'],
+            self::RESET => ['text' => 'Reset', 'id' => 'btnReset', 'type' => 'button'],
+            self::RETRY => ['text' => 'Retry', 'id' => 'btnRetry', 'type' => 'submit'],
+            self::IGNORE => ['text' => 'Ignore', 'id' => 'btnIgnore', 'type' => 'button'],
+            self::BACK => ['text' => 'Back', 'id' => 'btnBack', 'type' => 'button'],
         ];
         
         $aConfig = $this->oFG->getConfig()->getArray('ButtonBox.ButtonText');
