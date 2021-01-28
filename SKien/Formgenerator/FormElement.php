@@ -127,7 +127,7 @@ abstract class FormElement
      * @param int $iTabindex
      * @return int the number of indexes, the element needs
      */
-    public function setTabindex(int $iTabindex) : int
+    public function setTabindex(/** @scrutinizer ignore-unused */ int $iTabindex) : int
     {
         return 0;
     }
@@ -301,7 +301,7 @@ abstract class FormElement
     protected function buildValue() : string
     {
         $strHTML = '';
-        $strValue = $this->oFG->oData->getValue($this->strName);
+        $strValue = $this->oFG->getData()->getValue($this->strName);
         
         if ($this->oFlags->isSet(FormFlags::TRIM)) {
             $strValue = trim($strValue);
