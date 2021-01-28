@@ -13,35 +13,34 @@ function FormDataValidator(aMand, aDate, aTime, aInt, aCur)
     
 FormDataValidator.prototype.validate = function()
 {
-    var item;
     var i;
     
     // check mandatory fields
-    if (this.aMand != null) {
+    if (this.aMand !== null) {
         for (i = 0; i < this.aMand.length; i++) {
             this.checkMandatory(document.getElementById(this.aMand[i]));
         }
     }
     // validate date input
-    if (this.aDate != null) {
+    if (this.aDate !== null) {
         for (i = 0; i < this.aDate.length; i++) {
             this.checkDate(document.getElementById(this.aDate[i]));
         }
     }
     // validate time input
-    if (this.aTime != null) {
+    if (this.aTime !== null) {
         for (i = 0; i < this.aTime.length; i++) {
             this.checkTime(document.getElementById(this.aTime[i]));
         }
     }
     // validate integer input
-    if (this.aInt != null) {
+    if (this.aInt !== null) {
         for (i = 0; i < this.aInt.length; i++) {
             this.checkInteger(document.getElementById(this.aInt[i]));
         }
     }
     // validate currency/float input
-    if (this.aCur != null) {
+    if (this.aCur !== null) {
         for (i = 0; i < this.aCur.length; i++) {
             this.checkCurrency(document.getElementById(this.aCur[i]));
         }
@@ -51,14 +50,14 @@ FormDataValidator.prototype.validate = function()
     if (this.errors > 0) {
         var strMsg;
         // TODO: language
-        if (this.errors == 1) {
+        if (this.errors === 1) {
             strMsg = unescape("Das rot gekennzeichnete Feld wurde nicht korrekt ausgef%FCllt\n\n");
         } else {
             strMsg = unescape("Die rot gekennzeichneten Felder wurden nicht korrekt ausgef%FCllt\n\n");
         }
         strMsg += unescape("Korrigieren oder vervollst%E4ndigen Sie bitte Ihre Angaben.");
         alert( strMsg );
-        if (this.focusItem != null) {
+        if (this.focusItem !== null) {
             this.focusItem.focus();
         }
         return false;
@@ -68,14 +67,14 @@ FormDataValidator.prototype.validate = function()
     
 FormDataValidator.prototype.checkMandatory = function(item)
 {
-    if (item != null) {
+    if (item !== null) {
         this.setError((item.value == '' || item.value == 'null'), item);
     }
 }
 
 FormDataValidator.prototype.checkDate = function(item)
 {
-    if (item != null && item.value != '') {
+    if (item !== null && item.value != '') {
         var date = this.isValidDate(item.value);
         if (date !== false) {
             item.value = date;
@@ -88,7 +87,7 @@ FormDataValidator.prototype.checkDate = function(item)
 
 FormDataValidator.prototype.checkTime = function(item)
 {
-    if (item != null && item.value != '') {
+    if (item !== null && item.value != '') {
         var time = this.isValidTime(item.value); 
         if (time !== false) {
             item.value = time;
@@ -101,7 +100,7 @@ FormDataValidator.prototype.checkTime = function(item)
 
 FormDataValidator.prototype.checkInteger = function(item)
 {
-    if (item != null) {
+    if (item !== null) {
         var integer = this.isValidInteger(item.value);
         if (integer !== false) {
             item.value = integer;
@@ -114,7 +113,7 @@ FormDataValidator.prototype.checkInteger = function(item)
 
 FormDataValidator.prototype.checkCurrency = function(item)
 {
-    if (item != null) {
+    if (item !== null) {
         var currency = this.isValidCurrency(item.value);
         if (currency !== false) {
             item.value = currency;
@@ -165,7 +164,7 @@ FormDataValidator.prototype.isValidDate = function(strDate)
     var iD = parseInt(aSplit[0].replace(/^0+/,""));
     var iM = parseInt(aSplit[1].replace(/^0+/,""));
     var iY = parseInt(aSplit[2].replace(/^0+/,""));
-    if (iD == NaN || iM == NaN || iY == NaN) {
+    if (isNaN(iD) || isNaN(iM) || isNaN(iY)) {
         return false;
     }
     // values < 25 are 21'st century and 25...99 20'st Century!
@@ -211,7 +210,8 @@ FormDataValidator.prototype.isValidTime = function(strTime)
     // we only accept ':' as Delimiter and expect sequence H:i[:s]
     var aSplit = strTime.split(":");
 
-    var iH = iM = iS = 0;
+    var iH = 0;
+    var iM = 0;
     switch (aSplit.length) {
         case 1: // no separator - interpret as minutes
             if (aSplit[0] != '0' && aSplit[0] != '00') {
@@ -234,7 +234,7 @@ FormDataValidator.prototype.isValidTime = function(strTime)
             break;
     }
     
-    if ( iM == NaN || iH == NaN) {
+    if ( isNaN(iM) || isNaN(iH)) {
         return false;
     }
 

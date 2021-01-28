@@ -24,19 +24,19 @@ class FormButtonBox extends FormElement
     public const NONE       = 0;
     public const FIRST      = 0;
     public const LAST       = -1;
-    public const OK         = 0x0001;   // An "OK" button for submit.
-    public const OPEN       = 0x0002;   // An "Open" button for submit.
-    public const SAVE       = 0x0004;   // A "Save" button for submit.
-    public const YES        = 0x0008;   // A "Yes" button for submit.
-    public const NO         = 0x0010;   // A "No" button
-    public const CANCEL     = 0x0020;   // A "Cancel" button
-    public const CLOSE      = 0x0040;   // A "Close" button
-    public const DISCARD    = 0x0080;   // A "Discard" button
-    public const APPLY      = 0x0100;   // An "Apply" button for submit.
-    public const RESET      = 0x0200;   // A "Reset" button
-    public const RETRY      = 0x0400;   // A "Retry" button for submit.
-    public const IGNORE     = 0x0800;   // An "Ignore" button
-    public const BACK       = 0x1000;   // A "Back" button
+    public const OK         = 0x0001; // An "OK" button for submit.
+    public const OPEN       = 0x0002; // An "Open" button for submit.
+    public const SAVE       = 0x0004; // A "Save" button for submit.
+    public const YES        = 0x0008; // A "Yes" button for submit.
+    public const NO         = 0x0010; // A "No" button
+    public const CANCEL     = 0x0020; // A "Cancel" button
+    public const CLOSE      = 0x0040; // A "Close" button
+    public const DISCARD    = 0x0080; // A "Discard" button
+    public const APPLY      = 0x0100; // An "Apply" button for submit.
+    public const RESET      = 0x0200; // A "Reset" button
+    public const RETRY      = 0x0400; // A "Retry" button for submit.
+    public const IGNORE     = 0x0800; // An "Ignore" button
+    public const BACK       = 0x1000; // A "Back" button
     
     public const YES_NO_CANCEL = self::YES | self::NO | self::CANCEL;
     public const SAVE_CANCEL = self::SAVE | self::CANCEL;
@@ -161,7 +161,7 @@ class FormButtonBox extends FormElement
     {
         $iCount = 0;
         $iBtns = $this->iBtns;
-        while($iBtns) {
+        while ($iBtns) {
             $iCount += ($iBtns & 1);
             $iBtns >>= 1;
         }
