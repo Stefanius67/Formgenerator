@@ -25,7 +25,6 @@ class FormInt extends FormInput
     public function __construct(string $strName, int $iSize, int $wFlags = 0) 
     {
         parent::__construct($strName, $iSize, $wFlags);
-        $this->strValidate = 'aInt';
     }
     
     /**
@@ -43,6 +42,7 @@ class FormInt extends FormInput
             $this->strType = 'number';
             $this->addStyle('width', $this->size . 'em');
         }
+        $this->addAttribute('data-validation', 'int');
     }
     
     /**

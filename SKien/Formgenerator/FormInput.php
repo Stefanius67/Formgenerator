@@ -40,7 +40,6 @@ class FormInput extends FormElement
         parent::__construct($wFlags);
         $this->strName = $strName;
         $this->size = $size;
-        $this->strValidate = 'aEdit';
         $this->strType = 'text';
         $this->strSelectImg = '';
         $this->strSelectImgTitle = '';
@@ -109,9 +108,9 @@ class FormInput extends FormElement
         $strHTML .= $this->buildClass();
         $strHTML .= $this->buildID();
         $strHTML .= $this->buildStyle();
-        $strHTML .= $this->buildAttributes();
         $strHTML .= $this->buildTabindex();
         $strHTML .= $this->buildValue();
+        $strHTML .= $this->buildAttributes();
         $strHTML .= '>';
         
         // some additional elements

@@ -46,8 +46,6 @@ abstract class FormElement
     protected string $strID = '';
     /** @var string CSS class of the element     */
     protected string $strClass = '';
-    /** @var string validation for the element     */
-    protected string $strValidate = '';
     /** @var FormFlags flags that specify the appearance and behaviour     */
     protected FormFlags $oFlags;
     /** @var array attributes of the element     */

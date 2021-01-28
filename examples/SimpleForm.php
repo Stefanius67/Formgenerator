@@ -29,14 +29,14 @@ $aData = [
     'strPostcode' => '12345',
     'strCity' => 'Musterstadt',
     'strGender' => 'm',
-    'dateDoB' => '0000-00-00', //'1974-07-23',
+    'dateDoB' => '1974-07-23',
     'timeAvailableFrom' => time(),
     'timeAvailableTo' => $dtTo,
     'fltDue' => 1904,
     'strCatColor' => '#B0BED0',
 ];
 
-$aGenderSelect = ['' => '', 'männlich' => 'm', 'weiblich' => 'f', 'sep' => -1000, 'divers' => 'd'];
+$aGenderSelect = ['' => '', 'männlich' => 'm', 'weiblich' => 'f', 'divers' => 'd'];
 
 $oData = new ArrayFormData($aData, ['strGender' => $aGenderSelect]);
 
@@ -66,7 +66,7 @@ $oFL = $oFS->addLine();
 $oFL->setColWidth([0, 100], '%');
 $oFL->add(new FormStatic('And here are some internal informations...', FormFlags::INFO | FormFlags::BOLD));
 $oFL = $oFS->addLine('Gender:');
-$oFL->add(new FormSelect('strGender', 1));
+$oFL->add(new FormSelect('strGender', 1, FormFlags::MANDATORY));
 $oFL->add(new FormStatic('Date of Birth:'));
 $oFL->add(new FormDate('dateDoB', FormFlags::NO_ZERO));
 $oFL = $oFS->addLine('Available from:');

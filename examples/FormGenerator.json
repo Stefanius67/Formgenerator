@@ -1,9 +1,11 @@
 {
 	"Date": {
-		"Format": "%d.%m.%Y"
+		"Format": "DMY",
+        "Separator": "."
 	},
 	"Time": {
-		"Format": "%H:%M"
+		"Format": "HMS",
+        "Separator": ":"
 	},
 	"Currency": {
 		"DecimalPoint": ",",

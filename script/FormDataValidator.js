@@ -1,11 +1,6 @@
-function FormDataValidator(aMand, aDate, aTime, aInt, aCur)
+function FormDataValidator(id)
 {
-    this.aMand = aMand;
-    this.aDate = aDate;
-    this.aTime = aTime;
-    this.aInt = aInt;
-    this.aCur = aCur;
-    
+    this.id = id;
     this.focusItem = null;
     this.focusTabIndex = null;
     this.errors = 0;
@@ -14,51 +9,40 @@ function FormDataValidator(aMand, aDate, aTime, aInt, aCur)
 FormDataValidator.prototype.validate = function()
 {
     var i;
-    
-    // check mandatory fields
-    if (this.aMand !== null) {
-        for (i = 0; i < this.aMand.length; i++) {
-            this.checkMandatory(document.getElementById(this.aMand[i]));
+    var aValidationElements = this.getValidationElements();
+    var length = aValidationElements.length;
+    for (i = 0; i < length; i++) {
+        var validate = aValidationElements[i].getAttribute('data-validation');
+        var aValidate = validate.split(':');
+        switch (aValidate[0]) {
+            case 'int':
+                this.checkInteger(aValidationElements[i]);
+                break;
+            case 'cur':
+                this.checkCurrency(aValidationElements[i]);
+                break;
+            case 'date':
+                this.checkDate(aValidationElements[i]);
+                break;
+            case 'time':
+                this.checkTime(aValidationElements[i]);
+                break;
+            default:
+                break;
         }
     }
-    // validate date input
-    if (this.aDate !== null) {
-        for (i = 0; i < this.aDate.length; i++) {
-            this.checkDate(document.getElementById(this.aDate[i]));
-        }
-    }
-    // validate time input
-    if (this.aTime !== null) {
-        for (i = 0; i < this.aTime.length; i++) {
-            this.checkTime(document.getElementById(this.aTime[i]));
-        }
-    }
-    // validate integer input
-    if (this.aInt !== null) {
-        for (i = 0; i < this.aInt.length; i++) {
-            this.checkInteger(document.getElementById(this.aInt[i]));
-        }
-    }
-    // validate currency/float input
-    if (this.aCur !== null) {
-        for (i = 0; i < this.aCur.length; i++) {
-            this.checkCurrency(document.getElementById(this.aCur[i]));
-        }
-    }
-    
     // if errors found, dispplay message and set focus to last input
     if (this.errors > 0) {
-        var strMsg;
         // TODO: language
-        if (this.errors === 1) {
-            strMsg = unescape("Das rot gekennzeichnete Feld wurde nicht korrekt ausgef%FCllt\n\n");
-        } else {
-            strMsg = unescape("Die rot gekennzeichneten Felder wurden nicht korrekt ausgef%FCllt\n\n");
-        }
-        strMsg += unescape("Korrigieren oder vervollst%E4ndigen Sie bitte Ihre Angaben.");
+        var strMsg = 
+            "Das Formular entält ungültige Angaben, die rot markiert sind!<br/><br/>" +
+            "Korrigieren oder vervollständigen Sie bitte Ihre Eingaben.";
         
-        // TODO: create 'popup' div in the form for the message and replace the atert
-        alert( strMsg );
+        var popup = document.getElementById('errorPopup');
+        if (popup) {
+            popup.innerHTML = strMsg;
+            popup.style.display = 'block';
+        }
         if (this.focusItem !== null) {
             this.focusItem.focus();
         }
@@ -220,7 +204,7 @@ FormDataValidator.prototype.isValidTime = function(strTime)
         // more parts are invalid...
         return false;
     }
-    if (iLength === 0) {
+    if (iLength === 1) {
         // no separator - interpret value as minutes
         if (aSplit[0] != '0' && aSplit[0] != '00') {
             iM = parseInt(aSplit[0].replace(/^0+/,""));
@@ -306,4 +290,24 @@ FormDataValidator.prototype.isValidCurrency = function(strCur)
     strCur = strCur.replace( ".", "," );
     strCur = strCur.replace(/\B(?=(\d{3})+(?!\d))/g, ".");        
     return strCur;
+}
+
+FormDataValidator.prototype.getValidationElements = function () 
+{
+    var validationElements = [];
+    var form = document.getElementById(this.id);
+    var formElements = form.getElementsByTagName('*');
+    var n = formElements.length;
+    for (var i = 0; i < n; i++) {
+        if (formElements[i].getAttribute('data-validation') !== null) {
+            validationElements.push(formElements[i]);
+        }
+    }
+    return validationElements;    
+}
+
+function closeErrorPopup(popup)
+{
+    popup.innerHTML = '';
+    popup.style.display = 'none';
 }

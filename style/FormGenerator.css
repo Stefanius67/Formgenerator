@@ -1,5 +1,8 @@
 form
 {
+	width: 100%;
+    position: relative;
+    box-sizing: border-box;
     font-family: Verdana, Arial, Helvetica, sans-serif;
     font-size: 12px;
 	border-radius:7px;
@@ -249,4 +252,43 @@ form .hint
 	padding-left: 6px;
 	padding-right: 6px;
 	text-decoration: none;
+}
+
+#errorPopup
+{
+	display: none;
+    position: absolute;
+    width: calc(100% - 14px);
+    border: 1px solid black;
+    color: darkred;
+    background: lightyellow url(../images/window_close.png) no-repeat right 5px top 5px;
+    margin: 10px 2px;
+    padding: 5px 25px 5px 5px;
+    box-sizing: border-box;
+    border-radius: 3px;
+    font-weight: bold;
+}
+
+#JSError
+{
+	width: 80%;
+	color: black;
+	background-color: orange;
+	border: 1px solid black;
+    font-size: 1em;
+}
+
+#JSError h1
+{
+    background-color: #f57900;
+    padding: 2px 4px;
+    margin: 0px;
+    border-bottom: 1px solid;
+	color: black;
+    font-size: 1em;
+}
+
+#JSError p
+{
+    margin: 5;
 }

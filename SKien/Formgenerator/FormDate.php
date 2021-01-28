@@ -19,6 +19,9 @@ namespace SKien\Formgenerator;
  */
 class FormDate extends FormInput
 {
+    /** @var string strftime-compatible format for the date     */
+    protected string $strDateFormat = '';
+    
     /**
      * Creates input field for date values.
      * @param string $strName
@@ -27,7 +30,22 @@ class FormDate extends FormInput
     public function __construct(string $strName, int $wFlags = 0) 
     {
         parent::__construct($strName, '10', $wFlags);
-        $this->strValidate = 'aDate';
+    }
+    
+    /**
+     * get date format from configuration (default: '%Y-%m-%d').
+     */
+    protected function onParentSet() : void
+    {
+        // TODO: use localeconv() ??
+        $strFormat = strtoupper($this->oFG->getConfig()->getString('Date.Format', 'YMD'));
+        $strSep = $this->oFG->getConfig()->getString('Date.Separator', '-');
+        $aFormat = ['YMD' => '%Y-%m-%d', 'DMY' => '%d-%m-%Y', 'MDY' => '%m-%d-%Y'];
+        $this->strDateFormat = $aFormat[$strFormat] ?? '%Y-%m-%d';
+        if ($strSep !== '-') {
+            $this->strDateFormat = str_replace('-', $strSep, $this->strDateFormat);
+        }
+        $this->addAttribute('data-validation', 'date:' . $strFormat . $strSep);
     }
     
     /**
@@ -46,19 +64,18 @@ class FormDate extends FormInput
     protected function buildValue() : string
     {
         $date = $this->oFG->getData()->getValue($this->strName);
-        $strDateFormat = $this->oFG->getConfig()->getString('Date.Format', '%Y-%m-%d');
         
         $strValue = '';
         if (is_object($date) && get_class($date) == 'DateTime') {
             // DateTime-object
-            $strValue = strftime($strDateFormat, $date->getTimestamp());
+            $strValue = strftime($this->strDateFormat, $date->getTimestamp());
         } else if (is_numeric($date)) {
-            $strValue = strftime($strDateFormat, $date);
+            $strValue = strftime($this->strDateFormat, $date);
         } else {
-            if ($date != '0000-00-00 00:00:00' && $date == '0000-00-00' && $date == '00:00:00') {
+            if ($date != '0000-00-00 00:00:00' && $date != '0000-00-00' && $date != '00:00:00') {
                 $unixtime = strtotime($date);
                 if ($unixtime !== false) {
-                    $strValue = strftime($strDateFormat, $unixtime);
+                    $strValue = strftime($this->strDateFormat, $unixtime);
                 }
             }
         }

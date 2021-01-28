@@ -19,6 +19,13 @@ namespace SKien\Formgenerator;
 */
 class FormCur extends FormInput
 {
+    /** @var string decimal point     */
+    protected string $strDP = '.';
+    /** @var string thousands separator     */
+    protected string $strTS = ',';
+    /** @var int decimal digits     */
+    protected int $iDec = 2;
+    
     /**
      * Creates input field for currency values.
      * @param string $strName
@@ -28,18 +35,30 @@ class FormCur extends FormInput
     public function __construct(string $strName, int $iSize, int $wFlags = 0) 
     {
         parent::__construct($strName, $iSize, $wFlags);
-        $this->strValidate = 'aCur';
     }
     
     /**
-     * We 'ask' the configuration for alignment.
-     * $this->oFG is not available until the parent is set!
+     * get format from configuration: <ul>
+     * <li> right alignment (default: true) </li>
+     * <li> currency symbol (default: from locale settings) </li>
+     * <li> decimal point and thousands separator (default: from locale settings) </li></ul>
      */
     protected function onParentSet() : void
     {
         if ($this->oFG->getConfig()->getBool('Currency.RightAlign', true)) {
             $this->addFlags(FormFlags::ALIGN_RIGHT);
         }
+        
+        $li = localeconv();
+        
+        if ($this->oFlags->isSet(FormFlags::ADD_CUR)) {
+            $this->strSuffix = $this->oFG->getConfig()->getString('Currency.Symbol', ($li['currency_symbol'] ?: 'USD'));
+        }
+        
+        $this->strDP = $this->oFG->getConfig()->getString('Currency.DecimalPoint', ($li['mon_decimal_point'] ?: '.'));
+        $this->strTS = $this->oFG->getConfig()->getString('Currency.ThousandsSep', ($li['mon_thousands_sep'] ?: ','));
+        
+        $this->addAttribute('data-validation', 'cur:' . $this->strTS . $this->strDP . $this->iDec);
     }
     
     /**
@@ -50,20 +69,11 @@ class FormCur extends FormInput
     {
         $fltValue = floatval($this->oFG->getData()->getValue($this->strName));
 
-        $li = localeconv();
-        
-        if ($this->oFlags->isSet(FormFlags::ADD_CUR)) {
-            $this->strSuffix = $this->oFG->getConfig()->getString('Currency.Symbol', ($li['currency_symbol'] ?: 'USD'));
-        }
-        
         if ($this->oFlags->isSet(FormFlags::NO_ZERO) && $fltValue == 0.0) {
             return '';
         }
         
-        $strDP = $this->oFG->getConfig()->getString('Currency.DecimalPoint', ($li['mon_decimal_point'] ?: '.'));
-        $strTS = $this->oFG->getConfig()->getString('Currency.ThousandsSep', ($li['mon_thousands_sep'] ?: ','));
-        
-        $strValue = number_format($fltValue, 2, $strDP, $strTS);
+        $strValue = number_format($fltValue, 2, $this->strDP, $this->strTS);
         $strHTML = ' value="' . $strValue . '"';
         
         return $strHTML;

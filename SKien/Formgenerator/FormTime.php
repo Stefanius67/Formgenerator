@@ -19,6 +19,9 @@ namespace SKien\Formgenerator;
  */
 class FormTime extends FormInput
 {
+    /** @var string strftime-compatible format for the time     */
+    protected string $strTimeFormat = '';
+    
     /**
      * Creates input field for time values.
      * @param string $strName
@@ -27,7 +30,22 @@ class FormTime extends FormInput
     public function __construct(string $strName, int $wFlags = 0) 
     {
         parent::__construct($strName, 10, $wFlags);
-        $this->strValidate = 'aTime';
+    }
+    
+    /**
+     * get time format from configuration (default: '%H:%M').
+     */
+    protected function onParentSet() : void
+    {
+        // TODO: use localeconv() ??
+        $strFormat = strtoupper($this->oFG->getConfig()->getString('Time.Format', 'HM'));
+        $strSep = $this->oFG->getConfig()->getString('Time.Separator', ':');
+        $aFormat = ['HM' => '%H:%M', 'HMS' => '%H:%M:%S'];
+        $this->strTimeFormat = $aFormat[$strFormat] ?? '%H:%M';
+        if ($strSep !== ':') {
+            $this->strTimeFormat = str_replace(':', $strSep, $this->strTimeFormat);
+        }
+        $this->addAttribute('data-validation', 'time:' . $strFormat . $strSep);
     }
     
     /**
@@ -46,18 +64,17 @@ class FormTime extends FormInput
     protected function buildValue() : string
     {
         $date = $this->oFG->getData()->getValue($this->strName);
-        $strDateFormat = $this->oFG->getConfig()->getString('Time.Format', '%H:%M');
         
         $strValue = '';
         if (is_object($date) && get_class($date) == 'DateTime') {
             // DateTime-object
-            $strValue = strftime($strDateFormat, $date->getTimestamp());
+            $strValue = strftime($this->strTimeFormat, $date->getTimestamp());
         } else if (is_numeric($date)) {
-            $strValue = strftime($strDateFormat, $date);
+            $strValue = strftime($this->strTimeFormat, $date);
         } else {
             $unixtime = strtotime($date);
             if ($unixtime !== false) {
-                $strValue = strftime($strDateFormat, $unixtime);
+                $strValue = strftime($this->strTimeFormat, $unixtime);
             }
         }
         
