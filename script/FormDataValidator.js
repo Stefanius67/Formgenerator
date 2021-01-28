@@ -56,6 +56,8 @@ FormDataValidator.prototype.validate = function()
             strMsg = unescape("Die rot gekennzeichneten Felder wurden nicht korrekt ausgef%FCllt\n\n");
         }
         strMsg += unescape("Korrigieren oder vervollst%E4ndigen Sie bitte Ihre Angaben.");
+        
+        // TODO: create 'popup' div in the form for the message and replace the atert
         alert( strMsg );
         if (this.focusItem !== null) {
             this.focusItem.focus();
@@ -212,29 +214,33 @@ FormDataValidator.prototype.isValidTime = function(strTime)
 
     var iH = 0;
     var iM = 0;
-    switch (aSplit.length) {
-        case 1: // no separator - interpret as minutes
-            if (aSplit[0] != '0' && aSplit[0] != '00') {
-                iM = parseInt(aSplit[0].replace(/^0+/,""));
+    var iS = 0;
+    var iLength = aSplit.length;
+    if (iLength > 3) {
+        // more parts are invalid...
+        return false;
+    }
+    if (iLength === 0) {
+        // no separator - interpret value as minutes
+        if (aSplit[0] != '0' && aSplit[0] != '00') {
+            iM = parseInt(aSplit[0].replace(/^0+/,""));
+        }
+    } else {
+        if (iLength > 2) {
+            // hour:minutes:seconds specified
+            if (aSplit[2] != '0' && aSplit[2] != '00') {
+                iS = parseInt(aSplit[2].replace(/^0+/,""));
             }
-            break;
-        case 2: // hour:minutes specified
-        case 3: // hour:minutes:seconds
-            // only handle h:m
-            if (aSplit[0] != '0' && aSplit[0] != '00') {
-                iH = parseInt(aSplit[0].replace(/^0+/,""));
-            }
-            if (aSplit[1] != '0' && aSplit[1] != '00') {
-                iM = parseInt(aSplit[1].replace(/^0+/,""));
-            }
-            break;
-        default:
-            // all other combinations are invalid
-            return false;
-            break;
+        }
+        if (aSplit[0] != '0' && aSplit[0] != '00') {
+            iH = parseInt(aSplit[0].replace(/^0+/,""));
+        }
+        if (aSplit[1] != '0' && aSplit[1] != '00') {
+            iM = parseInt(aSplit[1].replace(/^0+/,""));
+        }
     }
     
-    if ( isNaN(iM) || isNaN(iH)) {
+    if ( isNaN(iM) || isNaN(iH) || isNaN(iS)) {
         return false;
     }
 
