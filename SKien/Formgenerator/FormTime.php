@@ -37,15 +37,13 @@ class FormTime extends FormInput
      */
     protected function onParentSet() : void
     {
-        // TODO: use localeconv() ??
-        $strFormat = strtoupper($this->oFG->getConfig()->getString('Time.Format', 'HM'));
+        $bSeconds = $this->oFG->getConfig()->getBool('Time.Seconds', false);
         $strSep = $this->oFG->getConfig()->getString('Time.Separator', ':');
-        $aFormat = ['HM' => '%H:%M', 'HMS' => '%H:%M:%S'];
-        $this->strTimeFormat = $aFormat[$strFormat] ?? '%H:%M';
+        $this->strTimeFormat = ($bSeconds ? '%H:%M:%S' : '%H:%M');
         if ($strSep !== ':') {
             $this->strTimeFormat = str_replace(':', $strSep, $this->strTimeFormat);
         }
-        $this->addAttribute('data-validation', 'time:' . $strFormat . $strSep);
+        $this->addAttribute('data-validation', 'time:' . $strSep . ($bSeconds ? '1' : '0') . 'm');
     }
     
     /**

@@ -4,13 +4,14 @@
         "Separator": "."
 	},
 	"Time": {
-		"Format": "HMS",
-        "Separator": ":"
+        "Separator": ":",
+        "Seconds": false,
+        "AllowMinutesOnly": true
 	},
 	"Currency": {
 		"DecimalPoint": ",",
 		"ThousandsSep": ".",
-		"Symbol": "SFR",
+		"Symbol": "EUR",
 		"RightAlign": true
 	},
 	"Color": {
@@ -72,5 +73,8 @@
 			"browseImageURL" : "images/",
 			"browseImageLinkURL" : ""
 		}
-	}
+	},
+    "FormDataValidation" : {
+        "errorMsg" : "Das Formular entält ungültige Angaben, die rot markiert sind!<br/><br/>Korrigieren oder vervollständigen Sie bitte Ihre Eingaben."
+    }
 }

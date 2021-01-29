@@ -37,7 +37,6 @@ class FormDate extends FormInput
      */
     protected function onParentSet() : void
     {
-        // TODO: use localeconv() ??
         $strFormat = strtoupper($this->oFG->getConfig()->getString('Date.Format', 'YMD'));
         $strSep = $this->oFG->getConfig()->getString('Date.Separator', '-');
         $aFormat = ['YMD' => '%Y-%m-%d', 'DMY' => '%d-%m-%Y', 'MDY' => '%m-%d-%Y'];
@@ -45,7 +44,7 @@ class FormDate extends FormInput
         if ($strSep !== '-') {
             $this->strDateFormat = str_replace('-', $strSep, $this->strDateFormat);
         }
-        $this->addAttribute('data-validation', 'date:' . $strFormat . $strSep);
+        $this->addAttribute('data-validation', 'date:' . $strSep . $strFormat);
     }
     
     /**

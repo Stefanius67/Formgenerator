@@ -276,7 +276,7 @@ class FormGenerator extends FormContainer
         }
         $strHTML .= $this->buildStyle();
         $strHTML .= ' method="post" id=' . $this->strID . ' onsubmit="return ' . $this->strOnSubmit . '">' . PHP_EOL;
-        $strHTML .= '<div id=errorPopup onclick="closeErrorPopup(this);"></div>' . PHP_EOL;
+        $strHTML .= '<div id=errorPopup onclick="this.style.display = \'none\';"></div>' . PHP_EOL;
         $iCnt = count($this->aChild);
         for ($i = 0; $i < $iCnt; $i++) {
             $strHTML .= $this->aChild[$i]->GetHTML();
@@ -297,7 +297,7 @@ class FormGenerator extends FormContainer
      */
     public function getScript() : string
     {
-        $strScript = '';
+        $strScript = '';        
         if ($this->getDebugMode()) {
             $strScript .= 
                 "function displayJSError(msg, level)" . PHP_EOL .
@@ -316,7 +316,9 @@ class FormGenerator extends FormContainer
         
         $strScript .= "function validateForm()" . PHP_EOL;
         $strScript .= "{" . PHP_EOL;
-        $strScript .= "    var FDV = new FormDataValidator('" . $this->strID . "');" . PHP_EOL;
+        $aFormDataValidator = $this->oConfig->getArray('FormDataValidation');
+        $strScript .= "    oFormDataValidator = " . json_encode($aFormDataValidator) . ";" . PHP_EOL;
+        $strScript .= "    var FDV = new FormDataValidator('" . $this->strID . "', oFormDataValidator);" . PHP_EOL;
         $strScript .= "    return FDV.validate();" . PHP_EOL;
         $strScript .= "}" . PHP_EOL;
         

@@ -25,6 +25,8 @@ class FormCur extends FormInput
     protected string $strTS = ',';
     /** @var int decimal digits     */
     protected int $iDec = 2;
+    /** @var bool empty entries allowed. If false, empty input is set to '0.0' */
+    protected bool $bEmptyAllowed = false; 
     
     /**
      * Creates input field for currency values.
@@ -58,7 +60,7 @@ class FormCur extends FormInput
         $this->strDP = $this->oFG->getConfig()->getString('Currency.DecimalPoint', ($li['mon_decimal_point'] ?: '.'));
         $this->strTS = $this->oFG->getConfig()->getString('Currency.ThousandsSep', ($li['mon_thousands_sep'] ?: ','));
         
-        $this->addAttribute('data-validation', 'cur:' . $this->strTS . $this->strDP . $this->iDec);
+        $this->addAttribute('data-validation', 'cur:' . ($this->bEmptyAllowed ? 'e' : 'x') . $this->iDec . $this->strDP . $this->strTS);
     }
     
     /**

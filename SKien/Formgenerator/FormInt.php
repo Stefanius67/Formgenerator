@@ -17,6 +17,9 @@ namespace SKien\Formgenerator;
  */
 class FormInt extends FormInput
 {
+    /** @var bool empty entries allowed. If false, empty input is set to '0.0' */
+    protected bool $bEmptyAllowed = false;
+    
     /**
      * @param string $strName   name of input
      * @param int $iSize     size in digits
@@ -42,7 +45,7 @@ class FormInt extends FormInput
             $this->strType = 'number';
             $this->addStyle('width', $this->size . 'em');
         }
-        $this->addAttribute('data-validation', 'int');
+        $this->addAttribute('data-validation', 'int:' . ($this->bEmptyAllowed ? 'e' : 'x'));
     }
     
     /**
