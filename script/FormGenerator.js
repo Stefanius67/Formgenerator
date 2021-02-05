@@ -2,8 +2,9 @@
 /** global: FormDataValidator */
 /** global: jscolor */
 /** global: CKEDITOR */
-/** global: loadEditor */
+/** global: FormCKEditor */
 
+var g_oCKEdit = null;
 document.addEventListener('DOMContentLoaded', initFormGenerator);
 
 function initFormGenerator()
@@ -23,10 +24,11 @@ function initFormGenerator()
         if (typeof CKEDITOR === undefined) {
             displayJSError('You must include [ckeditor.js] to use the FormCKEdit input element!', 'Warning');
         }
-        if (typeof loadEditor === undefined) {
+        if (typeof FormCKEditor === undefined) {
             displayJSError('You must include [FormCKEdit.js] to use the FormCKEdit input element!', 'Warning');
         }
-        loadEditor();
+        g_oCKEdit = new FormCKEditor(g_oConfigFromPHP);
+        g_oCKEdit.load();
     }
 }
 

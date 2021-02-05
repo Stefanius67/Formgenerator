@@ -50,7 +50,7 @@ class RichFmConnector
         
         this.oBrowserWnd = window.open(strBrowser, 'BrowseWindow', strOptions);
         
-        window.addEventListener('message', (e) => { this.handlePostMessage(e.data); });
+        window.addEventListener('message', (e) => {this.handlePostMessage(e.data);});
     }
     
     browseServerModal(strExpand)
@@ -73,7 +73,7 @@ class RichFmConnector
         document.body.append(this.oBrowserDiv);
         // $('body').css('overflow-y', 'hidden');
         
-        window.onmessage = (e) => { this.handlePostMessage(e.data); };
+        window.onmessage = (e) => {this.handlePostMessage(e.data);};
     }
 
     handlePostMessage(data)
