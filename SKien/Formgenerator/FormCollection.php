@@ -14,7 +14,7 @@ namespace SKien\Formgenerator;
  * @author Stefanius <s.kien@online.de>
  * @copyright MIT License - see the LICENSE file for details
  */
-class FormContainer extends FormElement
+abstract class FormCollection extends FormElement
 {
     /** @var FormElement[] all direct child elements     */
     protected array $aChild = [];

@@ -45,7 +45,7 @@ class FormInt extends FormInput
             $this->strType = 'number';
             $this->addStyle('width', $this->size . 'em');
         }
-        $this->addAttribute('data-validation', 'int:' . ($this->bEmptyAllowed ? 'e' : 'x'));
+        $this->addAttribute('data-validation', 'integer:' . ($this->bEmptyAllowed ? 'e' : 'x'));
     }
     
     /**

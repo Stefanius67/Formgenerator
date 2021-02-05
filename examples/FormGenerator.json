@@ -1,18 +1,24 @@
 {
 	"Date": {
+        "UseHTML5Type": false,
 		"Format": "DMY",
-        "Separator": "."
+        "Separator": ".",
+        "Placeholder": "TT.MM.JJJJ"
 	},
 	"Time": {
         "Separator": ":",
         "Seconds": false,
-        "AllowMinutesOnly": true
+        "AllowMinutesOnly": true,
+        "Placeholder": "SS:MM"
 	},
-	"Currency": {
+	"Float": {
 		"DecimalPoint": ",",
 		"ThousandsSep": ".",
-		"Symbol": "EUR",
-		"RightAlign": true
+		"RightAlign": true,
+        "Placeholder": ""
+	},
+	"Currency": {
+		"Symbol": "EUR"
 	},
 	"Color": {
 		"borderColor": "#5E656F",
@@ -40,6 +46,34 @@
 			"BACK": "zurück"
 		}
 	},
+    "Images": {
+        "StdImages": {
+            "Delete": {
+                "Image": "delete.png",
+                "Text": "Inhalt löschen"
+            },
+            "Search": {
+                "Image": "search.png",
+                "Text": "Auswählen"
+            },
+            "Browse": {
+                "Image": "browse.png",
+                "Text": "Server durchsuchen"
+            },
+            "DatePicker": {
+                "Image": "datepicker.png",
+                "Text": "Datum auswählen"
+            },
+            "TimePicker": {
+                "Image": "timepicker.png",
+                "Text": "Uhrzeit auswählen"
+            },
+            "InsertDTU": {
+                "Image": "insert_dtu.png",
+                "Text": "aktuelles Datum, Uhrzeit und Benutzer eintragen"
+            }
+        }
+    },
 	"CKEditor": {
 		"uiColor": "#B0BED0",
 		"pasteFilter": "p; h1; h2; h3; ul; ol; li; a[!href]",
@@ -64,17 +98,23 @@
 			"PH2"
 		]
 	},
+	"Filemanager": {
+        "Connect": true,
+        "Name": "RichFilemanager"
+    },
 	"RichFilemanager": {
-		"//": "Note: since this path is used from javascript, it should be absolute from the DOCUMENT - Root",
+		"//1": "Note: since this path is used from javascript, it should be absolute from the DOCUMENT - Root",
 		"Path": "/packages/Formgenerator/richfilemanager/custom.html",
 		"language" : "de",
 		"expandFolder": {
 			"browseLinkURL" : "files/",
 			"browseImageURL" : "images/",
 			"browseImageLinkURL" : ""
-		}
+		},
+		"//2": "possible values are 'modal' or 'window'",
+        "browseServer": "modal"
 	},
     "FormDataValidation" : {
-        "errorMsg" : "Das Formular entält ungültige Angaben, die rot markiert sind!<br/><br/>Korrigieren oder vervollständigen Sie bitte Ihre Eingaben."
+        "errorMsg" : "Das Formular enthält ungültige Angaben, die rot markiert sind!<br/><br/>Korrigieren oder vervollständigen Sie bitte Ihre Eingaben."
     }
 }

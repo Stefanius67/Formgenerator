@@ -21,6 +21,9 @@ namespace SKien\Formgenerator;
  */
 class FormButtonBox extends FormElement
 {
+    /** JS code to close dialog */
+    const CMD_CLOSE_DLG = "parent.document.getElementById('dialog').innerHTML = '';";
+    
     public const NONE       = 0;
     public const FIRST      = 0;
     public const LAST       = -1;

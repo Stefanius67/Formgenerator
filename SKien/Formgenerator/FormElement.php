@@ -20,22 +20,10 @@ namespace SKien\Formgenerator;
  */
 abstract class FormElement
 {
-    // TODO: Find a more general way of defining standard images. (possibly via a config)
-    /** standard delete image */
-    const IMG_DELETE            = 1;
-    /** standard delete image */
-    const IMG_SEARCH            = 2;
-    /** standard image for date picker */
-    const IMG_DATE_PICKER       = 3;
-    /** standard image for time picker */
-    const IMG_TIME_PICKER       = 4;
-    /** standard image for dtu insert (DTU: Date,Time,User) */
-    const IMG_DTU               = 5;
-    
     /** @var FormGenerator the FormGenerator this element belongs to     */
     protected FormGenerator $oFG;
-    /** @var FormContainer the parent element - only FormGenerator must has no parent     */
-    protected ?FormContainer $oParent = null;
+    /** @var FormCollection the parent element - only FormGenerator must has no parent     */
+    protected ?FormCollection $oParent = null;
     /** @var int tab index of the element if it can get focus     */
     protected int $iTabindex = -1;
     /** @var int col inside current line     */
@@ -52,8 +40,6 @@ abstract class FormElement
     protected ?array $aAttrib = null;
     /** @var array (CSS) styles of the element     */
     protected ?array $aStyle = null;
-    /** @var bool set to true, if element creates some JS     */
-    protected bool $bCreateScript = false;
     /** @var bool set to true, if element creates some CSS style     */
     protected bool $bCreateStyle = false;
     
@@ -78,9 +64,9 @@ abstract class FormElement
      * Set the parent of this element.
      * The Formgenerator of the parent is adopted for this element. 
      * If there are global flags set for the FormGenerator, this flags are added.
-     * @param FormContainer $oParent
+     * @param FormCollection $oParent
      */
-    public function setParent(FormContainer $oParent) : void 
+    public function setParent(FormCollection $oParent) : void 
     {
         $this->oParent = $oParent;
         $this->oFG = $oParent->oFG;
@@ -195,18 +181,6 @@ abstract class FormElement
             trigger_error('no class set so far!', E_USER_NOTICE);
         }
         $this->strClass .= ' ' . $strClass;
-    }
-    
-    /**
-     * Get JS script related to this element.
-     * This method gives each element the chance to add special JS script to the 
-     * current page. <br/>
-     * <b>This method is only called for elements having member bCreateScript set to true!</b>
-     * @return string
-     */
-    public function getScript() : string
-    {
-        return '';
     }
     
     /**
@@ -347,33 +321,6 @@ abstract class FormElement
             $strTabindex = ' tabindex="' . $this->iTabindex . '"';
         }
         return $strTabindex;
-    }
-    
-    /**
-     * Get filename for predifined standard images
-     * @param int $iImage
-     * @return string
-     */
-    protected function getStdImage(int $iImage) : string
-    {
-        // TODO: Find a more general way of defining standard images. (possibly via a config)
-        $strPath = '../images/';
-        if ($this->oFG !== null) {
-            $strPath = $this->oFG->getImagePath();
-        }
-        $aImage = array(
-            self::IMG_DELETE                => '16x16/admin_delete.png',
-            self::IMG_SEARCH                => '16x16/search.png',
-            self::IMG_DATE_PICKER           => '16x16/datepicker.png',
-            self::IMG_TIME_PICKER           => '16x16/timepicker.png',
-            self::IMG_DTU                   => '16x16/admin_dtu.png',
-        );
-        
-        $strImg = '';
-        if (isset($aImage[$iImage])) {
-            $strImg = $strPath . $aImage[$iImage];
-        }
-        return $strImg;
     }
     
     /**

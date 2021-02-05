@@ -68,7 +68,7 @@ class FormTextArea extends FormInput
         $strHTML .= $this->buildAttributes();
         $strHTML .= $this->buildTabindex();
         $strHTML .= '>' . $strValue . '</textarea>';
-        $strHTML .= $this->buildSelectImage('picker_top');
+        $strHTML .= $this->buildSelectButton('picker_top');
         
         $strHTML .= '</div>' . PHP_EOL;
         

@@ -37,6 +37,17 @@ class FormDate extends FormInput
      */
     protected function onParentSet() : void
     {
+        $this->setPlaceholder($this->oFG->getConfig()->getString('Date.Placeholder'));
+        if ($this->oFG->getConfig()->getBool('Date.UseHTML5Type')) {
+            // if the HTML5 date input used
+            // - value must be in format YYYY-MM-DD
+            // - ui-formating and validation is the job of the browser ;-)
+            // TODO: - adjust width since date input 'ignores' the size attrib!
+            //       - may check browser (safari didn't support type 'date')  
+            $this->strType = 'date';
+            $this->strDateFormat = '%Y-%m-%d';
+            return;
+        }
         $strFormat = strtoupper($this->oFG->getConfig()->getString('Date.Format', 'YMD'));
         $strSep = $this->oFG->getConfig()->getString('Date.Separator', '-');
         $aFormat = ['YMD' => '%Y-%m-%d', 'DMY' => '%d-%m-%Y', 'MDY' => '%m-%d-%Y'];

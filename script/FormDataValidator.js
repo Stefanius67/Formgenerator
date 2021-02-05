@@ -3,14 +3,14 @@
  * Each field that is marked with the custom 'data-validation' attribute is 
  * validated according to the information this attribute contains.
  */
-class FormDataValidator {
+class FormDataValidator 
+{
 	/**
 	 * pass the id of the form element to the constructor.
 	 * @param string id
 	 */
-    constructor(id, config) 
+    constructor(config) 
 	{
-        this.id = id;
         this.config = config;
         this.focusItem = null;
         this.focusTabIndex = null;
@@ -38,11 +38,11 @@ class FormDataValidator {
             let param = (pos >= 0) ? validate.substring(pos + 1) : '';
 			let valid = false;
             switch (type) {
-                case 'int':
+                case 'integer':
 		            valid = this.isValidInteger(item.value, param);
                     break;
-                case 'cur':
-		            valid = this.isValidCurrency(item.value, param);
+                case 'float':
+		            valid = this.isValidFloat(item.value, param);
                     break;
                 case 'date':
 		            valid = this.isValidDate(item.value, param);
@@ -89,7 +89,7 @@ class FormDataValidator {
     getValidationElements() 
 	{
         let validationElements = [];
-        let form = document.getElementById(this.id);
+        let form = document.getElementById(this.config.formID);
         let formElements = form.getElementsByTagName('*');
         let length = formElements.length;
         for (let i = 0; i < length; i++) {
@@ -131,7 +131,7 @@ class FormDataValidator {
 		        [iM, iD, iY] = strDate.split(strSep);
 				break;
 			default:
-				console.log('invalid format specification for date validation [' + strParam + ']!');
+				// console.log('invalid format specification for date validation [' + strParam + ']!');
 				return false;
 		}
         if (isNaN(iY) || isNaN(iM) || isNaN(iD)) {
@@ -180,7 +180,7 @@ class FormDataValidator {
     isValidTime(strTime, strParam)
 	{
 		if (strParam.length != 3) {
-			console.log('invalid format specification for time validation [' + strParam + ']!');
+			// console.log('invalid format specification for time validation [' + strParam + ']!');
 			return false;
 		}
 		let strSep = strParam.charAt(0);
@@ -250,7 +250,7 @@ class FormDataValidator {
     }
 
 	/**
-	 * Check, if input is a valid currency.
+	 * Check, if input is a valid float.
 	 * strParam[1]: 'e' if empty value allowed, all other empty value is set to '0'
 	 * strParam[2]: decimal digits 
 	 * strParam[3]: decimal point
@@ -259,11 +259,11 @@ class FormDataValidator {
      * @param string
      * @returns false|string false if invalid, otherwise formated value
 	 */
-    isValidCurrency(strCur, strParam) 
+    isValidFloat(strCur, strParam) 
 	{
         let iLength = strParam.length
 		if (iLength != 3 && iLength != 4) {
-			console.log('invalid format specification for currency validation [' + strParam + ']!');
+			// console.log('invalid format specification for float validation [' + strParam + ']!');
 			return false;
 		}
 		let strEmpty = strParam.charAt(0);

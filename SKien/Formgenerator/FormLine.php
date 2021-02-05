@@ -17,7 +17,7 @@ namespace SKien\Formgenerator;
  * @author Stefanius <s.kien@online.de>
  * @copyright MIT License - see the LICENSE file for details
  */
-class FormLine extends FormContainer
+class FormLine extends FormCollection
 {
     /** @var string text for the line label     */
     protected string $strLabel;

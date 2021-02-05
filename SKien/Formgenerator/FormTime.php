@@ -44,6 +44,7 @@ class FormTime extends FormInput
             $this->strTimeFormat = str_replace(':', $strSep, $this->strTimeFormat);
         }
         $this->addAttribute('data-validation', 'time:' . $strSep . ($bSeconds ? '1' : '0') . 'm');
+        $this->setPlaceholder($this->oFG->getConfig()->getString('Time.Placeholder'));
     }
     
     /**

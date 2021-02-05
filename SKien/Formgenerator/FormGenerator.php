@@ -18,31 +18,30 @@ use SKien\Config\NullConfig;
  * @author Stefanius <s.kien@online.de>
  * @copyright MIT License - see the LICENSE file for details
  */
-class FormGenerator extends FormContainer
+class FormGenerator extends FormCollection
 {
-    /** JS code to close dialog */
-    const CMD_CLOSE_DLG = "parent.document.getElementById('dialog').innerHTML = '';";
-    
     /** @var int last tab position in the form   */
     protected int $iLastTabindex = 0;
     /** @var bool set the whole form to readonly  */
     protected bool $bReadOnly = false;
     /** @var bool set debug mode to output more information  */
     protected bool $bDebugMode = false;
-    /** @var string JS handler for onsubmit  */
-    protected string $strOnSubmit = '';
-    /** @var string JS handler for oncancel  */
-    protected string $strOnCancel = '';
+    /** @var bool set dialog mode (form runs in dynamic created iframe)  */
+    protected bool $bIsDialog = false;
     /** @var int explicit width of the form in pixel  */
     protected int $iWidth = -1;
     /** @var FormFlags global flags for all form elements  */
     protected FormFlags $oGlobalFlags;
-    /** @var array elements that creates dynamic script */
-    protected array $aScriptElements = [];
+    /** @var string JS function for onsubmit  */
+    protected string $strOnSubmit = '';
+    /** @var string JS function for oncancel  */
+    protected string $strOnCancel = '';
+    /** @var array config values to pass as object to JS */
+    protected array $aConfigForJS = [];
     /** @var array elements that creates dynamic CSS styles */
     protected array $aStyleElements = [];
     /** @var string path to the images  */
-    protected string $strImgPath;
+    protected string $strImgPath = '';
     /** @var string URL params for the form action  */
     protected string $strAction;
     /** @var string form target  */
@@ -65,8 +64,10 @@ class FormGenerator extends FormContainer
         $this->strID = $strID;
         $this->strOnSubmit = "validateForm();";
         $this->strOnCancel = "javascript:history.back();";
-        $this->strImgPath = '../images/';
-        $this->strAction = $_SERVER['PHP_SELF'] . '?' . $_SERVER['QUERY_STRING'];
+        $this->strAction = $_SERVER['PHP_SELF'];
+        if (isset($_SERVER['QUERY_STRING'])) {
+            $this->strAction .= '?' . $_SERVER['QUERY_STRING'];
+        }
         $this->bDebugMode = (error_reporting() & (E_USER_ERROR | E_USER_WARNING)) != 0; 
     }
     
@@ -122,11 +123,44 @@ class FormGenerator extends FormContainer
     }
 
     /**
+     * Get the path to the StdImages  (<b>WITHOUT trailing DIRECTORY_SEPARATOR!</b>).
+     * If no directory set, the subdirectory 'StdImages' of this sourcefile is used. 
      * @return string current image path
      */
     public function getImagePath() : string
     {
-        return $this->strImgPath;
+        if ($this->strImgPath == '') {
+            $this->strImgPath = str_replace(rtrim($_SERVER['DOCUMENT_ROOT'], DIRECTORY_SEPARATOR), '', __DIR__);
+            $this->strImgPath .= DIRECTORY_SEPARATOR . 'StdImages';
+        }
+        return rtrim($this->strImgPath, DIRECTORY_SEPARATOR);
+    }
+    
+    /**
+     * Get filename for predifined standard images
+     * @param int $iImage
+     * @return array
+     */
+    public function getStdImage(int $iImage) : array
+    {
+        $aImageMap = [
+            FormImage::IMG_DELETE      => ['Delete', 'delete.png', 'Delete content'],
+            FormImage::IMG_SEARCH      => ['Search', 'search.png', 'Select'],
+            FormImage::IMG_BROWSE      => ['Browse', 'browse.png', 'Browse on server'],
+            FormImage::IMG_DATE_PICKER => ['DatePicker', 'datepicker.png', 'Select date'],
+            FormImage::IMG_TIME_PICKER => ['TimePicker', 'timepicker.png', 'Select time'],
+            FormImage::IMG_DTU         => ['InsertDTU', 'insert_dtu.png', 'insert current date, time and user'],
+        ];
+        
+        if (!isset($aImageMap[$iImage])) {
+            return ['', ''];
+        }
+        $aImage = $aImageMap[$iImage];
+        $strImage = $this->getImagePath() . DIRECTORY_SEPARATOR;
+        $strImage .= $this->getConfig()->getString('Images.StdImages.' . $aImage[0] . '.Image', $aImage[1]);
+        $strTitle = $this->getConfig()->getString('Images.StdImages.' . $aImage[0] . '.Text', $aImage[2]);
+        
+        return [$strImage, $strTitle];
     }
     
     /**
@@ -201,33 +235,18 @@ class FormGenerator extends FormContainer
      * dialog - DIV of the parent. <br/>
      * The cancel can easy be done by clear the content of that dialog-DIV.
      */
-    public function setDialog() : void
+    public function setDialog(bool $bDialog) : void
     {
-        $this->setOnCancel(self::CMD_CLOSE_DLG);
+        $this->bIsDialog = $bDialog;
     }
     
     /**
-     * Change JS handler for form submit from default "ValidateForm();";<br/><br/>
-     * Hide button, if set to empty string.<br/><br/>
-     * <b>!! Attention !!</b>
-     * don't use double quotes in function!
-     * @param string $strOnSubmit
+     * Check, if form runs in dialog (dynamic created iframe).
+     * @return bool
      */
-    public function setOnSubmit(string $strOnSubmit) : void 
+    public function isDialog() : bool
     {
-        $this->strOnSubmit = $strOnSubmit;
-    }
-
-    /**
-     * Change JS handler for cancel/close - button from default "javascript:history.back();";<br/><br/>
-     * Hide button, if set to empty string.<br/><br/>
-     * <b>!! Attention !!</b>
-     * don't use double quotes in function!
-     * @param string $strOnCancel
-     */
-    public function setOnCancel(string $strOnCancel) : void 
-    {
-        $this->strOnCancel = $strOnCancel;
+        return $this->bIsDialog;
     }
     
     /**
@@ -237,12 +256,19 @@ class FormGenerator extends FormContainer
     public function addElement(FormElement $oElement) : void 
     {
         $this->iLastTabindex += $oElement->setTabindex($this->iLastTabindex + 1);
-        if ($oElement->bCreateScript) {
-            $this->aScriptElements[] = $oElement;
-        }
         if ($oElement->bCreateStyle) {
             $this->aStyleElements[] = $oElement;
         }
+    }
+    
+    /**
+     * Add a key to the config passed to JS.
+     * @param string $strKey
+     * @param mixed $value
+     */
+    public function addConfigForJS(string $strKey, $value) : void
+    {
+        $this->aConfigForJS[$strKey] = $value;
     }
     
     /**
@@ -252,7 +278,6 @@ class FormGenerator extends FormContainer
     public function getForm() : string
     {
         $strHTML = PHP_EOL;
-        $strHTML .= '<!-- start autogenerated form -->' . PHP_EOL;
         
         if ($this->getDebugMode()) {
             // in debug environment we give alert if scriptfile is missing!
@@ -283,48 +308,27 @@ class FormGenerator extends FormContainer
         }
         
         $strHTML .= '</form>' . PHP_EOL;
-        $strHTML .= '<!-- end autogenerated form -->' . PHP_EOL;
         $strHTML .= PHP_EOL;
         
         return $strHTML;
     }
     
     /**
-     * Build needed JS script.
+     * Build needed configuration for JS scripts.
      * - for validation
      * - scripts of all childs that have own script
      * @return string
      */
     public function getScript() : string
     {
-        $strScript = '';        
-        if ($this->getDebugMode()) {
-            $strScript .= 
-                "function displayJSError(msg, level)" . PHP_EOL .
-                "{" . PHP_EOL .
-                "    let div = document.createElement('div');" . PHP_EOL .
-                "    div.id = 'JSError';" . PHP_EOL .
-                "    let header = document.createElement('h1');" . PHP_EOL .
-                "    div.appendChild(header);" . PHP_EOL .
-                "    let body = document.createElement('p');" . PHP_EOL .
-                "    div.appendChild(body);" . PHP_EOL .
-                "    header.innerHTML = 'Javascript ' + level;" . PHP_EOL .
-                "    body.innerHTML = msg;" . PHP_EOL .
-                "    document.body.insertBefore(div, document.body.firstChild);" . PHP_EOL .
-                "}" . PHP_EOL;
-        }
-        
-        $strScript .= "function validateForm()" . PHP_EOL;
-        $strScript .= "{" . PHP_EOL;
-        $aFormDataValidator = $this->oConfig->getArray('FormDataValidation');
-        $strScript .= "    oFormDataValidator = " . json_encode($aFormDataValidator) . ";" . PHP_EOL;
-        $strScript .= "    var FDV = new FormDataValidator('" . $this->strID . "', oFormDataValidator);" . PHP_EOL;
-        $strScript .= "    return FDV.validate();" . PHP_EOL;
-        $strScript .= "}" . PHP_EOL;
-        
-        foreach ($this->aScriptElements as $oElement) {
-            $strScript .= $oElement->getScript();
-        }
+        // 
+        $this->aConfigForJS['DebugMode'] = $this->getDebugMode();
+        $this->aConfigForJS['FormDataValidation'] = $this->oConfig->getArray('FormDataValidation');
+        $this->aConfigForJS['FormDataValidation']['formID'] = $this->strID;
+        // TODO: set this item from FormInput if filemanager is needed? 
+        $this->aConfigForJS['RichFilemanager'] = $this->oConfig->getArray('RichFilemanager');
+
+        $strScript = 'var g_oConfigFromPHP = ' . json_encode($this->aConfigForJS) . ';';
         return $strScript;
     }
     

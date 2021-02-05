@@ -25,8 +25,8 @@ class FormInput extends FormElement
     protected string $strSelectImg;
     /** @var string tooltip for selectbutton     */
     protected string $strSelectImgTitle;
-    /** @var string additional info for BrowseServer - Button     */
-    protected string $strBrowseServer;
+    /** @var string folder to expand when call the filemanager     */
+    protected string $strExpandFolder;
     /** @var string suffix directly after the element     */
     protected string $strSuffix;
     
@@ -43,23 +43,20 @@ class FormInput extends FormElement
         $this->strType = 'text';
         $this->strSelectImg = '';
         $this->strSelectImgTitle = '';
-        $this->strBrowseServer = '';
         $this->strSuffix = '';
         
         $this->addFlags($wFlags);
     }
     
     /**
-     * Add flags to existing element. 
-     * Maybe overloaded in derived class(es) 
-     * @param int $wFlags
-     * 
-     * {@inheritDoc}
-     * @see \SKien\Formgenerator\FormElement::addFlags()
+     * Set placeholder to display on empty input element.
+     * @param string $strPlaceholder
      */
-    public function addFlags($wFlags) : void
+    public function setPlaceholder(string $strPlaceholder) : void
     {
-        $this->oFlags->add($wFlags);
+        if (strlen($strPlaceholder) > 0) {
+            $this->addAttribute('placeholder', $strPlaceholder);
+        }
     }
     
     /**
@@ -74,11 +71,12 @@ class FormInput extends FormElement
     }
     
     /**
-     * @param string $strBrowseServer
+     * Set the folder to expand when call the filemanager.
+     * @param string $strExpandFolder
      */
-    public function setBrowseServer(string $strBrowseServer) : void
+    public function setExpandFolder(string $strExpandFolder) : void
     {
-        $this->strBrowseServer = $strBrowseServer;
+        $this->strExpandFolder = $strExpandFolder;
     }
     
     /**
@@ -113,24 +111,7 @@ class FormInput extends FormElement
         $strHTML .= $this->buildAttributes();
         $strHTML .= '>';
         
-        // some additional elements
-        if ($this->oFlags->isSet(FormFlags::ADD_DTU)) {
-            $strHTML .= '<img class="picker" src="' . $this->getStdImage(self::IMG_DTU) . '"  alt="[X]"';
-            $strHTML .= ' id="' . $this->strName . 'DTU"';
-            $strHTML .= ' title="aktuelle Datum Uhrzeit / Benutzername eintragen"';
-            $strHTML .= ' onclick="OnInsertDateTimeUser(' . "'" . $this->strName . "'" . ');">';
-        } else if ($this->oFlags->isSet(FormFlags::ADD_DATE_PICKER)) {
-            $strHTML .= '<img class="picker" src="' . $this->getStdImage(self::IMG_DATE_PICKER) . '" alt="[X]"';
-            $strHTML .= ' id="' . $this->strName . 'DP"';
-            $strHTML .= ' title="Datum auswählen"';
-            $strHTML .= ' onclick="OnDatePicker(' . "'" . $this->strName . "'" . ');">';
-        } else if ($this->oFlags->isSet(FormFlags::ADD_TIME_PICKER)) {
-            $strHTML .= '<img class="picker" src="' . $this->getStdImage(self::IMG_TIME_PICKER) . '"  alt="[X]"';
-            $strHTML .= ' id="' . $this->strName . 'TP"';
-            $strHTML .= ' title="Uhrzeit auswählen"';
-            $strHTML .= ' onclick="OnTimePicker(' . "'" . $this->strName . "'" . ');">';
-        }
-        $strHTML .= $this->buildSelectImage();
+        $strHTML .= $this->buildSelectButton();
         $strHTML .= $this->buildSuffix();
         
         $strHTML .= '</div>' . PHP_EOL;
@@ -242,33 +223,102 @@ class FormInput extends FormElement
     }
     
     /**
-     * Build the markup for a select button.
-     * @param string $strClass
+     * Build the markup for the select button(s).
+     * If input  is set to readonly, an additional 'delete' button is appended.
+     * @param string $strCssClass
      * @return string
      */
-    protected function buildSelectImage(string $strClass = 'picker') : string
+    protected function buildSelectButton(string $strCssClass='picker') : string
+    {
+        $wButtonFlags = $this->oFlags->getButtonFlags();
+        if ($wButtonFlags === 0) {
+            return '';
+        }
+        
+        $strImg = '';
+        $strTitle = '';
+        $strOnClick = '';
+        
+        // only one of the button flags is allowed - so we can use switch-case!
+        switch ($wButtonFlags) {
+            case FormFlags::ADD_DTU:
+                $strUsername = $this->oFG->getData()->getValue('username');
+                [$strImg, $strTitle] = $this->oFG->getStdImage(FormImage::IMG_DTU);
+                $strOnClick = "onInsertDateTimeUser('" . $this->strName . "', '" . $strUsername . "')";
+                // $strID = $this->strName . 'DTU';
+                break;
+            case FormFlags::ADD_DATE_PICKER:
+                [$strImg, $strTitle] = $this->oFG->getStdImage(FormImage::IMG_DATE_PICKER);
+                $strOnClick = "onDatePicker('" . $this->strName . "')";
+                // $strID = $this->strName . 'DP';
+                break;
+            case FormFlags::ADD_TIME_PICKER:
+                [$strImg, $strTitle] = $this->oFG->getStdImage(FormImage::IMG_TIME_PICKER);
+                $strOnClick = "onTimePicker('" . $this->strName . "')";
+                // $strID = $this->strName . 'TP';
+                break;
+            case FormFlags::BROWSE_SERVER:
+                if ($this->isFilemanagerConnected()) {
+                    [$strImg, $strTitle] = $this->oFG->getStdImage(FormImage::IMG_BROWSE);
+                    $strOnClick = "browseServer('" . $this->strName . "','','" . $this->strExpandFolder . "')";
+                    // $strID = $this->strName . 'BS';
+                }
+                break;
+            case FormFlags::ADD_SELBTN:
+                [$strImg, $strTitle] = $this->oFG->getStdImage(FormImage::IMG_SEARCH);
+                $strOnClick = "onSelect('" . $this->strName . "')";
+                // $strID = $this->strName . 'SB';
+                $strImg = $this->strSelectImg ?: $strImg;
+                $strTitle = $this->strSelectImgTitle ?: $strTitle;
+                break;
+            default:
+                trigger_error('Only one of the button-flags can be set!', E_USER_ERROR);
+        }
+        $strHTML = $this->buildSelectImage($strImg, $strTitle, $strOnClick, $strCssClass);
+        if (!empty($strHTML) && $this->oFlags->isSet(FormFlags::READ_ONLY)) {
+            [$strImg, $strTitle] = $this->oFG->getStdImage(FormImage::IMG_DELETE);
+            $strOnClick = "resetInput('" . $this->strName . "')";
+            // $strID = $this->strName . 'Del';
+            $strHTML .= $this->buildSelectImage($strImg, $strTitle, $strOnClick, $strCssClass);
+        }
+        return $strHTML;
+    }
+    
+    /**
+     * Build the markup for a selectimage.
+     * @param string $strImg
+     * @param string $strTitle
+     * @param string $strOnClick
+     * @param string $strCssClass
+     * @return string
+     */
+    protected function buildSelectImage(string $strImg, string $strTitle, string $strOnClick, string $strCssClass) : string
     {
         $strHTML = '';
-        if ($this->oFlags->isSet(FormFlags::ADD_SELBTN)) {
-            $strImg = $this->strSelectImg;
-            $strTitle = $this->strSelectImgTitle;
-            if (empty($strImg)) {
-                $strImg = $this->getStdImage(self::IMG_SEARCH);
-            }
-            $strHTML .= '<img class="' . $strClass . '" src="' . $strImg . '" alt="Auswahl"';
+        if (!empty($strImg)) {
+            $strHTML = '<img class="' . $strCssClass . '" src="' . $strImg . '" alt="[?]"';
             if (!empty($strTitle)) {
                 $strHTML .= ' title="' . $strTitle . '"';
             }
-            if (!empty($this->strBrowseServer)) {
-                $strHTML .= " onclick=\"BrowseServer('" . $this->strName . "','','" . $this->strBrowseServer . "');\">";
-                if ($this->oFlags->isSet(FormFlags::READ_ONLY)) {
-                    $strHTML .= '<img class="picker" src="' . $this->getStdImage(self::IMG_DELETE) . '" alt="L&ouml;schen" title="L&ouml;schen" ';
-                    $strHTML .= " onclick=\"ResetInput('" . $this->strName . "');\">";
-                }
-            } else {
-                $strHTML .= ' onclick="OnSelect(' . "'" . $this->strName . "'" . ');">';
+            if (!empty($strOnClick)) {
+                $strHTML .= ' onclick="' . $strOnClick . '"';
             }
+            $strHTML .= '>';
         }
         return $strHTML;
+    }
+    
+    /**
+     * Check, if filemanager is connected.
+     * Triggers warning, if no filmanager is connected.
+     * @return bool
+     */
+    protected function isFilemanagerConnected() : bool
+    {
+        $bIsConnected = $this->oFG->getConfig()->getBool('Filemanager.Connect');
+        if (!$bIsConnected) {
+            trigger_error('There is no filemanager connected', E_USER_WARNING );
+        }
+        return $bIsConnected;
     }
 }

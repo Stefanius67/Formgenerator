@@ -17,6 +17,19 @@ namespace SKien\Formgenerator;
  */
 class FormImage extends FormElement
 {
+    /** standard delete image */
+    const IMG_DELETE            = 1;
+    /** standard search image */
+    const IMG_SEARCH            = 2;
+    /** standard search image */
+    const IMG_BROWSE            = 3;
+    /** standard image for date picker */
+    const IMG_DATE_PICKER       = 4;
+    /** standard image for time picker */
+    const IMG_TIME_PICKER       = 5;
+    /** standard image for dtu insert (DTU: Date-Time-User) */
+    const IMG_DTU               = 6;
+    
     /** @var string|int image to display     */
     protected $img;
     /** @var string CSS styles     */
@@ -56,7 +69,7 @@ class FormImage extends FormElement
     {
         $strHTML = $this->buildContainerDiv();
         
-        $strImg = is_numeric($this->img) ? $this->getStdImage(intval($this->img)) : $this->img;
+        $strImg = is_numeric($this->img) ? $this->oFG->getStdImage(intval($this->img)) : $this->img;
         
         $strAlt = 'Image'; 
         $strHTML .= '<img src="' . $strImg . '" alt="' . $strAlt . '"';

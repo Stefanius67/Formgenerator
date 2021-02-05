@@ -6,8 +6,20 @@ form
     font-family: Verdana, Arial, Helvetica, sans-serif;
     font-size: 12px;
 	border-radius:7px;
-	padding:5px;
+	padding:0px;
 	background-color: #DAE2E9;  
+}
+
+form h1
+{
+    font-size: 16px;
+    font-weight: bold;
+    color: black;
+    padding: 10px 5px;
+    border-radius: inherit;
+    border-bottom-left-radius: unset;
+    background-image: linear-gradient(rgb(247, 248, 250), rgb(176, 190, 208));
+    margin: 0;
 }
 
 form fieldset 
@@ -16,7 +28,7 @@ form fieldset
 	border: 1px solid #96A9C0;
 	border-radius: 5px;
 	line-height: 190%;
-	margin: 5px 2px 2px 2px;  /* t, r, b, l */
+	margin: 8px 5px 5px 5px;  /* t, r, b, l */
 	padding: 4px 7px 4px 7px;  /* t, r, b, l */
 }
 
@@ -47,6 +59,16 @@ input, textarea, select
 	font-family: verdana, arial, helvetica, sans-serif;
 }
 
+form ::placeholder
+{
+	color: #96A9C0;
+	opacity: 1;
+}
+
+form ::-ms-input-placeholder
+{
+	color: #96A9C0;
+}
 input[disabled], 
 select[disabled], 
 textarea[disabled]
@@ -262,7 +284,7 @@ form .hint
     border: 1px solid black;
     color: darkred;
     background: lightyellow url(../images/window_close.png) no-repeat right 5px top 5px;
-    margin: 10px 2px;
+    margin: 10px 7px;
     padding: 5px 25px 5px 5px;
     box-sizing: border-box;
     border-radius: 3px;
@@ -292,3 +314,45 @@ form .hint
 {
     margin: 5;
 }
+
+/** needed for 'modal' filemanager */
+#fm-container
+{
+    z-index: 10011; /** Because CKEditor image dialog was at 10010 */
+    width: 80%;
+    height: 80%;
+    top: 10%;
+    left: 10%;
+    border: 1px solid black;;
+    position: fixed;
+	background-color: #DAE2E9;  
+}
+
+#fm-container h1
+{
+    width: calc(100% - 10px);
+    background-color: #777777;
+    margin: 5px 5px 0px 5px;
+    padding: 4px 5px;
+    height: 24px;
+    font-family: arial;
+    font-size: 16px;
+    font-weight: bold;
+    box-sizing: border-box;
+    background-image: url(../images/window_close.png);
+	background-repeat: no-repeat;
+    background-position: top 4px right 4px;
+}
+
+#fm-container h1 img
+{
+	float: right;
+}
+
+#fm-iframe
+{
+    width: 100%;
+    height: calc(100% - 29px);
+	border: none;
+}
+

@@ -17,7 +17,7 @@ namespace SKien\Formgenerator;
  * @author Stefanius <s.kien@online.de>
  * @copyright MIT License - see the LICENSE file for details
  */
-class FormDiv extends FormContainer
+class FormDiv extends FormCollection
 {
     const   NONE    = -1;
     const   CLEAR   = 0;
@@ -34,7 +34,7 @@ class FormDiv extends FormContainer
      * @param int $iWidth
      * @param int $iAlign
      */
-    public function __construct(int $iWidth = 0, int $iAlign = self::CLEAR) : void
+    public function __construct(int $iWidth = 0, int $iAlign = self::CLEAR)
     {
         parent::__construct(0);
         $this->iAlign = $iAlign;

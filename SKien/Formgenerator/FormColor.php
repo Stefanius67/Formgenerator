@@ -32,25 +32,16 @@ class FormColor extends FormInput
     public function __construct(string $strName, $size = 6, int $wFlags = 0) 
     {
         parent::__construct($strName, $size, $wFlags);
-        $this->bCreateScript = true;
         $this->addAttribute('data-jscolor', '{}');
     }
     
     /**
+     * Pass some presets for the color picker to JS.
      * {@inheritDoc}
-     * @see \SKien\Formgenerator\FormElement::getScript()
+     * @see \SKien\Formgenerator\FormElement::onParentSet()
      */
-    public function getScript() : string
+    protected function onParentSet() : void
     {
-        $strScript = '';
-        
-        if ($this->oFG->getDebugMode()) {
-            // in debug environment we give alert if scriptfile is missing!
-            $strScript  = "if (typeof jscolor === 'undefined') {";
-            $strScript .= "    alert('You must include <jscolor.js> to use the FormColor input element!');";
-            $strScript .= "}" . PHP_EOL;
-        }
-
         // If some presets for the picker are defined in the config, just set it:
         // - position (default: bottom)
         // - border color (no default value - set only if defined in the config)
@@ -67,8 +58,6 @@ class FormColor extends FormInput
         if (count($aPalette) > 0) {
             $aPreset['palette'] = $aPalette;
         }
-        $strScript .= 'jscolor.presets.default = ' . json_encode($aPreset) . PHP_EOL;
-        
-        return $strScript;
+        $this->oFG->addConfigForJS('Color', $aPreset);
     }
 }
