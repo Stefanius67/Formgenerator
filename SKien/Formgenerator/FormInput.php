@@ -228,7 +228,7 @@ class FormInput extends FormElement
      * @param string $strCssClass
      * @return string
      */
-    protected function buildSelectButton(string $strCssClass='picker') : string
+    protected function buildSelectButton(string $strCssClass = 'picker') : string
     {
         $wButtonFlags = $this->oFlags->getButtonFlags();
         if ($wButtonFlags === 0) {
@@ -241,38 +241,38 @@ class FormInput extends FormElement
         
         // only one of the button flags is allowed - so we can use switch-case!
         switch ($wButtonFlags) {
-            case FormFlags::ADD_DTU:
-                $strUsername = $this->oFG->getData()->getValue('username');
-                [$strImg, $strTitle] = $this->oFG->getStdImage(FormImage::IMG_DTU);
-                $strOnClick = "onInsertDateTimeUser('" . $this->strName . "', '" . $strUsername . "')";
-                // $strID = $this->strName . 'DTU';
-                break;
-            case FormFlags::ADD_DATE_PICKER:
-                [$strImg, $strTitle] = $this->oFG->getStdImage(FormImage::IMG_DATE_PICKER);
-                $strOnClick = "onDatePicker('" . $this->strName . "')";
-                // $strID = $this->strName . 'DP';
-                break;
-            case FormFlags::ADD_TIME_PICKER:
-                [$strImg, $strTitle] = $this->oFG->getStdImage(FormImage::IMG_TIME_PICKER);
-                $strOnClick = "onTimePicker('" . $this->strName . "')";
-                // $strID = $this->strName . 'TP';
-                break;
-            case FormFlags::BROWSE_SERVER:
-                if ($this->isFilemanagerConnected()) {
-                    [$strImg, $strTitle] = $this->oFG->getStdImage(FormImage::IMG_BROWSE);
-                    $strOnClick = "browseServer('" . $this->strName . "','','" . $this->strExpandFolder . "')";
-                    // $strID = $this->strName . 'BS';
-                }
-                break;
-            case FormFlags::ADD_SELBTN:
-                [$strImg, $strTitle] = $this->oFG->getStdImage(FormImage::IMG_SEARCH);
-                $strOnClick = "onSelect('" . $this->strName . "')";
-                // $strID = $this->strName . 'SB';
-                $strImg = $this->strSelectImg ?: $strImg;
-                $strTitle = $this->strSelectImgTitle ?: $strTitle;
-                break;
-            default:
-                trigger_error('Only one of the button-flags can be set!', E_USER_ERROR);
+        case FormFlags::ADD_DTU:
+            $strUsername = $this->oFG->getData()->getValue('username');
+            [$strImg, $strTitle] = $this->oFG->getStdImage(FormImage::IMG_DTU);
+            $strOnClick = "onInsertDateTimeUser('" . $this->strName . "', '" . $strUsername . "')";
+            // $strID = $this->strName . 'DTU';
+            break;
+        case FormFlags::ADD_DATE_PICKER:
+            [$strImg, $strTitle] = $this->oFG->getStdImage(FormImage::IMG_DATE_PICKER);
+            $strOnClick = "onDatePicker('" . $this->strName . "')";
+            // $strID = $this->strName . 'DP';
+            break;
+        case FormFlags::ADD_TIME_PICKER:
+            [$strImg, $strTitle] = $this->oFG->getStdImage(FormImage::IMG_TIME_PICKER);
+            $strOnClick = "onTimePicker('" . $this->strName . "')";
+            // $strID = $this->strName . 'TP';
+            break;
+        case FormFlags::BROWSE_SERVER:
+            if ($this->isFilemanagerConnected()) {
+                [$strImg, $strTitle] = $this->oFG->getStdImage(FormImage::IMG_BROWSE);
+                $strOnClick = "browseServer('" . $this->strName . "','','" . $this->strExpandFolder . "')";
+                // $strID = $this->strName . 'BS';
+            }
+            break;
+        case FormFlags::ADD_SELBTN:
+            [$strImg, $strTitle] = $this->oFG->getStdImage(FormImage::IMG_SEARCH);
+            $strOnClick = "onSelect('" . $this->strName . "')";
+            // $strID = $this->strName . 'SB';
+            $strImg = $this->strSelectImg ?: $strImg;
+            $strTitle = $this->strSelectImgTitle ?: $strTitle;
+            break;
+        default:
+            trigger_error('Only one of the button-flags can be set!', E_USER_ERROR);
         }
         $strHTML = $this->buildSelectImage($strImg, $strTitle, $strOnClick, $strCssClass);
         if (!empty($strHTML) && $this->oFlags->isSet(FormFlags::READ_ONLY)) {
@@ -317,7 +317,7 @@ class FormInput extends FormElement
     {
         $bIsConnected = $this->oFG->getConfig()->getBool('Filemanager.Connect');
         if (!$bIsConnected) {
-            trigger_error('There is no filemanager connected', E_USER_WARNING );
+            trigger_error('There is no filemanager connected', E_USER_WARNING);
         }
         return $bIsConnected;
     }

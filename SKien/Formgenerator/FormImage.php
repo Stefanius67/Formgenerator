@@ -69,7 +69,14 @@ class FormImage extends FormElement
     {
         $strHTML = $this->buildContainerDiv();
         
-        $strImg = is_numeric($this->img) ? $this->oFG->getStdImage(intval($this->img)) : $this->img;
+        if (is_numeric($this->img)) {
+            [$strImg, $strTitle] = $this->oFG->getStdImage(intval($this->img));
+            if (strlen($strTitle) > 0) {
+                $this->addAttribute('title', $strTitle);
+            }
+        } else {
+            $strImg = $this->img;
+        }
         
         $strAlt = 'Image'; 
         $strHTML .= '<img src="' . $strImg . '" alt="' . $strAlt . '"';

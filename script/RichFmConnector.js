@@ -36,6 +36,7 @@ class RichFmConnector
             strBrowser += "?expandedFolder=" + strExpand;
         }
 
+        /** global: jscolor */
         let iWidth = screen.width * 0.7;
         let iHeight = screen.height * 0.7;
         let iLeft = (screen.width - iWidth) / 2 ;
@@ -63,7 +64,7 @@ class RichFmConnector
         this.oBrowserDiv.id = 'fm-container';
         let oHeader = document.createElement('h1');
         oHeader.append(document.createTextNode('Rich Filemanager'));
-        oHeader.onclick = (e) => { this.handleOnClose(e); };
+        oHeader.onclick = () => { this.handleOnClose(); };
         this.oBrowserDiv.append(oHeader);
         let oBrowserIFrame = document.createElement('iframe');
         oBrowserIFrame.id = 'fm-iframe';
@@ -105,7 +106,7 @@ class RichFmConnector
         }
     }
     
-    handleOnClose(e)
+    handleOnClose()
     {
         if (this.oBrowserDiv !== null) {
             this.oBrowserDiv.remove();
@@ -116,7 +117,7 @@ class RichFmConnector
     getElement(id)
     {
         var oElement = null;
-        if (id != null && id != '') {
+        if (id !== null && id != '') {
             oElement = document.getElementById(id);
         }
         return oElement;

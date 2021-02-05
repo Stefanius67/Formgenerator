@@ -1,6 +1,8 @@
+/** global: g_oConfigFromPHP */
+/** global: CKEDITOR */
+
 function loadEditor()
 {
-    var oEditor = null;
     
     var oTA = document.getElementById(g_oConfigFromPHP.CKEditor.editorID);
     if (!oTA) {
@@ -10,7 +12,7 @@ function loadEditor()
     // get initial size of textarea to replace
     var iHeight = oTA.offsetHeight;
     var iWidth = oTA.offsetWidth;
-    oEditor = CKEDITOR.replace(g_oConfigFromPHP.CKEditor.editorID, g_oConfigFromPHP.CKEditor.editorOptions);
+    var oEditor = CKEDITOR.replace(g_oConfigFromPHP.CKEditor.editorID, g_oConfigFromPHP.CKEditor.editorOptions);
 
     // custom buttons
     if (Array.isArray(g_oConfigFromPHP.CKEditor.customButtons)) {
@@ -75,7 +77,7 @@ function loadEditor()
                     params += '&expandedFolder=' + g_oConfigFromPHP.RichFilemanager.expandFolder.browseImageLinkURL;
                 }
                 browseButton.filebrowser.params = params;
-                browseButton.onClick = function (dialog, i) {
+                browseButton.onClick = function (dialog) {
                     editor._.filebrowserSe = this;
                     
                     let oIFrame = document.createElement('iframe');

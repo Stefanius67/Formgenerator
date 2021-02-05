@@ -1,7 +1,17 @@
+/** global: g_oConfigFromPHP */
+/** global: FormDataValidator */
+/** global: jscolor */
+/** global: CKEDITOR */
+/** global: loadEditor */
+
 document.addEventListener('DOMContentLoaded', initFormGenerator);
 
 function initFormGenerator()
 {
+    if (FormDataValidator === undefined) {
+        displayJSError('You must include [FormDataValidator.js] for Form Validation!', 'Warning');
+    }
+    
     if (g_oConfigFromPHP.Color !== undefined) {
         if (typeof jscolor === undefined) {
             displayJSError('You must include [jscolor.js / jscolor.min.js] to use the FormColor input element!', 'Warning');
@@ -42,6 +52,7 @@ function displayJSError(msg, level)
     }
 }
 
+/** global: RichFmConnector */
 function browseServer(editID, imgID, strExpand)
 {
     let FmConnector = new RichFmConnector(g_oConfigFromPHP.RichFilemanager.Path);
