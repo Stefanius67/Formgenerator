@@ -283,7 +283,7 @@ class FormInput extends FormElement
         $strHTML = $this->buildSelectImage($strImg, $strTitle, $strOnClick, $strID, $strCssClass);
         if (!empty($strHTML) && $this->oFlags->isSet(FormFlags::READ_ONLY)) {
             [$strImg, $strTitle] = $this->oFG->getStdImage(FormImage::IMG_DELETE);
-            $strOnClick = "resetInput('" . $this->strName . "')";
+            $strOnClick = "resetElement('" . $this->strName . "')";
             $strID = $this->strName . 'Del';
             $strHTML .= $this->buildSelectImage($strImg, $strTitle, $strOnClick, $strID, $strCssClass);
         }

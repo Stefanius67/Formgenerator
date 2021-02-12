@@ -30,10 +30,10 @@ class FormButton extends FormInput
      * @param string $strId        button id
      * @param string $strBtnText   button text (value)
      * @param string $strOnClick   onClick() handler
-     * @param string $strStyle     CSS style(s) (default: '')
      * @param int $wFlags       
+     * @param string $strStyle     CSS style(s) (default: '')
      */
-    public function __construct(string $strId, string $strBtnText, string $strOnClick, string $strStyle = '', int $wFlags = 0) 
+    public function __construct(string $strId, string $strBtnText, string $strOnClick, int $wFlags = 0, string $strStyle = '') 
     {
         $this->oFlags = new FormFlags($wFlags);
         $this->strBtnText = $strBtnText;

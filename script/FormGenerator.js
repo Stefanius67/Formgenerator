@@ -129,15 +129,36 @@ function onInsertDateTimeUser(id, strUsername)
 
 /**
  * Handler for the reset - Button.
- * Used to to reset the content of readonly-inputs that get the value
- * from filebrowser or anather picker
+ * Used to to reset the content of readonly-inputs or images that get the value
+ * from filebrowser or another picker etc.
  */
-function resetInput(id)
+function resetElement(id)
 {
-    let oEdit = document.getElementById(id);
-    if (oEdit) {
-        oEdit.value = '';
+    let oElement = document.getElementById(id);
+    if (oElement) {
+        if (oElement.tagName.toLowerCase() === 'img') {
+            oElement.src = oElement.getAttribute('data-default');
+            resetElement(oElement.getAttribute('data-bound-to'));
+        } else {
+            oElement.value = '';
+        }
     }
+}
+
+/**
+ * Adjust the height of two columns.
+ */
+function adjustColumnHeight(col1, col2)
+{
+	var oCol1 = document.getElementById(col1);
+	var oCol2 = document.getElementById(col2);
+	if (oCol1 && oCol2) {
+		if (oCol1.offsetHeight > oCol2.offsetHeight) {
+			oCol2.style.height = oCol1.offsetHeight + 'px'; 
+		} else {
+			oCol1.style.height = oCol2.offsetHeight + 'px'; 
+		}
+	}
 }
 
 /**
