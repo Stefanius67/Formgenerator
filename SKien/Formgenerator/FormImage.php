@@ -88,10 +88,6 @@ class FormImage extends FormElement
      */
     public function getHTML() : string
     {
-        if (strlen($this->strDefault) > 0) {
-            $this->addAttribute('data-default', $this->strDefault);
-        }
-        
         $strStyle = '';
         if ($this->oFlags->isSet(FormFlags::ALIGN_CENTER)) {
             $strStyle = 'text-align: center;';
@@ -99,6 +95,39 @@ class FormImage extends FormElement
             $strStyle = 'text-align: right;';
         }
         $strHTML  = $this->buildContainerDiv($strStyle);
+        
+        $strImg = $this->getImg();
+        $strAlt = 'Image'; 
+        $strHTML .= '<img src="' . $strImg . '" alt="' . $strAlt . '"';
+        if (!empty($this->strName)) {
+            $strHTML .= ' id="' . $this->strName . '"';
+        }
+        $strHTML .= $this->buildStyle();
+        if (!empty($this->strOnClick)) {
+            $strHTML .= ' onclick="' . $this->strOnClick . ';"';
+        }
+        $strHTML .= $this->buildClass();
+        $strHTML .= $this->buildID();
+        $strHTML .= $this->buildAttributes();
+        $strHTML .= '></div>' . PHP_EOL;
+        
+        return $strHTML;
+    }
+    
+    /**
+     * Get  the image to display.
+     * Can be <ul>
+     * <li> the image contained in the value of a bounded input field </li>
+     * <li> a standard image specified by number </li>
+     * <li> the image specified by the img property </li></ul>  
+     * @return string
+     */
+    protected function getImg() : string
+    {
+        $strImg = '';
+        if (strlen($this->strDefault) > 0) {
+            $this->addAttribute('data-default', $this->strDefault);
+        }
         
         if (strlen($this->strBoundTo) > 0) {
             $this->addAttribute('data-bound-to', $this->strBoundTo);
@@ -115,21 +144,6 @@ class FormImage extends FormElement
         if (strlen($strImg) == 0) {
             $strImg = $this->strDefault;
         }
-        
-        $strAlt = 'Image'; 
-        $strHTML .= '<img src="' . $strImg . '" alt="' . $strAlt . '"';
-        if (!empty($this->strName)) {
-            $strHTML .= ' id="' . $this->strName . '"';
-        }
-        $strHTML .= $this->buildStyle();
-        if (!empty($this->strOnClick)) {
-            $strHTML .= ' onclick="' . $this->strOnClick . ';"';
-        }
-        $strHTML .= $this->buildClass();
-        $strHTML .= $this->buildID();
-        $strHTML .= $this->buildAttributes();
-        $strHTML .= '></div>' . PHP_EOL;
-        
-        return $strHTML;
+        return $strImg;
     }
 }
