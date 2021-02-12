@@ -36,22 +36,25 @@ class FormImage extends FormElement
     protected string $strStyle;
     /** @var string JS onclick() handler     */
     protected string $strOnClick;
+    /** @var string image is bound to this input element    */
+    protected string $strBoundTo = '';
+    /** @var string image to use, if no image set    */
+    protected string $strDefault = '';
     
     /**
      * Create image element. 
      * @param string $strName
      * @param string|int $img       image to display or index to a standard image
      * @param string $strOnClick    JS onclick() handler
+     * @param int $wFlags       
      * @param string $strStyle      CSS style (default '')
-     * @param string $strTitle      tooltip title (default '')
      */
-    public function __construct(string $strName, $img, string $strOnClick, string $strStyle = '', string $strTitle = '') 
+    public function __construct(string $strName, $img, string $strOnClick, int $wFlags = 0, string $strStyle = '')
     {
-        parent::__construct(0);
+        parent::__construct($wFlags);
         $this->strName = $strName;
         $this->img = $img;
         $this->strOnClick = $strOnClick;
-        $this->setTitle($strTitle);
 
         if (strlen($strStyle) > 0) {
             $this->aStyle = self::parseStyle($strStyle);
@@ -60,22 +63,57 @@ class FormImage extends FormElement
             $this->addStyle('vertical-align', 'text-bottom');
         }
     }
-
+    
+    /**
+     * Bind the image to an input field that contains the imagepath.
+     * @param string $strBoundTo
+     */
+    public function bindTo(string $strBoundTo) : void
+    {
+        $this->strBoundTo = $strBoundTo;
+    }
+    
+    /**
+     * Set a default image, if no image set or the bounded input contains no data.
+     * @param string $strDefault
+     */
+    public function setDefault(string $strDefault) : void
+    {
+        $this->strDefault = $strDefault;
+    }
+    
     /**
      * Build the HTML-notation for the image.
      * @return string
      */
     public function getHTML() : string
     {
-        $strHTML = $this->buildContainerDiv();
+        if (strlen($this->strDefault) > 0) {
+            $this->addAttribute('data-default', $this->strDefault);
+        }
         
-        if (is_numeric($this->img)) {
+        $strStyle = '';
+        if ($this->oFlags->isSet(FormFlags::ALIGN_CENTER)) {
+            $strStyle = 'text-align: center;';
+        } else if ($this->oFlags->isSet(FormFlags::ALIGN_RIGHT)) {
+            $strStyle = 'text-align: right;';
+        }
+        $strHTML  = $this->buildContainerDiv($strStyle);
+        
+        if (strlen($this->strBoundTo) > 0) {
+            $this->addAttribute('data-bound-to', $this->strBoundTo);
+            $strImg = $this->oFG->getData()->getValue($this->strBoundTo);
+        } else if (is_numeric($this->img)) {
             [$strImg, $strTitle] = $this->oFG->getStdImage(intval($this->img));
             if (strlen($strTitle) > 0) {
                 $this->addAttribute('title', $strTitle);
             }
         } else {
             $strImg = $this->img;
+        }
+        
+        if (strlen($strImg) == 0) {
+            $strImg = $this->strDefault;
         }
         
         $strAlt = 'Image'; 
