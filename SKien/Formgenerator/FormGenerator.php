@@ -207,6 +207,21 @@ class FormGenerator extends FormCollection
     }
     
     /**
+     * Adjust the height of the two specified columns.
+     * If we have two columns containing fieldset, the height pf both (... and the border) 
+     * usually differs dependent on the contents. To prettify the output, the height of the 
+     * smaller columns is set to the height of the bigger one.
+     * @param string $strCol1
+     * @param string $strCol2
+     */
+    public function adjustColHeight(string $strCol1, string $strCol2) : void
+    {
+        $strScript = "window.addEventListener('load', function () {";  
+        $strScript .= "adjustColumnHeight('" . $strCol1 . "', '" . $strCol2 . "');});";
+        $this->add(new FormScript($strScript));
+    }
+    
+    /**
      * Sets the debug mode to output more information.
      * Especialy for some elements, that need additional JS it can be helpfull to
      * turn on the debug mode. 
