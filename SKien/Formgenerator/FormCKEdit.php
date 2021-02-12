@@ -183,6 +183,7 @@ class FormCKEdit extends FormTextArea
     protected function onParentSet() : void
     {
         $aCKEditor = [
+            'Path' => $this->oFG->getConfig()->getString('CKEditor.Path'),
             'editorID' => $this->strName,
             'editorOptions' => $this->buildEditorOptions(),
             'customButtons' => $this->aCustomBtn,
@@ -206,6 +207,7 @@ class FormCKEdit extends FormTextArea
             $strBrowseFolderImageLinkURL = $this->oFG->getConfig()->getString('RichFilemanager.expandFolder.browseImageLinkURL', $strBrowseFolderLinkURL);
             $aRFN = [
                 'Path' => $strRfmPath,
+                'language' => $this->oFG->getConfig()->getString('RichFilemanager.language'),
                 'expandFolder' => [
                     'browseLinkURL' => $strBrowseFolderLinkURL,
                     'browseImageURL' => $strBrowseFolderImageURL,

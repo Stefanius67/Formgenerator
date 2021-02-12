@@ -18,17 +18,17 @@ namespace SKien\Formgenerator;
 class FormInput extends FormElement
 {
     /** @var string value input type    */
-    protected string $strType;
+    protected string $strType = '';
     /** @var int|string size as number or as string including dimension ('%', 'px', 'em') */
-    protected $size;
+    protected $size = 0;
     /** @var string image displayed, if selectbutton is enabled     */
-    protected string $strSelectImg;
+    protected string $strSelectImg = '';
     /** @var string tooltip for selectbutton     */
-    protected string $strSelectImgTitle;
+    protected string $strSelectImgTitle = '';
     /** @var string folder to expand when call the filemanager     */
-    protected string $strExpandFolder;
+    protected string $strExpandFolder = '';
     /** @var string suffix directly after the element     */
-    protected string $strSuffix;
+    protected string $strSuffix = '';
     
     /**
      * @param string $strName Name (also used as ID, if not set separate)
@@ -85,6 +85,17 @@ class FormInput extends FormElement
     public function setSuffix(string $strSuffix) : void
     {
         $this->strSuffix = $strSuffix;
+    }
+    
+    /**
+     * {@inheritDoc}
+     * @see \SKien\Formgenerator\FormElement::onParentSet()
+     */
+    protected function onParentSet() : void
+    {
+        if ($this->oFlags->isSet(FormFlags::BROWSE_SERVER)) {
+            $this->oFG->addConfigForJS('RichFilemanager', $this->oFG->getConfig()->getArray('RichFilemanager'));
+        }
     }
     
     /**
@@ -231,13 +242,14 @@ class FormInput extends FormElement
     protected function buildSelectButton(string $strCssClass = 'picker') : string
     {
         $wButtonFlags = $this->oFlags->getButtonFlags();
-        if ($wButtonFlags === 0) {
+        if ($wButtonFlags === 0 || $this->oFlags->isSet(FormFlags::HIDDEN)) {
             return '';
         }
         
         $strImg = '';
         $strTitle = '';
         $strOnClick = '';
+        $strID = '';
         
         // only one of the button flags is allowed - so we can use switch-case!
         switch ($wButtonFlags) {
@@ -245,41 +257,35 @@ class FormInput extends FormElement
             $strUsername = $this->oFG->getData()->getValue('username');
             [$strImg, $strTitle] = $this->oFG->getStdImage(FormImage::IMG_DTU);
             $strOnClick = "onInsertDateTimeUser('" . $this->strName . "', '" . $strUsername . "')";
-            // $strID = $this->strName . 'DTU';
+            $strID = $this->strName . 'DTU';
             break;
         case FormFlags::ADD_DATE_PICKER:
             [$strImg, $strTitle] = $this->oFG->getStdImage(FormImage::IMG_DATE_PICKER);
-            $strOnClick = "onDatePicker('" . $this->strName . "')";
-            // $strID = $this->strName . 'DP';
             break;
         case FormFlags::ADD_TIME_PICKER:
             [$strImg, $strTitle] = $this->oFG->getStdImage(FormImage::IMG_TIME_PICKER);
-            $strOnClick = "onTimePicker('" . $this->strName . "')";
-            // $strID = $this->strName . 'TP';
             break;
         case FormFlags::BROWSE_SERVER:
-            if ($this->isFilemanagerConnected()) {
-                [$strImg, $strTitle] = $this->oFG->getStdImage(FormImage::IMG_BROWSE);
-                $strOnClick = "browseServer('" . $this->strName . "','','" . $this->strExpandFolder . "')";
-                // $strID = $this->strName . 'BS';
-            }
+            [$strImg, $strTitle] = $this->oFG->getStdImage(FormImage::IMG_BROWSE);
+            $strOnClick = "browseServer('" . $this->strName . "','','" . $this->strExpandFolder . "')";
+            $strID = $this->strName . 'BS';
             break;
         case FormFlags::ADD_SELBTN:
             [$strImg, $strTitle] = $this->oFG->getStdImage(FormImage::IMG_SEARCH);
             $strOnClick = "onSelect('" . $this->strName . "')";
-            // $strID = $this->strName . 'SB';
+            $strID = $this->strName . 'SB';
             $strImg = $this->strSelectImg ?: $strImg;
             $strTitle = $this->strSelectImgTitle ?: $strTitle;
             break;
         default:
             trigger_error('Only one of the button-flags can be set!', E_USER_ERROR);
         }
-        $strHTML = $this->buildSelectImage($strImg, $strTitle, $strOnClick, $strCssClass);
+        $strHTML = $this->buildSelectImage($strImg, $strTitle, $strOnClick, $strID, $strCssClass);
         if (!empty($strHTML) && $this->oFlags->isSet(FormFlags::READ_ONLY)) {
             [$strImg, $strTitle] = $this->oFG->getStdImage(FormImage::IMG_DELETE);
             $strOnClick = "resetInput('" . $this->strName . "')";
-            // $strID = $this->strName . 'Del';
-            $strHTML .= $this->buildSelectImage($strImg, $strTitle, $strOnClick, $strCssClass);
+            $strID = $this->strName . 'Del';
+            $strHTML .= $this->buildSelectImage($strImg, $strTitle, $strOnClick, $strID, $strCssClass);
         }
         return $strHTML;
     }
@@ -289,14 +295,18 @@ class FormInput extends FormElement
      * @param string $strImg
      * @param string $strTitle
      * @param string $strOnClick
+     * @param string $strID
      * @param string $strCssClass
      * @return string
      */
-    protected function buildSelectImage(string $strImg, string $strTitle, string $strOnClick, string $strCssClass) : string
+    protected function buildSelectImage(string $strImg, string $strTitle, string $strOnClick, string $strID, string $strCssClass) : string
     {
         $strHTML = '';
         if (!empty($strImg)) {
             $strHTML = '<img class="' . $strCssClass . '" src="' . $strImg . '" alt="[?]"';
+            if (!empty($strID)) {
+                $strHTML .= ' id="' . $strID . '"';
+            }
             if (!empty($strTitle)) {
                 $strHTML .= ' title="' . $strTitle . '"';
             }
@@ -306,19 +316,5 @@ class FormInput extends FormElement
             $strHTML .= '>';
         }
         return $strHTML;
-    }
-    
-    /**
-     * Check, if filemanager is connected.
-     * Triggers warning, if no filmanager is connected.
-     * @return bool
-     */
-    protected function isFilemanagerConnected() : bool
-    {
-        $bIsConnected = $this->oFG->getConfig()->getBool('Filemanager.Connect');
-        if (!$bIsConnected) {
-            trigger_error('There is no filemanager connected', E_USER_WARNING);
-        }
-        return $bIsConnected;
     }
 }

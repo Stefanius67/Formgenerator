@@ -43,7 +43,7 @@ class FormDate extends FormInput
             // - value must be in format YYYY-MM-DD
             // - ui-formating and validation is the job of the browser ;-)
             // TODO: - adjust width since date input 'ignores' the size attrib!
-            //       - may check browser (safari didn't support type 'date')  
+            //       - may check browser => safari didn't support input type="date"  
             $this->strType = 'date';
             $this->strDateFormat = '%Y-%m-%d';
             return;
@@ -56,6 +56,7 @@ class FormDate extends FormInput
             $this->strDateFormat = str_replace('-', $strSep, $this->strDateFormat);
         }
         $this->addAttribute('data-validation', 'date:' . $strSep . $strFormat);
+        $this->addPicker($strSep, $strFormat);
     }
     
     /**
@@ -95,5 +96,27 @@ class FormDate extends FormInput
             $strHTML = ' value="' . str_replace('"', '&quot;', $strValue) . '"';
         }
         return $strHTML;
+    }
+    
+    /**
+     * Add attributes for the date picker.
+     * @param string $strSep
+     * @param string $strFormat
+     */
+    protected function addPicker(string $strSep, string $strFormat) : void
+    {
+        if ($this->oFlags->isSet(FormFlags::ADD_DATE_PICKER)) {
+            $this->addAttribute('autocomplete', 'off');
+            $aFormat = ['YMD' => 'yyyy-mm-dd', 'DMY' => 'dd-mm-yyyy', 'MDY' => 'mm-dd-yyyy'];
+            $strDatePickerFormat = $aFormat[$strFormat] ?? 'yyyy-mm-dd';
+            if ($strSep !== '-') {
+                $strDatePickerFormat = str_replace('-', $strSep, $strDatePickerFormat);
+            }
+            $this->addAttribute('data-picker', 'date:' . $strDatePickerFormat);
+            $aDTSel = $this->oFG->getConfig()->getArray('DTSel');
+            if (count($aDTSel) > 0) {
+                $this->oFG->addConfigForJS('DTSel', $aDTSel);
+            }
+        }
     }
 }

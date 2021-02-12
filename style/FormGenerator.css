@@ -18,6 +18,7 @@ form h1
     padding: 10px 5px;
     border-radius: inherit;
     border-bottom-left-radius: unset;
+    border-bottom-right-radius: unset;
     background-image: linear-gradient(rgb(247, 248, 250), rgb(176, 190, 208));
     margin: 0;
 }
@@ -30,6 +31,7 @@ form fieldset
 	line-height: 190%;
 	margin: 8px 5px 5px 5px;  /* t, r, b, l */
 	padding: 4px 7px 4px 7px;  /* t, r, b, l */
+	box-sizing: border-box;
 }
 
 form legend 
@@ -219,8 +221,6 @@ select[readonly]
 	margin-left:  3px; 
 	margin-right: 3px; 
 }
-
-
 
 form img.picker
 {

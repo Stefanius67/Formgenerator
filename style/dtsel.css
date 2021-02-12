@@ -1,0 +1,202 @@
+/* Set breakpoint at line 266 in dtsel.js to 'style' the picker in the devtools */
+
+.date-selector-wrapper {
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+	border-radius:7px;
+    width: 160px;
+    padding: 0px;
+	background-color: #DAE2E9;  
+    box-shadow: 1px 1px 10px 1px #5c5c5c;
+    position: absolute;
+    font-size: 10px;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    /* user-select: none; */
+}
+
+.cal-header
+{
+    display: flex;
+    width: 100%;
+    height: 25px;
+    line-height: 25px;
+    text-align: center;
+    border-top-left-radius: inherit;
+    border-top-right-radius: inherit;
+    background-image: linear-gradient(rgb(247, 248, 250), rgb(176, 190, 208));
+}
+
+.cal-row 
+{
+    display: flex;
+    width: 100%;
+    height: 25px;
+    line-height: 25px;
+    text-align: center;
+}
+
+.cal-cell, .cal-nav 
+{
+    cursor: pointer;
+}
+
+.cal-day-names 
+{
+    height: 20px;
+    line-height: 20px;
+}
+
+.cal-day-names
+{
+    cursor: default;
+    font-weight: bold;
+	background-color: #96A9C0
+}
+
+.cal-cell 
+{
+    cursor: default;
+	border: 1px solid #96A9C0
+}
+
+.cal-cell-prev, .cal-cell-next 
+{
+    color: #777;
+}
+
+.cal-months .cal-row, .cal-years .cal-row 
+{
+    height: 45px;
+    line-height: 45px;
+}
+
+.cal-nav-prev
+{
+    flex: 0.15;
+	font-weight: bold;
+    background-color: #07243E;
+	border-right: 1px solid white;
+    border-top-left-radius: inherit;
+    color: white;
+}
+
+.cal-nav-next 
+{
+    flex: 0.15;
+	font-weight: bold;
+    background-color: #07243E;
+	border-left: 1px solid white;
+    border-top-right-radius: inherit;
+    color: white;
+}
+
+.cal-nav-current 
+{
+    flex: 0.75;
+	font-weight: bold;
+    background-color: #07243E;
+    color: white;
+}
+
+.cal-header .cal-nav-prev:hover,
+.cal-header .cal-nav-next:hover,
+.cal-header .cal-nav-current:hover
+{
+	background-color: #870014;
+}
+
+
+.cal-months .cal-cell, .cal-years .cal-cell 
+{
+    flex: 0.25;
+}
+
+.cal-days .cal-cell 
+{
+    flex: 0.143;
+}
+
+.cal-days .cal-cell:hover
+{
+	border: 1px solid red;
+}
+
+.cal-days .cal-day-names .cal-cell:hover
+{
+	background-color: #96A9C0;
+	border: 1px solid #96A9C0;
+}
+
+.cal-value 
+{
+    color: #fff;
+    background-color: #286090;
+}
+
+.cal-cell:hover
+{
+    background-color: #eee;
+}
+
+.cal-value:hover 
+{
+    background-color: #204d74;
+}
+
+/* time footer */
+.cal-footer
+{
+    border-bottom-left-radius: inherit;
+    border-bottom-right-radius: inherit;
+	background-color: #96A9C0;
+}
+
+.cal-time 
+{
+    display: flex;
+    justify-content: flex-start;
+    height: 27px;
+    line-height: 27px;
+    border-bottom-left-radius: inherit;
+    border-bottom-right-radius: inherit;
+	background-color: #96A9C0;
+}
+
+.cal-time-label
+{
+    flex: 0.22;
+    text-align: left;
+	padding-left: 5px
+}
+
+.cal-time-value 
+{
+    flex: 0.18;
+    text-align: center;
+	font-weight: bold;
+}
+
+.cal-time-slider 
+{
+    flex: 0.6;
+    background-image: linear-gradient(to right, #d1d8dd, #d1d8dd);
+    background-repeat: no-repeat;
+    background-size: 100% 3px;
+    background-position: left 55%;
+    height: 100%;
+	margin-right: 5px;
+}
+
+.cal-time-slider input 
+{
+    width: 100%;
+    -webkit-appearance: none;
+    background: 0 0;
+    cursor: pointer;
+    height: 100%;
+    outline: 0;
+    user-select: auto;
+}

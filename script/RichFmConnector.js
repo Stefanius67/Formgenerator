@@ -1,3 +1,5 @@
+/** global: screen */
+
 /**
  * Class to call the rich filemanager from a page.
  * Filemanager can be created as independent window or in 'modal' mode
@@ -36,7 +38,6 @@ class RichFmConnector
             strBrowser += "?expandedFolder=" + strExpand;
         }
 
-        /** global: jscolor */
         let iWidth = screen.width * 0.7;
         let iHeight = screen.height * 0.7;
         let iLeft = (screen.width - iWidth) / 2 ;

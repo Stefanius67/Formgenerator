@@ -279,13 +279,6 @@ class FormGenerator extends FormCollection
     {
         $strHTML = PHP_EOL;
         
-        if ($this->getDebugMode()) {
-            // in debug environment we give alert if scriptfile is missing!
-            $strHTML .= "<script>if (typeof FormDataValidator === 'undefined') {";
-            $strHTML .= "displayJSError('You must include <b>&lt;FormDataValidator.js&gt;</b> for Form Validation!', 'Warning');" . PHP_EOL;
-            $strHTML .= "}</script>" . PHP_EOL;
-        }
-        
         $strHTML .= '<form';
         if (!empty($this->strAction)) {
             $strHTML .= ' action="';
@@ -321,13 +314,12 @@ class FormGenerator extends FormCollection
      */
     public function getScript() : string
     {
-        // 
+        // set some general configurations
         $this->aConfigForJS['DebugMode'] = $this->getDebugMode();
         $this->aConfigForJS['FormDataValidation'] = $this->oConfig->getArray('FormDataValidation');
         $this->aConfigForJS['FormDataValidation']['formID'] = $this->strID;
-        // TODO: set this item from FormInput if filemanager is needed? 
-        $this->aConfigForJS['RichFilemanager'] = $this->oConfig->getArray('RichFilemanager');
-
+        $this->aConfigForJS['JavaScript'] = $this->oConfig->getArray('JavaScript');
+        
         $strScript = 'var g_oConfigFromPHP = ' . json_encode($this->aConfigForJS) . ';';
         return $strScript;
     }

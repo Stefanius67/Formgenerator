@@ -99,7 +99,7 @@ class FormFlags
     
     public function getButtonFlags() : int
     {
-        $wButtonFlags = FormFlags::BROWSE_SERVER | FormFlags::ADD_DTU | FormFlags::ADD_TIME_PICKER | FormFlags::ADD_SELBTN | FormFlags::BROWSE_SERVER;
+        $wButtonFlags = FormFlags::ADD_DTU | FormFlags::ADD_TIME_PICKER | FormFlags::ADD_DATE_PICKER | FormFlags::ADD_SELBTN | FormFlags::BROWSE_SERVER;
         return ($this->wFlags & $wButtonFlags);
     }
 }

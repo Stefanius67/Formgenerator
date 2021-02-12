@@ -305,7 +305,7 @@ abstract class FormElement
     {
         $strID = '';
         if (!empty($this->strID)) {
-            $strID .= ' id=' . $this->strID;
+            $strID .= ' id="' . $this->strID . '"';
         }
         return $strID;
     }

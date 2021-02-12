@@ -59,14 +59,14 @@ class FormButton extends FormInput
         }
         $strHTML  = $this->buildContainerDiv($strStyle);
 
-        $strHTML .= '<input type=button ';
+        $strHTML .= '<input type="button" ';
         $strHTML .= $this->buildID();
         $strHTML .= $this->buildStyle();
         $strHTML .= $this->buildAttributes();
         if (!empty($this->strOnClick)) {
             $strHTML .= ' onclick="' . $this->strOnClick . ';" ';
         }
-        $strHTML .= 'value="' . $this->strBtnText . '"></div>' . PHP_EOL;
+        $strHTML .= ' value="' . $this->strBtnText . '"></div>' . PHP_EOL;
 
         return $strHTML;
     }

@@ -10,8 +10,9 @@ class FormCKEditor
     /**
      * Constructor get the configuration passed from PHP.
      */
-    constructor(config)
+    constructor(config, editor)
     {
+        this.editor = editor;
         this.config = config;
         this.oEditor = null;
     }
@@ -31,7 +32,7 @@ class FormCKEditor
             this.oEditor.setData(this.config.CKEditor.editorData);
         }
         if (this.config.RichFilemanager !== undefined) {
-            CKEDITOR.on('dialogDefinition', (event) => {this.connectRichFilemanager(event);});
+            this.editor.on('dialogDefinition', (event) => {this.connectRichFilemanager(event);});
         }
     }
     
@@ -51,7 +52,7 @@ class FormCKEditor
         // get initial size of textarea to replace
         var iHeight = oTA.offsetHeight;
         var iWidth = oTA.offsetWidth;
-        this.oEditor = CKEDITOR.replace(this.config.CKEditor.editorID, this.config.CKEditor.editorOptions);
+        this.oEditor = this.editor.replace(this.config.CKEditor.editorID, this.config.CKEditor.editorOptions);
         // resize to desired size
         this.oEditor.on('instanceReady', function(event) {event.editor.resize(iWidth, iHeight);});
     }
@@ -96,7 +97,7 @@ class FormCKEditor
         var editor = event.editor;
         var dialogDefinition = event.data.definition;
         var dialogName = event.data.name;
-        var cleanUpFuncRef = CKEDITOR.tools.addFunction(function () {
+        var cleanUpFuncRef = this.editor.tools.addFunction(function () {
             let oIFrame = document.getElementById('fm-iframeCKE');
             if (oIFrame) {
                 oIFrame.remove();
@@ -115,7 +116,7 @@ class FormCKEditor
             if (browseButton !== null) {
                 browseButton.hidden = false;
                 var params = 
-                    '?CKEditorFuncNum=' + CKEDITOR.instances[event.editor.name]._.filebrowserFn +
+                    '?CKEditorFuncNum=' + this.editor.instances[event.editor.name]._.filebrowserFn +
                     '&CKEditorCleanUpFuncNum=' + cleanUpFuncRef +
                     '&langCode=' + this.config.RichFilemanager.language +
                     '&CKEditor=' + event.editor.name;

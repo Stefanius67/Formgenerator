@@ -37,6 +37,7 @@ class FormTime extends FormInput
      */
     protected function onParentSet() : void
     {
+        $this->setPlaceholder($this->oFG->getConfig()->getString('Time.Placeholder'));
         $bSeconds = $this->oFG->getConfig()->getBool('Time.Seconds', false);
         $strSep = $this->oFG->getConfig()->getString('Time.Separator', ':');
         $this->strTimeFormat = ($bSeconds ? '%H:%M:%S' : '%H:%M');
@@ -44,7 +45,7 @@ class FormTime extends FormInput
             $this->strTimeFormat = str_replace(':', $strSep, $this->strTimeFormat);
         }
         $this->addAttribute('data-validation', 'time:' . $strSep . ($bSeconds ? '1' : '0') . 'm');
-        $this->setPlaceholder($this->oFG->getConfig()->getString('Time.Placeholder'));
+        $this->addPicker($strSep, $bSeconds);
     }
     
     /**
@@ -82,5 +83,26 @@ class FormTime extends FormInput
             $strHTML = ' value="' . str_replace('"', '&quot;', $strValue) . '"';
         }
         return $strHTML;
+    }
+    
+    /**
+     * Add attributes for the time picker.
+     * @param string $strSep
+     * @param bool $bSeconds
+     */
+    protected function addPicker(string $strSep, bool $bSeconds) : void
+    {
+        if ($this->oFlags->isSet(FormFlags::ADD_TIME_PICKER)) {
+            $this->addAttribute('autocomplete', 'off');
+            $strTimePickerFormat = ($bSeconds ? 'HH:MM:SS"' : 'HH:MM');
+            if ($strSep !== ':') {
+                $strTimePickerFormat = str_replace(':', $strSep, $strTimePickerFormat);
+            }
+            $this->addAttribute('data-picker', 'time:' . $strTimePickerFormat);
+            $aDTSel = $this->oFG->getConfig()->getArray('DTSel');
+            if (count($aDTSel) > 0) {
+                $this->oFG->addConfigForJS('DTSel', $aDTSel);
+            }
+        }
     }
 }
