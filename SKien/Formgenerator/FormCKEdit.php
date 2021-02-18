@@ -198,21 +198,34 @@ class FormCKEdit extends FormTextArea
                 }
             }
             
-            $strBrowseFolderLinkURL = $this->strBrowseFolderLinkURL ?: $this->oFG->getConfig()->getString('RichFilemanager.expandFolder.browseLinkURL');
-            $strBrowseFolderImageURL = $this->strBrowseFolderImageURL ?: $this->oFG->getConfig()->getString('RichFilemanager.expandFolder.browseImageURL');
-            $strBrowseFolderImageLinkURL = $this->strBrowseFolderImageLinkURL ?: $this->oFG->getConfig()->getString('RichFilemanager.expandFolder.browseImageLinkURL');
-            $strBrowseFolderImageLinkURL = $strBrowseFolderImageLinkURL ?: $strBrowseFolderLinkURL;
+            $strBrowseFolderLinkURL = $this->getBrowseFolder($this->strBrowseFolderLinkURL, 'RichFilemanager.expandFolder.browseLinkURL');
+            $strBrowseFolderImageURL = $this->getBrowseFolder($this->strBrowseFolderImageURL, 'RichFilemanager.expandFolder.browseImageURL');
+            $strBrowseFolderImageLinkURL = $this->getBrowseFolder($this->strBrowseFolderImageLinkURL, 'RichFilemanager.expandFolder.browseImageLinkURL');
             $aRFN = [
                 'Path' => $strRfmPath,
                 'language' => $this->oFG->getConfig()->getString('RichFilemanager.language'),
                 'expandFolder' => [
                     'browseLinkURL' => $strBrowseFolderLinkURL,
                     'browseImageURL' => $strBrowseFolderImageURL,
-                    'browseImageLinkURL' => $strBrowseFolderImageLinkURL
+                    'browseImageLinkURL' => $strBrowseFolderImageLinkURL ?: $strBrowseFolderLinkURL
                 ]
             ];
             $this->oFG->addConfigForJS('RichFilemanager', $aRFN);
         }
+    }
+    
+    /**
+     * Get the startfolder for different purposes.
+     * @param string $strFolder
+     * @param string $strConfig
+     * @return string
+     */
+    protected function getBrowseFolder(string $strFolder, string $strConfig) : string
+    {
+        if (strlen($strFolder) > 0) {
+            return $strFolder;
+        }
+        return $this->oFG->getConfig()->getString($strConfig);
     }
     
     /**
