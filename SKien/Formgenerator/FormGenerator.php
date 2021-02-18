@@ -340,7 +340,7 @@ class FormGenerator extends FormCollection
     {
         $strStyle = '';
         if ($this->iWidth > 0) {
-            $strStyle  = "body { width: " . $this->iWidth . "px;}" . PHP_EOL;
+            $strStyle = "body { width: " . $this->iWidth . "px;}" . PHP_EOL;
         }
         $iCnt = count($this->aChild);
         for ($i = 0; $i < $iCnt; $i++) {

@@ -60,6 +60,11 @@ form label
 	display: block; 
 }
 
+form label.radio
+{
+	padding-right: 8px;
+}
+
 input, textarea, select
 {
 	font-size: 12px;
@@ -77,6 +82,7 @@ form ::-ms-input-placeholder
 {
 	color: #96A9C0;
 }
+
 input[disabled], 
 select[disabled], 
 textarea[disabled]
@@ -85,7 +91,7 @@ textarea[disabled]
 	background-color:#EEEEEE;
 }
 
-textarea
+form textarea
 {
 	font-size: 12px;
 	font-weight: normal;
@@ -93,16 +99,22 @@ textarea
 	border: 1px solid #96A9C0;
 }
 
-input[type=checkbox]
+form input[type=checkbox]
 {
 	vertical-align: bottom;
 	margin: 2px 4px 4px 0px;
 }
 
-input[type=submit], 
-input[type=button], 
-input[type=file], 
-button
+form input[type=radio]
+{
+	margin-right: 8px;
+    margin-top: 4px;
+}
+
+form input[type=submit], 
+form input[type=button], 
+forminput[type=file], 
+form button
 {
 	border: 1px solid #1A3F6B;
 	border-radius:3px;
@@ -111,71 +123,72 @@ button
 	margin: 5px 0 1px 0;
 }
 
-input[type=submit]:disabled, 
-input[type=button]:disabled, 
-input[type=file]:disabled,
-button:disabled
+form input[type=submit]:disabled, 
+form input[type=button]:disabled, 
+form input[type=file]:disabled,
+form button:disabled
 {
 	border: 1px solid #666666;
 	color: #444444;
 	background: url(../images/button-disabled.png) repeat-x 0px 0px;
 }
 
-input[type=submit]:hover:enabled, 
-input[type=button]:hover:enabled, 
-input[type=file]:hover:enabled, 
-button:hover:enabled
+form input[type=submit]:hover:enabled, 
+form input[type=button]:hover:enabled, 
+form input[type=file]:hover:enabled, 
+form button:hover:enabled
 {
 	background: url(../images/button-hover.png) repeat-x 0px 0px;
 }
 
-input[readonly], 
-select[readonly]
+form input[readonly], 
+form select[readonly]
 {
 	color:#444444;
 	background-color:transparent;
 }
 
-.error
+form .error
 {
 	color: #ff0000;
 }
 
-.numeric
+form .numeric
 {
 	font-family: 'Inconsolata', sans-serif !important;
 	font-size: 14px !important;	/* Inconsolata appears smaller than 'normal' sans-serif */
 }
 
-.inputOK, .inputOK_R
+form .inputOK, form .inputOK_R
 {
 	border: 1px solid #96A9C0;
 }
 
-.inputMand, .inputMand_R
+form .inputMand, form .inputMand_R
 {
 	border: 1px solid #1A3F6B;
 	background-color:#FFEEEE;
 }
 
-.inputError, .inputMError, .inputError_R, .inputMError_R
+form .inputError, form .inputMError, form .inputError_R, form .inputMError_R
 {
 	border: 2px solid red;
 }
 
-.inputError:focus, .inputMError:focus, .inputError_R:focus, .inputMError_R:focus
+form .inputError:focus, form .inputMError:focus, 
+form .inputError_R:focus, form .inputMError_R:focus
 {
 	color: darkred;
 	border: 2px solid red !important;
 	outline: none;
  }
 
-.inputOK_R, .inputMand_R, .inputError_R, .inputMError_R
+form .inputOK_R, form .inputMand_R, form .inputError_R, form .inputMError_R
 {
 	text-align:right;
 }
 
-.forminfo
+form .forminfo
 {
 	box-sizing: border-box;
 	color: #00005F;
@@ -186,7 +199,7 @@ select[readonly]
 	margin: 4px 0px;
 }
 
-.formreadonly
+form .formreadonly
 {
 	overflow: hidden;
 	height: 20px;
@@ -197,14 +210,14 @@ select[readonly]
 	margin: 0px 5px 0px 0px;
 }
 
-.sbSelect
+form .sbSelect
 {
 	opacity: 0;
 	width: 100%;
 	position: relative;
 }
 
-.sbBtn
+form .sbBtn
 {
 	position: absolute;
 	width: 100%;
@@ -273,7 +286,7 @@ form .hint
 	padding-top: 5px;
 }
 
-.info
+form .info
 {
 	color:darkblue;
 	font-size: 12px;

@@ -16,6 +16,7 @@ use SKien\Formgenerator\FormButton;
 use SKien\Formgenerator\FormDate;
 use SKien\Formgenerator\FormCheck;
 use SKien\Formgenerator\FormLine;
+use SKien\Formgenerator\FormRadioGroup;
 
 $oConfig = new JSONConfig('FormGenerator.json');
 
@@ -39,7 +40,7 @@ $aData = [
     'bBoardMember' => true,
 ];
 
-$aGenderSelect = ['' => '', 'männlich' => 'm', 'weiblich' => 'f', 'divers' => 'd'];
+$aGenderSelect = ['' => '', 'male' => 'm', 'female' => 'f', 'diverse' => 'd'];
 
 $oData = new ArrayFormData($aData, ['strGender' => $aGenderSelect]);
 
@@ -64,6 +65,8 @@ $oFL->setColWidth([25, 25, 50], '%');
 $oFL->add(new FormInput('strPostcode', '90%'));
 $oFL->add(new FormInput('strCity', '100%'));
 $oFL = $oFS->addLine(FormLine::HR);
+$oFL = $oFS->addLine('Gender:');
+$oFL->add(new FormRadioGroup('strGender', FormFlags::HORZ_ARRANGE | FormFlags::READ_ONLY));
 $oFL = $oFS->addLine('Birthday:');
 $oFL->add(new FormDate('dateDoB', FormFlags::ADD_DATE_PICKER));
 $oFL = $oFS->addLine();

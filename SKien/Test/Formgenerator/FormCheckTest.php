@@ -31,6 +31,18 @@ class FormCheckTest extends TestCase
         $this->assertEquals($bChecked, strpos($strHTML, ' checked '));
     }
     
+    public function test_BtnValue() : void
+    {
+        $oFG = $this->createFG(false);
+        $oFL = $oFG->add(new FormLine('testline'));
+        $oBtn = new FormCheck('btnCheck1', 0, 'this is the description');
+        $oBtn->setBtnValue('test');
+        $oFL->add($oBtn);
+        $strHTML = $oBtn->getHTML();
+        $this->assertNotFalse(strpos($strHTML, 'value="test"'));
+    }
+    
+    
     /**
      * @dataProvider provideValues
      */

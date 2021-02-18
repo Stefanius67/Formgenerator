@@ -27,7 +27,7 @@ class FormScript extends FormElement
      */
     public function getHTML() : string
     {
-        $strHTML  = '<script>' . $this->strScript . '</script>' . PHP_EOL;
+        $strHTML = '<script>' . $this->strScript . '</script>' . PHP_EOL;
         return $strHTML;
     }
 }

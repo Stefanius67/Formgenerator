@@ -54,7 +54,7 @@ class FormFlags
     const   PASSWORD                = 0x0010000;
     /** file input  */
     const   FILE                    = 0x0020000;
-    /** add EUR - Suffix    */
+    /** add Currency - Suffix    */
     const   ADD_CUR                 = 0x0040000;
     /** trim content (leading / trailing blanks)    */
     const   TRIM                    = 0x0080000;
@@ -64,6 +64,8 @@ class FormFlags
     const   BOLD                    = 0x0400000;
     /** replace '<br/>' / '<br> with CR */
     const   REPLACE_BR_CR           = 0x0800000;
+    /** arrange radio - buttons horizontal in a row */
+    const   HORZ_ARRANGE            = 0x1000000;
     
     /** @var integer the flags specified     */
     protected int $wFlags = 0;

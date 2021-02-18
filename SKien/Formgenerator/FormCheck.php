@@ -12,11 +12,13 @@ namespace SKien\Formgenerator;
  */
 class FormCheck extends FormInput
 {
+    /** @var string value for the button, if checked (default = 'on')  */
+    protected string $strBtnValue = 'on';
+    
     /**
      * Create a checkbox.
      * As default, the value 'on' is submitted for a checked element. This value can be 
-     * changed by setting a btnValue for the elementname in the FormData. <br/>
-     * <b>Note: HTML does not submit any value for unchecked checkboxes !!!.</b>
+     * changed with the setBtnValue() method.<br/>
      * @param string $strName   name AND id of the element
      * @param int $wFlags    (default: 0)
      * @param string $strSuffix Text after the checkbox (default: '')
@@ -29,6 +31,15 @@ class FormCheck extends FormInput
         if ($this->oFlags->isSet(FormFlags::READ_ONLY | FormFlags::DISABLED)) {
             $this->addAttribute('disabled');
         }
+    }
+    
+    /**
+     * Set the value that is posted, when the element is checked.
+     * @param string $strBtnValue
+     */
+    public function setBtnValue(string $strBtnValue) : void
+    {
+        $this->strBtnValue = $strBtnValue;
     }
     
     /**
@@ -99,6 +110,7 @@ class FormCheck extends FormInput
         $strHTML .= ' id="' . $this->strName . '"';
         if (!$this->oFlags->isSet(FormFlags::READ_ONLY | FormFlags::DISABLED)) {
             $strHTML .= ' name="' . $this->strName . '"';
+            $strHTML .= ' value="' . $this->strBtnValue . '"';
         }
         $strHTML .= '>';
         
@@ -142,7 +154,7 @@ class FormCheck extends FormInput
             $strHTML .= '<input';
             $strHTML .= ' type="hidden"';
             $strHTML .= ' name="' . $this->strName . '"';
-            $strValue = ($bChecked) ? 'on' :'off';
+            $strValue = ($bChecked) ? $this->strBtnValue : 'off';
             $strHTML .= ' value="' . $strValue . '">';
         }
         return $strHTML;        
