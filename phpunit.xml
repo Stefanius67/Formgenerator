@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit
+    verbose="true"
+    colors="true"
+	bootstrap ="autoloader.php">
+    <testsuites>
+        <testsuite name="PNServer">
+            <directory>SKien/Test/Formgenerator</directory>
+        </testsuite>
+    </testsuites>
+
+    <filter>
+        <whitelist>
+            <directory suffix=".php">SKien/Formgenerator</directory>
+        </whitelist>
+    </filter>
+
+    <logging>
+        <log type="coverage-text" target="php://stdout" showUncoveredFiles="true" showOnlySummary="true"/>
+        <log type="coverage-html" target="SKien/Test/Formgenerator/coverage"/>
+        <log type="coverage-clover" target="SKien/Test/Formgenerator/coverage/clover.xml"/>
+    </logging>
+	
+    <php>
+		<server name="PHP_SELF" value="test.php" />
+		<server name="QUERY_STRING" value="action=edit" />
+    </php>	
+</phpunit>

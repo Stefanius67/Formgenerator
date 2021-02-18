@@ -1,0 +1,96 @@
+{
+   "FormDataValidation" : {
+        "errorMsg" : "Das Formular entält ungültige Angaben, die rot markiert sind!<br/><br/>Korrigieren oder vervollständigen Sie bitte Ihre Eingaben."
+    },
+	"Date": {
+		"Format": "DMY",
+        "Separator": ".",
+        "Placeholder": "TT.MM.JJJJ"
+	},
+	"Time": {
+        "Separator": ":",
+        "Seconds": false,
+        "AllowMinutesOnly": true,
+        "Placeholder": "SS:MM"
+	},
+	"Float": {
+		"DecimalPoint": ",",
+		"ThousandsSep": ".",
+		"RightAlign": true,
+        "Placeholder": ""
+	},
+	"Currency": {
+		"Symbol": "EUR"
+	},
+	"Color": {
+		"borderColor": "#5E656F",
+		"backgroundColor": "#C5D5E9",
+		"position": "top",
+		"palette": [
+			"#000000", "#7d7d7d", "#870014", "#ec1c23",	"#ff7e26", "#fef100", "#22b14b", "#00a1e7", "#3f47cc", "#a349a4", 
+			"#ffffff", "#c3c3c3", "#b87957", "#feaec9", "#ffc80d", "#eee3af", "#b5e61d", "#99d9ea",	"#7092be", "#c8bfe7"
+		]
+	},
+	"ButtonBox": {
+		"ButtonText": {
+			"OK": "OK",
+			"OPEN": "Öffnen",
+			"SAVE": "Speichern",
+			"YES": "Ja",
+			"NO": "Nein",
+			"CANCEL": "Abbrechen",
+			"CLOSE": "Schließen",
+			"DISCARD": "Verwerfen",
+			"APPLY": "Übernehmen",
+			"RESET": "Zurücksetzen",
+			"RETRY": "Wiederholen",
+			"IGNORE": "Ignorieren",
+			"BACK": "zurück"
+		}
+	},
+	"CKEditor": {
+		"uiColor": "#B0BED0",
+		"pasteFilter": "p; h1; h2; h3; ul; ol; li; a[!href]",
+		"colorbutton": {
+			"enableAutomatic": false,
+			"enableMore": true,
+			"colorsPerRow": 5,
+			"selectableColors": [
+				"#7f7f7f", "#595959", "#3f3f3f", "#262626", "#0c0c0c",
+				"#d0cece", "#aeabab", "#757070", "#3a3838",	"#171616",
+				"#d6dce4", "#adb9ca", "#8496b0", "#323f4f",	"#222a35",
+				"#d9e2f3", "#b4c6e7", "#8eaadb", "#2f5496",	"#1f3864",
+				"#fbe5d5", "#f7cbac", "#f4b183", "#c55a11",	"#833c0b",
+				"#ededed", "#dbdbdb", "#c9c9c9", "#7b7b7b", "#525252",
+				"#fff2cc", "#fee599", "#ffd965", "#bf9000", "#7f6000",
+				"#deebf6", "#bdd7ee", "#9cc3e5", "#2e75b5", "#1e4e79",
+				"#e2efd9", "#c5e0b3", "#a8d08d", "#538135", "#375623"
+			]
+		},
+		"placeholder": [
+			"PH1",
+			"PH2"
+		]
+	},
+	"RichFilemanager": {
+		"//": "Note: since this path is used from javascript, it should be absolute from the DOCUMENT - Root",
+		"Path": "/packages/Formgenerator/richfilemanager/custom.html",
+		"language" : "de",
+		"expandFolder": {
+			"browseLinkURL" : "files/",
+			"browseImageURL" : "images/",
+			"browseImageLinkURL" : ""
+		}
+	},
+     "DTSel": {
+        "direction": "BOTTOM",
+        "months": ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"],
+        "monthsShort": ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"],
+        "weekdays": ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"],
+        "weekdaysShort": ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"],
+        "timeDescr": ["Hour:", "Min.:", "Sec.:"]
+    },
+    "JavaScript": {
+        "Path": "/packages/Formgenerator/script/"
+    }
+}
