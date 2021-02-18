@@ -2,15 +2,18 @@
 namespace SKien\Formgenerator;
 
 /**
+ * Abstract class representing data for the FormGenerator.
  *
- * @author sk
- *        
+ * @package Formgenerator
+ * @author Stefanius <s.kien@online.de>
+ * @copyright MIT License - see the LICENSE file for details
  */
 abstract class AbstractFormData implements FormDataInterface
 {
+    /** @var array containing all data that can be edited by the form     */
     protected array $aValues;
+    /** @var array containing select list to be displayed by the form     */
     protected array $aSelectOptions;
-    protected array $aBtnValues;
     
     /**
      * (non-PHPdoc)
@@ -31,15 +34,6 @@ abstract class AbstractFormData implements FormDataInterface
     }
     
     /**
-     * (non-PHPdoc)
-     * @see \SKien\Formgenerator\FormDataInterface::getSelectOptions()
-     */
-    public function getBtnValue(string $strName) : string
-    {
-        return $this->aBtnValues[$strName] ?? '';
-    }
-    
-    /**
      * Set value for specified element.
      * @param string $strName
      * @param mixed $value
@@ -50,23 +44,13 @@ abstract class AbstractFormData implements FormDataInterface
     }
     
     /**
-     * Set selectiptions for specified elemnt
+     * Set selections for specified elemnt
      * @param string $strName
      * @param array $aOptions
      */
     public function setSelectOptions(string $strName, array $aOptions) : void
     {
         $this->aSelectOptions[$strName] = $aOptions;
-    }
-    
-    /**
-     * Set value for specified element.
-     * @param string $strName
-     * @param mixed $value
-     */
-    public function setBtnValue(string $strName, $value) : void
-    {
-        $this->aBtnValues[$strName] = $value;
     }
 }
 

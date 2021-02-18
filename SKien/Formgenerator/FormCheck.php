@@ -6,12 +6,7 @@ namespace SKien\Formgenerator;
 /**
  * Checkbox input field.
  *
- * #### History
- * - *2020-05-12*   initial version
- * - *2021-01-07*   PHP 7.4
- *
  * @package Formgenerator
- * @version 1.1.0
  * @author Stefanius <s.kien@online.de>
  * @copyright MIT License - see the LICENSE file for details
  */
@@ -38,39 +33,25 @@ class FormCheck extends FormInput
     
     /**
      * Build the HTML-markup for the checkbox.
+     * Checkbox is a special case, as it behaves particularly with regard to the transferred 
+     * value and does not support read-only mode.
+     * There is special treatment for both cases, which is explained in more detail in the 
+     * respective code areas bolow.  
      * @return string
      */
     public function getHTML() : string 
     {
         $this->processFlags();
-        $bChecked = $this->oFG->getData()->getValue($this->strName);
+        $bChecked = $this->getBoolValue();
         if ($bChecked) {
             $this->addAttribute('checked');
         }
         
         $strHTML = $this->buildContainerDiv();
-        $strHTML .= '<input type="checkbox"';
-        $strHTML .= $this->buildStyle();
-        $strHTML .= $this->buildAttributes();
-        $strHTML .= $this->buildTabindex();
-        $strHTML .= $this->buildValue();
         
-        // NOTE: because checkboxes don't support readonly-attribute and disabled checkboxes 
-        // are not posted to reciever, we insert an hidden field with name and id to keep 
-        // value 'alive'
-        // -> so we dont set name and id for readonly or disabled checkbox!
-        if ($this->oFlags->isSet(FormFlags::READ_ONLY | FormFlags::DISABLED)) {
-            $strHTML .= '><input';
-            $strHTML .= ' type="hidden"';
-            $strHTML .= ' name="' . $this->strName . '"';
-            $strHTML .= ' id="' . $this->strName . '"';
-            $strValue = $this->oFG->getData()->getBtnValue($this->strName) ?: 'on';
-            $strHTML .= ($bChecked) ? ' value="' . $strValue . '"' : $strHTML .= ' value="off"';
-        } else {
-            $strHTML .= ' name="' . $this->strName . '"';
-            $strHTML .= ' id="' . $this->strName . '"';
-        }
-        $strHTML .= '>';
+        $strHTML .= $this->buildUncheckedSurrogate();
+        $strHTML .= $this->buildCheckBox();
+        $strHTML .= $this->buildReadonlySurrogate($bChecked);
         
         if (!empty($this->strSuffix)) {
             $strHTML .= '&nbsp;' . $this->strSuffix;
@@ -82,17 +63,88 @@ class FormCheck extends FormInput
     }
     
     /**
-     * Build the markup for the value attribute.
-     * For checkboxes value comes from the getBtnValue().
+     * Get the value as bool. <ul>
+     * <li> 'real' bool values as is </li>
+     * <li> numeric: 0 -> false, all other -> true </li>
+     * <li> string: '1', 'on', 'true', 'yes' (case insensitive) -> true, all other -> false </li></ul>
+     * @return bool
+     */
+    protected function getBoolValue() : bool
+    {
+        $bChecked = false;
+        $value = $this->oFG->getData()->getValue($this->strName);
+        if (is_bool($value)) {
+            $bChecked = $value;
+        } else {
+            if (is_numeric($value)) {
+                $bChecked = ($value !== 0);
+            } else {
+                $value = strtolower($value);
+                $bChecked = in_array($value, ['1', 'on', 'true', 'yes']);
+            }
+        }
+        return $bChecked;
+    }
+    
+    /**
+     * Build the checkbox.
      * @return string
      */
-    protected function buildValue() : string
+    protected function buildCheckBox() : string
     {
-        $strHTML = '';
-        $strValue = $this->oFG->getData()->getBtnValue($this->strName);
-        if (!empty($strValue)) {
-            $strHTML = ' value="' . $strValue . '"';
+        $strHTML = '<input type="checkbox"';
+        $strHTML .= $this->buildStyle();
+        $strHTML .= $this->buildAttributes();
+        $strHTML .= $this->buildTabindex();
+        $strHTML .= ' id="' . $this->strName . '"';
+        if (!$this->oFlags->isSet(FormFlags::READ_ONLY | FormFlags::DISABLED)) {
+            $strHTML .= ' name="' . $this->strName . '"';
         }
+        $strHTML .= '>';
+        
         return $strHTML;
+    }
+    
+    /**
+     * Build the surrogate for unchecked box.
+     * @return string
+     */
+    protected function buildUncheckedSurrogate() : string
+    {
+        // We insert a hidden edit field with same name/id BEFORE we create the checkbox
+        // and  alwas set its value to 'off'.
+        // If the checkbox is activated, 'on' (or the value set with BtnValue) is posted as normal. 
+        // However, since the value of a non-activated checkbox is not transferred at all, in this 
+        // case the hidden field defined in the previous order comes into play and the fixed value 
+        // 'off' is transferred.
+        // This is particularly helpful/important if a database operation is to be carried out 
+        // dynamically on the basis of the transferred fields: If the 'off' were not transferred, 
+        // the field would not be taken into account either and would therefore never be set from 
+        // 'on' to 'off'!! 
+        $strHTML = '<input type="hidden" value="off" name="' . $this->strName . '">';
+        
+        return $strHTML;
+    }
+    
+    /**
+     * Build the surrogate in case of readonly checkbox.
+     * @param bool $bChecked
+     * @return string
+     */
+    protected function buildReadonlySurrogate(bool $bChecked) : string
+    {
+        // NOTE: because checkboxes don't support readonly-attribute and disabled checkboxes
+        // are not posted to reciever, we insert an hidden field with name and id to keep
+        // value 'alive'
+        // -> so we dont set name and id for readonly or disabled checkbox!
+        $strHTML = '';
+        if ($this->oFlags->isSet(FormFlags::READ_ONLY | FormFlags::DISABLED)) {
+            $strHTML .= '<input';
+            $strHTML .= ' type="hidden"';
+            $strHTML .= ' name="' . $this->strName . '"';
+            $strValue = ($bChecked) ? 'on' :'off';
+            $strHTML .= ' value="' . $strValue . '">';
+        }
+        return $strHTML;        
     }
 }

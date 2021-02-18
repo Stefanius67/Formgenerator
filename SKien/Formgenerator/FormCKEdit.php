@@ -7,17 +7,14 @@ namespace SKien\Formgenerator;
  * WYSIWYG - HTML input using CKEditor.
  * uses CKEditor Version 4.15
  * 
- * For more information about download, install and integrate the CKEditor, see
- * CKEditorIntegration.md 
+ * For more information about download, install and integration of the CKEditor, see
+ * CKEditorIntegration.md
  * 
- * #### History
- * - *2020-05-12*   initial version
- * - *2021-01-07*   PHP 7.4
- * - *2021-01-09*   added support of icons for custom buttons and table, special char and iframe - Button
- * - *2021-01-22*   added some configuration through the parent formgenerator
- *
+ * To enable filebrowsing on the server for the insert mage and insert link functionality
+ * the RichFilemanager is used. For more information see
+ * RichFilemanager.md  
+ * 
  * @package Formgenerator
- * @version 1.1.0
  * @author Stefanius <s.kien@online.de>
  * @copyright MIT License - see the LICENSE file for details
  */
@@ -94,7 +91,6 @@ class FormCKEdit extends FormTextArea
     {
         // add 2 rows to increase height for toolbar
         parent::__construct($strName, 0, $iRows + 2, $strWidth, $wFlags);
-        $this->bCreateStyle = true;
         $this->strBodyID = 'editarea';
         $this->lToolbar = self::TB_CONTENT;
     } 
@@ -188,7 +184,7 @@ class FormCKEdit extends FormTextArea
             'editorOptions' => $this->buildEditorOptions(),
             'customButtons' => $this->aCustomBtn,
         ];
-        // TODO: explain differences when using FormFlag::SET_JSON_DATA
+        // pass the content through the JSON data
         if ($this->oFlags->isSet(FormFlags::SET_JSON_DATA)) {
             $aCKEditor['editorData'] = $this->oFG->getData()->getValue($this->strName);
         }
@@ -202,9 +198,10 @@ class FormCKEdit extends FormTextArea
                 }
             }
             
-            $strBrowseFolderLinkURL = $this->oFG->getConfig()->getString('RichFilemanager.expandFolder.browseLinkURL', $this->strBrowseFolderLinkURL);
-            $strBrowseFolderImageURL = $this->oFG->getConfig()->getString('RichFilemanager.expandFolder.browseImageURL', $this->strBrowseFolderImageURL);
-            $strBrowseFolderImageLinkURL = $this->oFG->getConfig()->getString('RichFilemanager.expandFolder.browseImageLinkURL', $strBrowseFolderLinkURL);
+            $strBrowseFolderLinkURL = $this->strBrowseFolderLinkURL ?: $this->oFG->getConfig()->getString('RichFilemanager.expandFolder.browseLinkURL');
+            $strBrowseFolderImageURL = $this->strBrowseFolderImageURL ?: $this->oFG->getConfig()->getString('RichFilemanager.expandFolder.browseImageURL');
+            $strBrowseFolderImageLinkURL = $this->strBrowseFolderImageLinkURL ?: $this->oFG->getConfig()->getString('RichFilemanager.expandFolder.browseImageLinkURL');
+            $strBrowseFolderImageLinkURL = $strBrowseFolderImageLinkURL ?: $strBrowseFolderLinkURL;
             $aRFN = [
                 'Path' => $strRfmPath,
                 'language' => $this->oFG->getConfig()->getString('RichFilemanager.language'),

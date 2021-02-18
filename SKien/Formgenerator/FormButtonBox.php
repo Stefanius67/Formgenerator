@@ -10,20 +10,13 @@ namespace SKien\Formgenerator;
  * [OK] [Save] [Cancel] ...
  * Custom defined buttons can also be added.
  * Language can be configured through the config file.
- * 
- * #### History
- * - *2021-01-22*   initial version
  *
  * @package Formgenerator
- * @version 1.1.0
  * @author Stefanius <s.kien@online.de>
  * @copyright MIT License - see the LICENSE file for details
  */
 class FormButtonBox extends FormElement
 {
-    /** JS code to close dialog */
-    const CMD_CLOSE_DLG = "parent.document.getElementById('dialog').innerHTML = '';";
-    
     public const NONE       = 0;
     public const FIRST      = 0;
     public const LAST       = -1;
@@ -173,7 +166,7 @@ class FormButtonBox extends FormElement
     
     /**
      * Get Textlabels for all buttons.
-     * Default they are initialized with the englisch Text.
+     * Default they are initialized with the english Text.
      * Configuration can contain localization.
      * @return array
      */

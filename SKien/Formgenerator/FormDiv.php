@@ -6,19 +6,15 @@ namespace SKien\Formgenerator;
 /**
  *  Represents a <div> inside of the form.
  *  It can be used to arrange some fieldset horizontally or to group some 
- *  elements for dynamic hide/show operations
- *
- * #### History
- * - *2020-05-12*   initial version
- * - *2021-01-07*   PHP 7.4
+ *  elements for JS hide/show operations
  *
  * @package Formgenerator
- * @version 1.1.0
  * @author Stefanius <s.kien@online.de>
  * @copyright MIT License - see the LICENSE file for details
  */
 class FormDiv extends FormCollection
 {
+    /** float styles for the div */
     const   NONE    = -1;
     const   CLEAR   = 0;
     const   LEFT    = 1;

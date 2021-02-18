@@ -6,17 +6,13 @@ namespace SKien\Formgenerator;
 /**
  * Base-class for all elements that can have child elements.
  *
- * #### History
- * - *2021-01-18*   initial version
- *
  * @package Formgenerator
- * @version 1.1.0
  * @author Stefanius <s.kien@online.de>
  * @copyright MIT License - see the LICENSE file for details
  */
 abstract class FormCollection extends FormElement
 {
-    /** @var FormElement[] all direct child elements     */
+    /** @var FormElementInterface[] all direct child elements     */
     protected array $aChild = [];
     /** @var array the width information for the cols inside this element     */
     protected ?array $aColWidth = null;
@@ -33,10 +29,10 @@ abstract class FormCollection extends FormElement
     
     /**
      * Add a child to this element.
-     * @param FormElement $oElement
-     * @return FormElement
+     * @param FormElementInterface $oElement
+     * @return FormElementInterface
      */
-    public function add(FormElement $oElement) : FormElement
+    public function add(FormElementInterface $oElement) : FormElementInterface
     {
         $oElement->setParent($this);
         $this->aChild[] = $oElement;
@@ -108,6 +104,19 @@ abstract class FormCollection extends FormElement
     }
     
     /**
+     * Add new line to this fieldset
+     * @param string $strLabel (default: '&nbsp;')
+     * @return \SKien\Formgenerator\FormLine
+     */
+    public function addLine(string $strLabel = '&nbsp;') : FormLine
+    {
+        $oFL = new FormLine($strLabel);
+        $this->add($oFL);
+        
+        return $oFL;
+    }
+    
+    /**
      * Build the HTML-notation for the element and/or all child elements.
      * @return string
      */
@@ -119,6 +128,22 @@ abstract class FormCollection extends FormElement
             $strHTML .= $this->aChild[$i]->GetHTML();
         }
         return $strHTML;
+    }
+    
+    /**
+     * Get styles from all child elements.
+     * This method gives each element the chance to add special styles to the
+     * current page.
+     * @return string
+     */
+    public function getStyle() : string
+    {
+        $strStyle = '';
+        $iCnt = count($this->aChild);
+        for ($i = 0; $i < $iCnt; $i++) {
+            $strStyle .= $this->aChild[$i]->getStyle();
+        }
+        return $strStyle;
     }
 }
 

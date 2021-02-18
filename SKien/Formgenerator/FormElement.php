@@ -9,16 +9,11 @@ namespace SKien\Formgenerator;
  * of elements.
  * The elements usuallay be arranged within FormFieldSet- and FormLine-elements
  *
- * #### History
- * - *2020-05-12*   initial version
- * - *2021-01-07*   PHP 7.4
- *
  * @package Formgenerator
- * @version 1.1.0
  * @author Stefanius <s.kien@online.de>
  * @copyright MIT License - see the LICENSE file for details
  */
-abstract class FormElement
+abstract class FormElement implements FormElementInterface
 {
     /** @var FormGenerator the FormGenerator this element belongs to     */
     protected FormGenerator $oFG;
@@ -40,8 +35,6 @@ abstract class FormElement
     protected ?array $aAttrib = null;
     /** @var array (CSS) styles of the element     */
     protected ?array $aStyle = null;
-    /** @var bool set to true, if element creates some CSS style     */
-    protected bool $bCreateStyle = false;
     
     /**
      * @param int $wFlags
@@ -50,7 +43,7 @@ abstract class FormElement
     {
         $this->oFlags = new FormFlags($wFlags);
     }
-
+    
     /**
      * Return the FormGenerator this element belongs to.
      * @return FormGenerator

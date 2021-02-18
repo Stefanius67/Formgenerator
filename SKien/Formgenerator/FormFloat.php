@@ -5,7 +5,9 @@ namespace SKien\Formgenerator;
 
 /**
  * Input field for float value.
- * - always right aligned
+ * Default the separators tried to get from the local environment, but can be
+ * specified in the configuration.
+ * Default align is right - this can be overwritten ion the configuration.
  * 
  * #### History
  * - *2021-01-30*   initial version

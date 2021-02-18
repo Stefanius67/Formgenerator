@@ -6,12 +6,7 @@ namespace SKien\Formgenerator;
 /**
  * Text Area element.
  *
- * #### History
- * - *2020-05-12*   initial version
- * - *2021-01-07*   PHP 7.4
- *
  * @package Formgenerator
- * @version 1.1.0
  * @author Stefanius <s.kien@online.de>
  * @copyright MIT License - see the LICENSE file for details
  */
@@ -48,13 +43,16 @@ class FormTextArea extends FormInput
         
         $this->strID = $this->strID ?: $this->strName;
         
-        $strValue = $this->oFG->getData()->getValue($this->strName);
-        
-        // CR only relevant for Textareas ...
-        if ($this->oFlags->isSet(FormFlags::REPLACE_BR_CR)) {
-            $strValue = str_replace('<br>', "\n", $strValue);
-            $strValue = str_replace('<br/>', "\n", $strValue);
-            $strValue = str_replace('<br />', "\n", $strValue);
+        $strValue = '';
+        if (!$this->oFlags->isSet(FormFlags::SET_JSON_DATA)) {
+            $strValue = $this->oFG->getData()->getValue($this->strName);
+            
+            // CR only relevant for Textareas ...
+            if ($this->oFlags->isSet(FormFlags::REPLACE_BR_CR)) {
+                $strValue = str_replace('<br>', "\n", $strValue);
+                $strValue = str_replace('<br/>', "\n", $strValue);
+                $strValue = str_replace('<br />', "\n", $strValue);
+            }
         }
         
         $strHTML = $this->buildContainerDiv();

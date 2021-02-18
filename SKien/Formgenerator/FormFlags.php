@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace SKien\Formgenerator;
 
 /**
- * Class to handle all the differnet flags to control the form elements.
+ * Class to handle all the different flags to control the form elements.
  *
  * #### History
  * - *2021-01-18*   initial version
@@ -77,26 +77,47 @@ class FormFlags
         $this->wFlags = $wFlags;
     }
     
+    /**
+     * Get current flags.
+     * @return int
+     */
     public function getFlags() : int
     {
         return $this->wFlags;
     }
     
+    /**
+     * Add specified flags. 
+     * @param int $wFlags
+     */
     public function add(int $wFlags) : void
     {
         $this->wFlags |= $wFlags;
     }
     
+    /**
+     * Remove specified flag(s).
+     * @param int $wFlags
+     */
     public function remove(int $wFlags) : void
     {
         $this->wFlags &= ~$wFlags;
     }
     
+    /**
+     * Check if one of the requested flags is set.
+     * @param int $wFlags
+     * @return bool
+     */
     public function isSet(int $wFlags) : bool
     {
         return ($this->wFlags & $wFlags) != 0;
     }
     
+    /**
+     * Check if one of the selectbutton - flags is specified.
+     * @return int
+     */
     public function getButtonFlags() : int
     {
         $wButtonFlags = FormFlags::ADD_DTU | FormFlags::ADD_TIME_PICKER | FormFlags::ADD_DATE_PICKER | FormFlags::ADD_SELBTN | FormFlags::BROWSE_SERVER;

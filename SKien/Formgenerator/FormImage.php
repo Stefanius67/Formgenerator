@@ -6,12 +6,7 @@ namespace SKien\Formgenerator;
 /**
  * Element to display image inside of a form.
  *
- * #### History
- * - *2020-05-12*   initial version
- * - *2021-01-07*   PHP 7.4
- *
  * @package Formgenerator
- * @version 1.1.0
  * @author Stefanius <s.kien@online.de>
  * @copyright MIT License - see the LICENSE file for details
  */
@@ -39,7 +34,7 @@ class FormImage extends FormElement
     /** @var string image is bound to this input element    */
     protected string $strBoundTo = '';
     /** @var string image to use, if no image set    */
-    protected string $strDefault = '';
+    protected string $strDefaultImg = '';
     
     /**
      * Create image element. 
@@ -79,7 +74,7 @@ class FormImage extends FormElement
      */
     public function setDefault(string $strDefault) : void
     {
-        $this->strDefault = $strDefault;
+        $this->strDefaultImg = $strDefault;
     }
     
     /**
@@ -94,7 +89,7 @@ class FormImage extends FormElement
         } else if ($this->oFlags->isSet(FormFlags::ALIGN_RIGHT)) {
             $strStyle = 'text-align: right;';
         }
-        $strHTML  = $this->buildContainerDiv($strStyle);
+        $strHTML = $this->buildContainerDiv($strStyle);
         
         $strImg = $this->getImg();
         $strAlt = 'Image'; 
@@ -125,8 +120,8 @@ class FormImage extends FormElement
     protected function getImg() : string
     {
         $strImg = '';
-        if (strlen($this->strDefault) > 0) {
-            $this->addAttribute('data-default', $this->strDefault);
+        if (strlen($this->strDefaultImg) > 0) {
+            $this->addAttribute('data-default', $this->strDefaultImg);
         }
         
         if (strlen($this->strBoundTo) > 0) {
@@ -142,7 +137,7 @@ class FormImage extends FormElement
         }
         
         if (strlen($strImg) == 0) {
-            $strImg = $this->strDefault;
+            $strImg = $this->strDefaultImg;
         }
         return $strImg;
     }

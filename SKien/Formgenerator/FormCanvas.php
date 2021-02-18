@@ -4,14 +4,9 @@ declare(strict_types=1);
 namespace SKien\Formgenerator;
 
 /**
- * canvas element
- *
- * #### History
- * - *2020-05-12*   initial version
- * - *2021-01-07*   PHP 7.4
+ * Canvas element.
  *
  * @package Formgenerator
- * @version 1.1.0
  * @author Stefanius <s.kien@online.de>
  * @copyright MIT License - see the LICENSE file for details
  */
@@ -19,6 +14,10 @@ class FormCanvas extends FormInput
 {
     /**
      * Create o canvas element. 
+     * All attributes and styles can except height and width can be set through
+     * the methods <ul>
+     * <li> addAttribute() </li>
+     * <li> addStyle() </li></ul>
      * @param string $strID
      * @param int $iWidth
      * @param int $iHeight

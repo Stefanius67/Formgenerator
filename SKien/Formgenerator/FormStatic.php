@@ -6,12 +6,7 @@ namespace SKien\Formgenerator;
 /**
  * Static Text element.
  *
- * #### History
- * - *2020-05-12*   initial version
- * - *2021-01-07*   PHP 7.4
- *
  * @package Formgenerator
- * @version 1.1.0
  * @author Stefanius <s.kien@online.de>
  * @copyright MIT License - see the LICENSE file for details
  */
@@ -51,17 +46,16 @@ class FormStatic extends FormElement
         if ($this->oFlags->isSet(FormFlags::BOLD)) {
             $this->addStyle('font-weight', 'bold');
         }
-        // don't overwrite class if explicit set
-        if (strlen($this->strClass) == 0) {
-            if ($this->oFlags->isSet(FormFlags::ERROR)) {
-                $this->strClass = 'error';
-            }
-            if ($this->oFlags->isSet(FormFlags::HINT)) {
-                $this->strClass = 'hint';
-            }
-            if ($this->oFlags->isSet(FormFlags::INFO)) {
-                $this->strClass = 'forminfo';
-            }
+        $strSep = '';
+        if (strlen($this->strClass) !== 0) {
+            $strSep = ' ';
+        }
+        if ($this->oFlags->isSet(FormFlags::ERROR)) {
+            $this->strClass .= $strSep . 'error';
+        } else if ($this->oFlags->isSet(FormFlags::HINT)) {
+            $this->strClass = $strSep . 'hint';
+        } else if ($this->oFlags->isSet(FormFlags::INFO)) {
+            $this->strClass = $strSep . 'forminfo';
         }
         
         $strHTML  = '';

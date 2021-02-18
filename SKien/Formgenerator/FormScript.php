@@ -6,11 +6,7 @@ namespace SKien\Formgenerator;
 /**
  * Class to insert a script tag inside of the form.  
  *
- * #### History
- * - *2021-02-12*   initial version
- *
  * @package Formgenerator
- * @version 1.1.0
  * @author Stefanius <s.kien@online.de>
  * @copyright MIT License - see the LICENSE file for details
  */
@@ -26,12 +22,12 @@ class FormScript extends FormElement
     }
 
     /**
-     * Just insert the script at current position of the form.
+     * Insert the script at current position of the form.
      * @return string
      */
     public function getHTML() : string
     {
-        $strHTML  = '<script>' . $this->strScript . '</Script>' . PHP_EOL;
+        $strHTML  = '<script>' . $this->strScript . '</script>' . PHP_EOL;
         return $strHTML;
     }
 }

@@ -2,33 +2,32 @@
 namespace SKien\Formgenerator;
 
 /**
- * Interface htat must be implementet by the object to pass form data to the
- * formgenerator
- *
- * #### History
- * - *2021-01-17*   initial version
+ * Interface that must be implementet by the Data object that is passed 
+ * as form data to the formgenerator
  *
  * @package Formgenerator
- * @version 1.1.0
  * @author Stefanius <s.kien@online.de>
  * @copyright MIT License - see the LICENSE file for details
  */
 interface FormDataInterface
 {
     /**
+     * The FormGenerator tries to get the value for each input element through this
+     * method by the name of the input element.
+     * The return type depends on the type of input element, the data is fetched for.
      * @param string $strName
      * @return mixed 
      */
     public function getValue(string $strName);
+    
     /**
+     * The FormGenerator tries to get the select options for select fields through this
+     * method by the name of the input element.
+     * The FormGenerator expects an associative array, where the key must contain the available 
+     * option names and the value the associated value. 
      * @param string $strName
      * @return array
      */
     public function getSelectOptions(string $strName) : array;
-    /**
-     * @param string $strName
-     * @return string
-     */
-    public function getBtnValue(string $strName) : string;
 }
 

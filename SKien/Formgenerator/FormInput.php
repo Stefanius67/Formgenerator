@@ -6,12 +6,7 @@ namespace SKien\Formgenerator;
 /**
  * Base-class for all elements intended to get user input.
  *
- * #### History
- * - *2020-05-12*   initial version
- * - *2021-01-07*   PHP 7.4
- *
  * @package Formgenerator
- * @version 1.1.0
  * @author Stefanius <s.kien@online.de>
  * @copyright MIT License - see the LICENSE file for details
  */
@@ -60,7 +55,7 @@ class FormInput extends FormElement
     }
     
     /**
-     * set image and title for select-button (leave strImg blank for default)
+     * set image and title for select-button (leave strImg blank for default 'search')
      * @param string $strImg
      * @param string $strTitle (default = '')
      */

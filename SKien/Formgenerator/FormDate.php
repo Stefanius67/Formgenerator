@@ -6,14 +6,8 @@ namespace SKien\Formgenerator;
 /**
  * Input field for date value.
  * - size always 10
- * - field will be added to JS form validation
- * 
- * #### History
- * - *2020-05-12*   initial version
- * - *2021-01-07*   PHP 7.4
  *
  * @package Formgenerator
- * @version 1.1.0
  * @author Stefanius <s.kien@online.de>
  * @copyright MIT License - see the LICENSE file for details
  */
@@ -34,6 +28,8 @@ class FormDate extends FormInput
     
     /**
      * get date format from configuration (default: '%Y-%m-%d').
+     * {@inheritDoc}
+     * @see \SKien\Formgenerator\FormInput::onParentSet()
      */
     protected function onParentSet() : void
     {
@@ -42,7 +38,8 @@ class FormDate extends FormInput
             // if the HTML5 date input used
             // - value must be in format YYYY-MM-DD
             // - ui-formating and validation is the job of the browser ;-)
-            // TODO: - adjust width since date input 'ignores' the size attrib!
+            // TODO: - adjust width in % since type="date" input 'ignores' the size attrib!
+            //         and the size differs from browser to browser...
             //       - may check browser => safari didn't support input type="date"  
             $this->strType = 'date';
             $this->strDateFormat = '%Y-%m-%d';
@@ -60,7 +57,7 @@ class FormDate extends FormInput
     }
     
     /**
-     * Accept date value from Formgenerator-data as <ul>
+     * Accept date value from FormData as <ul>
      * <li> DateTime - object </li>
      * <li> unix timestamp (int) </li>
      * <li> English textual datetime description readable by <b>strtotime</b> <br/>
@@ -82,12 +79,10 @@ class FormDate extends FormInput
             $strValue = strftime($this->strDateFormat, $date->getTimestamp());
         } else if (is_numeric($date)) {
             $strValue = strftime($this->strDateFormat, $date);
-        } else {
-            if ($date != '0000-00-00 00:00:00' && $date != '0000-00-00' && $date != '00:00:00') {
-                $unixtime = strtotime($date);
-                if ($unixtime !== false) {
-                    $strValue = strftime($this->strDateFormat, $unixtime);
-                }
+        } else if ($date != '0000-00-00 00:00:00' && $date != '0000-00-00' && $date != '00:00:00') {
+            $unixtime = strtotime($date);
+            if ($unixtime !== false) {
+                $strValue = strftime($this->strDateFormat, $unixtime);
             }
         }
         

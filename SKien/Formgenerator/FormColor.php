@@ -7,16 +7,10 @@ namespace SKien\Formgenerator;
  * Element to select Color.
  * Uses the JSColor - picker version 2.4.5  (https://jscolor.com/)
  * 
- * The jscolor.js or jscolor.min.js mujst be included in the page.
  * <br/><br/>
- * <b>!!! Take care of the JSColor licence conditions if using this control !!!</b>
- *
- * #### History
- * - *2020-05-12*   initial version
- * - *2021-01-07*   PHP 7.4
+ * <b>!!! For commercial use take care of the JSColor licence conditions !!!</b>
  *
  * @package Formgenerator
- * @version 1.1.0
  * @author Stefanius <s.kien@online.de>
  * @copyright MIT License - see the LICENSE file for details
  * @link https://jscolor.com/

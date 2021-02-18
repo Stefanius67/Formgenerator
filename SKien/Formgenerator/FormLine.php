@@ -6,24 +6,28 @@ namespace SKien\Formgenerator;
 /**
  * Class to create a line starting with label.
  * - create as child of a FormField using FormFieldSet::addLine().
- * - create standalone and add directly to form  
- *
- * #### History
- * - *2020-05-12*   initial version
- * - *2021-01-07*   PHP 7.4
+ * - create standalone as direct child of the form  
  *
  * @package Formgenerator
- * @version 1.1.0
  * @author Stefanius <s.kien@online.de>
  * @copyright MIT License - see the LICENSE file for details
  */
 class FormLine extends FormCollection
 {
+    /** line contains only HR - no further childs! */
+    const HR = '<hr>';
+    
     /** @var string text for the line label     */
     protected string $strLabel;
     /** @var int col count     */
     protected int $iCols = 0;
     
+    /**
+     * Create new line.
+     * Label is allways the first child / col of the line.
+     * With $strLabel = self::HR a horizontal line is created.
+     * @param string $strLabel
+     */
     public function __construct(string $strLabel)
     {
         parent::__construct(0);
@@ -36,10 +40,10 @@ class FormLine extends FormCollection
      * Add a child to the line.
      * next col index is passed to the element and the col count is inkremented with 
      * each element added to this line.
-     * @param FormElement $oElement
-     * @return FormElement
+     * @param FormElementInterface $oElement
+     * @return FormElementInterface
      */
-    public function add(FormElement $oElement) : FormElement
+    public function add(FormElementInterface $oElement) : FormElementInterface
     {
         parent::add($oElement);
         $oElement->setCol(++$this->iCols);
@@ -67,14 +71,18 @@ class FormLine extends FormCollection
         $strHTML .= '   <div';
         $strHTML .= $this->buildID();
         $strHTML .= ">" . PHP_EOL;
-        $strHTML .= '       <label';
-        $strHTML .= $this->buildStyle();
-        $strHTML .= '>' . $this->strLabel . '</label>' . PHP_EOL;
-        $iCnt = count($this->aChild);
-        for ($i = 0; $i < $iCnt; $i++) {
-            $strHTML .= $this->aChild[$i]->getHTML();
+        if (strtolower($this->strLabel) == self::HR) {
+            $strHTML .= '<hr>';
+        } else {
+            $strHTML .= '       <label';
+            $strHTML .= $this->buildStyle();
+            $strHTML .= '>' . $this->strLabel . '</label>' . PHP_EOL;
+            $iCnt = count($this->aChild);
+            for ($i = 0; $i < $iCnt; $i++) {
+                $strHTML .= $this->aChild[$i]->getHTML();
+            }
+            $strHTML .= '       <br style="clear:both;" />' . PHP_EOL;
         }
-        $strHTML .= '       <br style="clear:both;" />' . PHP_EOL;
         $strHTML .= '   </div>' . PHP_EOL;
         return $strHTML;
     }

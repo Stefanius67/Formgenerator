@@ -9,12 +9,7 @@ use SKien\Config\NullConfig;
 /**
  * Container for all form elements.
  *
- * #### History
- * - *2020-05-12*   initial version
- * - *2021-01-07*   PHP 7.4
- *
  * @package Formgenerator
- * @version 1.1.0
  * @author Stefanius <s.kien@online.de>
  * @copyright MIT License - see the LICENSE file for details
  */
@@ -38,8 +33,6 @@ class FormGenerator extends FormCollection
     protected string $strOnCancel = '';
     /** @var array config values to pass as object to JS */
     protected array $aConfigForJS = [];
-    /** @var array elements that creates dynamic CSS styles */
-    protected array $aStyleElements = [];
     /** @var string path to the images  */
     protected string $strImgPath = '';
     /** @var string URL params for the form action  */
@@ -152,13 +145,14 @@ class FormGenerator extends FormCollection
             FormImage::IMG_DTU         => ['InsertDTU', 'insert_dtu.png', 'insert current date, time and user'],
         ];
         
-        if (!isset($aImageMap[$iImage])) {
-            return ['', ''];
+        $strImage = '';
+        $strTitle = '';
+        if (isset($aImageMap[$iImage])) {
+            $aImage = $aImageMap[$iImage];
+            $strImage = $this->getImagePath() . DIRECTORY_SEPARATOR;
+            $strImage .= $this->getConfig()->getString('Images.StdImages.' . $aImage[0] . '.Image', $aImage[1]);
+            $strTitle = $this->getConfig()->getString('Images.StdImages.' . $aImage[0] . '.Text', $aImage[2]);
         }
-        $aImage = $aImageMap[$iImage];
-        $strImage = $this->getImagePath() . DIRECTORY_SEPARATOR;
-        $strImage .= $this->getConfig()->getString('Images.StdImages.' . $aImage[0] . '.Image', $aImage[1]);
-        $strTitle = $this->getConfig()->getString('Images.StdImages.' . $aImage[0] . '.Text', $aImage[2]);
         
         return [$strImage, $strTitle];
     }
@@ -266,14 +260,11 @@ class FormGenerator extends FormCollection
     
     /**
      * Add any element to the form.
-     * @param FormElement $oElement
+     * @param FormElementInterface $oElement
      */
-    public function addElement(FormElement $oElement) : void 
+    public function addElement(FormElementInterface $oElement) : void 
     {
         $this->iLastTabindex += $oElement->setTabindex($this->iLastTabindex + 1);
-        if ($oElement->bCreateStyle) {
-            $this->aStyleElements[] = $oElement;
-        }
     }
     
     /**
@@ -341,7 +332,7 @@ class FormGenerator extends FormCollection
     
     /**
      * Build needed CSS styles.
-     * - body, if form width defined (TODO: better set width of form-element??)
+     * - body, if form width defined
      * - styles of all childs that have own styles
      * @return string
      */
@@ -351,8 +342,9 @@ class FormGenerator extends FormCollection
         if ($this->iWidth > 0) {
             $strStyle  = "body { width: " . $this->iWidth . "px;}" . PHP_EOL;
         }
-        foreach ($this->aStyleElements as $oElement) {
-            $strStyle .= $oElement->getStyle();
+        $iCnt = count($this->aChild);
+        for ($i = 0; $i < $iCnt; $i++) {
+            $strStyle .= $this->aChild[$i]->getStyle();
         }
         return $strStyle;   
     }

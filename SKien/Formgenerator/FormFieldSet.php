@@ -6,12 +6,7 @@ namespace SKien\Formgenerator;
 /**
  * Class to create fieldset as parent of lines.
  *
- * #### History
- * - *2020-05-12*   initial version
- * - *2021-01-07*   PHP 7.4
- *
  * @package Formgenerator
- * @version 1.1.0
  * @author Stefanius <s.kien@online.de>
  * @copyright MIT License - see the LICENSE file for details
  */
@@ -54,19 +49,6 @@ class FormFieldSet extends FormCollection
     public function setImageHeight(int $iHeight) : void 
     {
         $this->iImageHeight = $iHeight;
-    }
-
-    /**
-     * Add new line to this fieldset
-     * @param string $strLabel (default: '&nbsp;')
-     * @return \SKien\Formgenerator\FormLine
-     */
-    public function addLine(string $strLabel = '&nbsp;') : FormLine
-    {
-        $oFL = new FormLine($strLabel);
-        $this->add($oFL);
-        
-        return $oFL;
     }
 
     /**

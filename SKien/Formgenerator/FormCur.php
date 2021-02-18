@@ -5,14 +5,11 @@ namespace SKien\Formgenerator;
 
 /**
  * Input field for currency value.
- * - always right aligned
- * 
- * #### History
- * - *2020-05-12*   initial version
- * - *2021-01-07*   PHP 7.4
+ * Special variant FormFloat with fixed two decimalpoints.
+ * - Separators can be specified alternating to the definition for the FormFloat
+ * - Currency symbol can be appended
  *
  * @package Formgenerator
- * @version 1.1.0
  * @author Stefanius <s.kien@online.de>
  * @copyright MIT License - see the LICENSE file for details
 */
