@@ -115,10 +115,12 @@ class FormInput extends FormElement
         $strHTML .= $this->buildTabindex();
         $strHTML .= $this->buildValue();
         $strHTML .= $this->buildAttributes();
+        $strHTML .= $this->buildListLink();
         $strHTML .= '>';
         
         $strHTML .= $this->buildSelectButton();
         $strHTML .= $this->buildSuffix();
+        $strHTML .= $this->buildDatalist();
         
         $strHTML .= '</div>' . PHP_EOL;
         
@@ -224,6 +226,44 @@ class FormInput extends FormElement
             } else {
                 $strHTML .= '&nbsp;' . $this->strSuffix;
             }
+        }
+        return $strHTML;
+    }
+    
+    /**
+     * Build attrib for associated datalist.
+     * If the dataprovider contains a datalist in the selectoptions with the same name
+     * as the element, we add the attrib to conect to this list.
+     * @return string
+     */
+    protected function buildListLink() : string
+    {
+        $strLink = '';
+        $aOptions = $this->oFG->getData()->getSelectOptions($this->strName);
+        if (count($aOptions) > 0) {
+            $strLink = ' list="list' . $this->strName . '"';
+        }
+        return $strLink;
+    }
+    
+    /**
+     * Build the markup for associated datalist.
+     * If the dataprovider contains a datalist in the selectoptions with the same name 
+     * as the element, we build this datalist.
+     * @return string
+     */
+    protected function buildDatalist() : string
+    {
+        $strHTML = '';
+        $aOptions = $this->oFG->getData()->getSelectOptions($this->strName);
+        if (count($aOptions) > 0) {
+            $strHTML .= '<datalist id="list' . $this->strName . '">' . PHP_EOL;
+            foreach ($aOptions as $strValue) {
+                $strHTML .= '    ';
+                $strHTML .= '<option ';
+                $strHTML .= 'value="' . $strValue . '">' . PHP_EOL;
+            }
+            $strHTML .= '</datalist>' . PHP_EOL;
         }
         return $strHTML;
     }
