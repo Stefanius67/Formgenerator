@@ -18,7 +18,9 @@ use SKien\Formgenerator\FormCheck;
 use SKien\Formgenerator\FormLine;
 use SKien\Formgenerator\FormRadioGroup;
 
-$oConfig = new JSONConfig('FormGenerator.json');
+$strTheme = './MSO-Theme/';
+
+$oConfig = new JSONConfig($strTheme . 'FormGenerator.json');
 
 $dtTo = new DateTime();
 $dtTo->setTimestamp(time() + 3600);
@@ -36,7 +38,7 @@ $aData = [
     'fltDue' => 1904,
     'strCatColor' => '#B0BED0',
     'fltWeight' => 71.3,
-    'strImage' => '/packages/Formgenerator/public/images/sample1.jpg',
+    'strImage' => '/packages/Formgenerator/examples/public/images/sample1.jpg',
     'bBoardMember' => true,
 ];
 
@@ -66,7 +68,7 @@ $oFL->add(new FormInput('strPostcode', '90%'));
 $oFL->add(new FormInput('strCity', '100%'));
 $oFL = $oFS->addLine(FormLine::HR);
 $oFL = $oFS->addLine('Gender:');
-$oFL->add(new FormRadioGroup('strGender', FormFlags::HORZ_ARRANGE | FormFlags::READ_ONLY));
+$oFL->add(new FormRadioGroup('strGender', FormFlags::HORZ_ARRANGE));
 $oFL = $oFS->addLine('Birthday:');
 $oFL->add(new FormDate('dateDoB', FormFlags::ADD_DATE_PICKER));
 $oFL = $oFS->addLine();
@@ -88,7 +90,7 @@ $oFS->setColWidth([100]);
 $strBrowseServer = "browseServer('strImage', 'imgImage', '/images')";
 $oFL->add(new FormInput('strImage', 0, FormFlags::HIDDEN | FormFlags::BROWSE_SERVER));
 $oImg = new FormImage('imgImage', '', $strBrowseServer, FormFlags::ALIGN_CENTER);
-$oImg->setDefault('..\public\images\contact_empty.png');
+$oImg->setDefault('.\public\images\contact_empty.png');
 $oImg->bindTo('strImage');
 $oImg->setTitle('click to select an image');
 $oFS->add($oImg);
@@ -109,8 +111,7 @@ $strConfigFromPHP = $oFG->getScript();
 ?>
 <html>
 <head>
-<link type="text/css" rel="stylesheet" href="../style/FormGenerator.css">
-<link type="text/css" rel="stylesheet" href="../style/dtsel.css">
+<link type="text/css" rel="stylesheet" href="<?= $strTheme; ?>FormGenerator.css">
 <style>
 body
 {

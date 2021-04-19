@@ -1,0 +1,679 @@
+@charset "ISO-8859-1";
+
+/* some custom-props to make it easier to adjust the styles */
+:root
+{
+    --theme-font: Verdana, Arial, Helvetica, sans-serif;
+
+    --theme-size-h1: 16px;
+    --theme-size-h2: 14px;
+    --theme-size-h3: 12px;
+    --theme-size-h4: 11px;
+    --theme-size-std: 12px;
+    --theme-size-legend: 14px;
+    --theme-size-hint: 10px;
+
+    --theme-border-light: #96A9C0;
+    --theme-border-medium: #96A9C0;
+    --theme-border-dark: #1A3F6B;
+    --theme-border-disabled: #666666;
+    --theme-border-error: red;
+
+    --radius-small: 3px;
+    --radius-medium: 5px;
+    --radius-big: 7px;
+
+    --theme-bkg-light: #DAE2E9;
+    --theme-bkg-medium: #96A9C0;
+    --theme-bkg-dark: #1A3F6B;
+    --theme-bkg-selected: #286090;
+    --theme-bkg-hover: #444444;
+    --theme-bkg-disabled: #EEEEEE;
+    --theme-bkg-mandatory: #FFEEEE;
+    --theme-bkg-error: lightyellow;
+    --theme-bkg-info: #FFFFD2;
+
+    --theme-txt-light: #FFFFFF;
+    --theme-txt-medium: #07243E;
+    --theme-txt-dark: #000000;
+    --theme-txt-selected: #EEEEEE;
+    --theme-txt-hover: #EEEEEE;
+    --theme-txt-disabled: #444444;
+    --theme-txt-error: darkred;
+    --theme-txt-info: #00005F;
+
+    --gradient-start-h1: #F7F8FA;
+    --gradient-stop-h1: #B0BED0;
+    --gradient-start-btn: #F7F8FA;
+    --gradient-stop-btn: #B0BED0;
+    --gradient-start-btn-disabled: #F6F6F6;
+    --gradient-stop-btn-disabled: #8E8E8E;
+    --gradient-start-btn-hover: #ECF5FD;
+    --gradient-stop-btn-hover: #859FC1;
+
+    --theme-txt-tip: darkblue;
+}
+
+form
+{
+    width: 100%;
+    position: relative;
+    box-sizing: border-box;
+    font-family: var(--theme-font);
+    font-size: var(--theme-size-std);
+    border-radius: var(--radius-big);
+    padding: 0px;
+    background-color: var(--theme-bkg-light);
+}
+
+form h1
+{
+    font-size: var(--theme-size-h1);
+    font-weight: bold;
+    color: var(--theme-txt-dark);
+    padding: 10px 5px;
+    border-radius: inherit;
+    border-bottom-left-radius: unset;
+    border-bottom-right-radius: unset;
+    background-image: linear-gradient(var(--gradient-start-h1), var(--gradient-stop-h1));
+    margin: 0;
+}
+
+form h2
+{
+    font-size: var(--theme-size-h2);
+    font-weight: bold;
+}
+
+form h3
+{
+    font-size: var(--theme-size-h3);
+    font-weight: bold;
+}
+
+form h4
+{
+    font-size: var(--theme-size-h4);
+    font-weight: bold;
+}
+
+form fieldset
+{
+    color: var(--theme-txt-dark);
+    border: 1px solid var(--theme-border-light);
+    border-radius: var(--radius-medium);
+    line-height: 190%;
+    margin: 8px 5px 5px 5px;
+    padding: 4px 7px 4px 7px;
+    box-sizing: border-box;
+}
+
+form legend
+{
+    font-size: var(--theme-size-legend);
+    font-weight: bold;
+    color: var(--theme-txt-medium);
+    padding: 0px 5px 0px 5px;
+    margin: 0px;
+}
+
+form legend img
+{
+    height: 12px;
+}
+
+form hr
+{
+    border: none;
+    border-top: 1px solid var(--theme-border-medium);
+}
+
+form label
+{
+    color: var(--theme-txt-dark);
+    display: block;
+}
+
+form label.radio
+{
+    padding-right: 8px;
+}
+
+form input, form textarea, form select
+{
+    font-size: var(--theme-size-std);
+    font-weight: normal;
+    font-family: var(--theme-font);
+    border: 1px solid var(--theme-border-medium);
+}
+
+form input[disabled],
+form select[disabled],
+form textarea[disabled]
+{
+    color: var(--theme-txt-disabled);
+    background-color: var(--theme-bkg-disabled);
+}
+
+form input[readonly],
+form select[readonly]
+{
+    color: var(--theme-txt-disabled);
+    background-color:transparent;
+}
+
+form ::placeholder
+{
+    color: var(--theme-border-light);
+    opacity: 1;
+}
+
+form ::-ms-input-placeholder
+{
+    color: var(--theme-border-light);
+}
+
+form textarea
+{
+    font-size: var(--theme-size-std);
+    font-weight: normal;
+    font-family: var(--theme-font);
+    border: 1px solid var(--theme-border-medium);
+}
+
+form .error
+{
+    color: var(--theme-border-error);
+}
+
+form .numeric
+{
+    font-family: 'Inconsolata', sans-serif !important;
+    font-size: 14px !important; /* Inconsolata appears smaller than 'normal' sans-serif */
+}
+
+form .inputOK, form .inputOK_R
+{
+    border: 1px solid var(--theme-border-medium);
+}
+
+form .inputMand, form .inputMand_R
+{
+    border: 1px solid var(--theme-border-dark);
+    background-color: var(--theme-bkg-mandatory);
+}
+
+form .inputError, form .inputMError, form .inputError_R, form .inputMError_R
+{
+    color: var(--theme-txt-error);
+    background-color: var(--theme-bkg-error);
+    border: 2px solid var(--theme-border-error);
+}
+
+form .inputError:focus, form .inputMError:focus,
+form .inputError_R:focus, form .inputMError_R:focus
+{
+    border: 2px solid var(--theme-border-error) !important;
+    outline: none;
+ }
+
+form .inputOK_R, form .inputMand_R, form .inputError_R, form .inputMError_R
+{
+    text-align:right;
+}
+
+form input[type=checkbox]
+{
+    vertical-align: bottom;
+    margin: 2px 4px 4px 0px;
+}
+
+form input[type=radio]
+{
+    margin-right: 8px;
+    margin-top: 4px;
+}
+
+form input[type=submit],
+form input[type=button],
+forminput[type=file],
+form button
+{
+    border: 1px solid var(--theme-border-dark);
+    border-radius: var(--radius-small);
+    padding: 2px 10px;
+    background: linear-gradient(var(--gradient-start-btn), var(--gradient-stop-btn));
+    margin: 5px 0 1px 0;
+}
+
+form input[type=submit]:disabled,
+form input[type=button]:disabled,
+form input[type=file]:disabled,
+form button:disabled
+{
+    border: 1px solid var(--theme-border-disabled);
+    color: var(--theme-txt-disabled);
+    background: linear-gradient(var(--gradient-start-btn-disabled), var(--gradient-stop-btn-disabled));
+}
+
+form input[type=submit]:hover:enabled,
+form input[type=button]:hover:enabled,
+form input[type=file]:hover:enabled,
+form button:hover:enabled
+{
+    background: linear-gradient(var(--gradient-start-btn-hover), var(--gradient-stop-btn-hover));
+}
+
+form .forminfo
+{
+    box-sizing: border-box;
+    color: var(--theme-txt-info);
+    border: 1px solid var(--theme-border-medium);
+    border-radius: var(--radius-medium);
+    padding-left: 5px;
+    margin: 4px 0px;
+    background: var(--theme-bkg-info) url(../images/info.png) no-repeat right  4px top 3px;
+}
+
+form .sbSelect
+{
+    opacity: 0;
+    width: 100%;
+    position: relative;
+}
+
+form .sbBtn
+{
+    position: absolute;
+    width: 100%;
+    right: 0px;
+    top: 0px;
+    padding-top: 0px;
+    height: 20px;
+    margin: 0;
+}
+
+#buttonbox
+{
+    clear: both;
+    margin: 10px 10px 0 10px;
+    padding:  10px 0px 10px 0px;    /* t, r, b, l */
+    /* border-top: 1px solid var(--theme-border-light); */
+}
+
+#buttonbox input[type=submit], #buttonbox input[type=button], #buttonbox input[type=file]
+{
+    margin-left:  3px;
+    margin-right: 3px;
+}
+
+form img.picker
+{
+    margin-left: 5px;
+    vertical-align: text-bottom;
+}
+
+form img.picker_top
+{
+    margin-left: 5px;
+    vertical-align: top;
+    padding-top: 5px;
+}
+
+form .readonly
+{
+    color: var(--theme-txt-disabled);
+}
+
+form .hint
+{
+    color: var(--theme-txt-disabled);
+    font-size: var(--theme-size-hint);
+    line-height: 150%;
+    padding-top: 5px;
+}
+
+#errorPopup
+{
+    display: none;
+    position: absolute;
+    width: calc(100% - 14px);
+    border: 1px solid var(--theme-border-dark);
+    color: var(--theme-txt-error);
+    background: var(--theme-bkg-error) url(../images/window_close.png) no-repeat right 5px top 5px;
+    margin: 10px 7px;
+    padding: 5px 25px 5px 5px;
+    box-sizing: border-box;
+    border-radius: var(--radius-small);
+    font-weight: bold;
+}
+
+#JSError
+{
+    width: 80%;
+    color: black;
+    background-color: orange;
+    border: 1px solid black;
+    font-size: 1em;
+}
+
+#JSError h1
+{
+    background-color: #f57900;
+    padding: 2px 4px;
+    margin: 0px;
+    border-bottom: 1px solid;
+    color: black;
+    font-size: 1em;
+}
+
+#JSError p
+{
+    margin: 5;
+}
+
+/**
+ * styles for the wraper of the 'modal' rich filemanager running in an iframe
+ * Note: the styles of the filemanager itself have to be defined in the
+ * rich filemanager - theme! 
+ */
+
+#fm-container
+{
+    z-index: 10100; /** Because CKEditor image dialog was at 10010 */
+    width: 80%;
+    height: 80%;
+    top: 10%;
+    left: 10%;
+    border: 1px solid black;;
+    position: fixed;
+    background-color: var(--theme-bkg-light);
+}
+
+#fm-container h1
+{
+    width: calc(100% - 10px);
+    background-color: var(--theme-bkg-medium);
+    margin: 5px 5px 0px 5px;
+    padding: 4px 5px;
+    height: 24px;
+    font-family: arial;
+    font-size: var(--theme-size-h1);
+    font-weight: bold;
+    box-sizing: border-box;
+    background-image: url(../images/window_close.png);
+    background-repeat: no-repeat;
+    background-position: top 4px right 4px;
+}
+
+#fm-container h1 img
+{
+    float: right;
+}
+
+#fm-iframe
+{
+    width: 100%;
+    height: calc(100% - 29px);
+    border: none;
+}
+
+/**
+ * styles for the date and time picker generated by dtsel.js
+ *
+ * hint: to 'style' the picker in the devtools, set breakpoint at line 266 in dtsel.js
+ */
+
+.date-selector-wrapper {
+    font-family: var(--theme-font);
+    border: 1px solid var(--theme-border-dark);
+    border-radius: var(--radius-big);
+    width: 160px;
+    padding: 0px;
+    background-color: var(--theme-bkg-dark);
+    box-shadow: 1px 1px 10px 1px #5c5c5c;
+    position: absolute;
+    font-size: var(--theme-size-hint);
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    /* user-select: none; */
+}
+
+.date-selector-wrapper .cal-header
+{
+    display: flex;
+    width: 100%;
+    height: 25px;
+    line-height: 25px;
+    text-align: center;
+    border-top-left-radius: inherit;
+    border-top-right-radius: inherit;
+}
+
+.date-selector-wrapper .cal-header .cal-nav
+{
+    cursor: pointer;
+    font-weight: bold;
+    background-color: var(--theme-bkg-dark);
+    color: var(--theme-txt-light);
+}
+
+.date-selector-wrapper .cal-header .cal-nav-prev
+{
+    flex: 0.15;
+    border-right: 1px solid var(--theme-txt-light);
+    border-radius: unset;
+    border-top-left-radius: inherit;
+}
+
+.date-selector-wrapper .cal-header .cal-nav-next
+{
+    flex: 0.15;
+    border-left: 1px solid var(--theme-txt-light);
+    border-radius: unset;
+    border-top-right-radius: inherit;
+}
+
+.date-selector-wrapper .cal-header .cal-nav-current
+{
+    flex: 0.70;
+}
+
+.date-selector-wrapper .cal-header .cal-nav-prev:hover,
+.date-selector-wrapper .cal-header .cal-nav-next:hover,
+.date-selector-wrapper .cal-header .cal-nav-current:hover
+{
+    color: var(--theme-txt-dark);
+    background-color: var(--theme-bkg-medium);
+}
+
+.date-selector-wrapper .cal-body
+{
+    padding-bottom: var(--radius-big);
+}
+
+.date-selector-wrapper .cal-row
+{
+    display: flex;
+    width: 100%;
+    height: 25px;
+    line-height: 25px;
+    text-align: center;
+}
+
+.date-selector-wrapper .cal-cell
+{
+    cursor: pointer;
+    background-color: var(--theme-bkg-light);
+    border: 1px solid var(--theme-border-light);
+}
+
+.date-selector-wrapper .cal-cell:hover
+{
+    color: var(--theme-txt-dark);
+    background-color: var(--theme-bkg-medium);
+    border: 1px solid var(--theme-border-error);
+}
+
+.date-selector-wrapper .cal-value
+{
+    color: var(--theme-txt-selected);
+    background-color: var(--theme-bkg-selected);
+}
+
+.date-selector-wrapper .cal-days .cal-cell
+{
+    flex: 0.143;
+}
+
+.date-selector-wrapper .cal-days .cal-day-names
+{
+    height: 20px;
+    line-height: 20px;
+}
+
+.date-selector-wrapper .cal-days .cal-day-names .cal-cell
+{
+    cursor: default;
+    height: 20px;
+    line-height: 20px;
+    font-weight: bold;
+    background-color: var(--theme-bkg-medium);
+    border: 1px solid var(--theme-border-medium);
+}
+
+.date-selector-wrapper .cal-days .cal-day-names .cal-cell:hover
+{
+    border: 1px solid var(--theme-border-medium);
+}
+
+.date-selector-wrapper .cal-days .cal-cell-prev,
+.date-selector-wrapper .cal-days .cal-cell-next
+{
+    color: var(--theme-txt-disabled);
+    background-color: var(--theme-bkg-disabled);
+}
+
+.date-selector-wrapper .cal-months .cal-row,
+.date-selector-wrapper .cal-years .cal-row
+{
+    height: 45px;
+    line-height: 45px;
+}
+
+.date-selector-wrapper .cal-months .cal-cell,
+.date-selector-wrapper .cal-years .cal-cell
+{
+    flex: 0.25;
+}
+
+.date-selector-wrapper .cal-footer
+{
+    border-radius: inherit;
+    background-color: var(--theme-bkg-light);
+}
+
+.date-selector-wrapper .cal-time
+{
+    display: flex;
+    justify-content: flex-start;
+    height: 27px;
+    line-height: 27px;
+    border-radius: inherit;
+    background-color: var(--theme-bkg-light);
+}
+
+.date-selector-wrapper .cal-time-label
+{
+    flex: 0.22;
+    text-align: left;
+    padding-left: 5px
+}
+
+.date-selector-wrapper .cal-time-value
+{
+    flex: 0.18;
+    text-align: center;
+    font-weight: bold;
+}
+
+.date-selector-wrapper .cal-time-slider
+{
+    flex: 0.6;
+    background-image: linear-gradient(to right, var(--theme-border-medium), var(--theme-border-medium));
+    background-repeat: no-repeat;
+    background-size: 100% 3px;
+    background-position: left 55%;
+    height: 100%;
+    margin-right: 5px;
+}
+
+.date-selector-wrapper .cal-time-slider input[type=range]
+{
+    -webkit-appearance: none;
+    width: 100%;
+    background: transparent;
+}
+
+.date-selector-wrapper .cal-time-slider input[type=range]:focus
+{
+    outline: none;
+}
+
+.date-selector-wrapper .cal-time-slider input[type=range]::-ms-track
+{
+    width: 100%;
+    cursor: pointer;
+    background: transparent;
+    border-color: transparent;
+    color: transparent;
+}
+
+.date-selector-wrapper .cal-time-slider input[type=range]
+{
+    width: 100%;
+    -webkit-appearance: none;
+    background: 0 0;
+    cursor: pointer;
+    height: 100%;
+    outline: 0;
+    user-select: auto;
+}
+
+.date-selector-wrapper .cal-time-slider input[type=range]::-webkit-slider-thumb
+{
+    -webkit-appearance: none;
+    margin-top: -2px;
+    box-shadow: 1px 1px 1px var(--theme-border-dark), 0px 0px 1px var(--theme-border-medium);
+    border: 1px solid var(--theme-border-dark);
+    height: 14px;
+    width: 14px;
+    border-radius: 7px;
+    background: var(--theme-bkg-medium);
+    cursor: pointer;
+}
+
+.date-selector-wrapper .cal-time-slider input[type=range]::-moz-range-thumb
+{
+    box-shadow: 1px 1px 1px var(--theme-border-dark), 0px 0px 1px var(--theme-border-medium);
+    border: 1px solid var(--theme-border-dark);
+    height: 14px;
+    width: 14px;
+    border-radius: 7px;
+    background: var(--theme-bkg-medium);
+    cursor: pointer;
+}
+
+.date-selector-wrapper .cal-time-slider input[type=range]::-ms-thumb
+{
+    box-shadow: 1px 1px 1px var(--theme-border-dark), 0px 0px 1px var(--theme-border-medium);
+    border: 1px solid var(--theme-border-dark);
+    height: 14px;
+    width: 14px;
+    border-radius: 7px;
+    background: var(--theme-bkg-medium);
+    cursor: pointer;
+}

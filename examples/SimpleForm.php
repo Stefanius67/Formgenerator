@@ -19,7 +19,10 @@ use SKien\Formgenerator\FormColor;
 use SKien\Formgenerator\FormHeader;
 use SKien\Formgenerator\FormFloat;
 
-$oConfig = new JSONConfig('FormGenerator.json');
+// $strTheme = './MSO-Theme/';
+$strTheme = './';
+
+$oConfig = new JSONConfig($strTheme . 'FormGenerator.json');
 
 $dtTo = new DateTime();
 $dtTo->setTimestamp(time() + 3600);
@@ -40,8 +43,9 @@ $aData = [
 ];
 
 $aGenderSelect = ['' => '', 'männlich' => 'm', 'weiblich' => 'f', 'divers' => 'd'];
+$aCitySelect = ['München', 'Berlin', 'Köln', 'Hamburg'];
 
-$oData = new ArrayFormData($aData, ['strGender' => $aGenderSelect]);
+$oData = new ArrayFormData($aData, ['strGender' => $aGenderSelect, 'strCity' => $aCitySelect]);
 
 $oFG = new FormGenerator($oData);
 $oFG->setConfig($oConfig);
@@ -110,8 +114,7 @@ $strConfigFromPHP = $oFG->getScript();
 ?>
 <html>
 <head>
-<link type="text/css" rel="stylesheet" href="../style/FormGenerator.css">
-<link type="text/css" rel="stylesheet" href="../style/dtsel.css">
+<link type="text/css" rel="stylesheet" href="<?= $strTheme; ?>FormGenerator.css">
 <style>
 body
 {
