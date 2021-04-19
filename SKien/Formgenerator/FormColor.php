@@ -41,13 +41,13 @@ class FormColor extends FormInput
         // - border color (no default value - set only if defined in the config)
         // - background color (no default value - set only if defined in the config)
         // - palette (no default value - set only if defined in the config)
-        $aPreset = ['position' => $this->oFG->getConfig()->getString('Color.position', 'bottom')];
-        if (($strBorderColor = $this->oFG->getConfig()->getString('Color.borderColor')) != '') {
-            $aPreset["borderColor"] = $strBorderColor;
-        }
-        if (($strBackgroundColor = $this->oFG->getConfig()->getString('Color.backgroundColor')) != '') {
-            $aPreset["backgroundColor"] = $strBackgroundColor;
-        }
+        $aPreset = [
+            'position' => $this->oFG->getConfig()->getString('Color.position', 'bottom'),
+            'borderColor' => $this->oFG->getConfig()->getString('Color.borderColor', '#000000'),
+            'backgroundColor' => $this->oFG->getConfig()->getString('Color.backgroundColor', '#FFFFFF'),
+            'borderRadius' => $this->oFG->getConfig()->getInt('Color.borderRadius', 7),
+            'padding' => $this->oFG->getConfig()->getInt('Color.padding', 12),
+        ];
         $aPalette = $this->oFG->getConfig()->getArray('Color.palette');
         if (count($aPalette) > 0) {
             $aPreset['palette'] = $aPalette;
