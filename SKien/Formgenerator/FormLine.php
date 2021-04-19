@@ -74,9 +74,11 @@ class FormLine extends FormCollection
         if (strtolower($this->strLabel) == self::HR) {
             $strHTML .= '<hr>';
         } else {
-            $strHTML .= '       <label';
-            $strHTML .= $this->buildStyle();
-            $strHTML .= '>' . $this->strLabel . '</label>' . PHP_EOL;
+            if (strlen($this->strLabel) > 0 && $strWidth != '0%') {
+                $strHTML .= '       <label';
+                $strHTML .= $this->buildStyle();
+                $strHTML .= '>' . $this->strLabel . '</label>' . PHP_EOL;
+            }
             $iCnt = count($this->aChild);
             for ($i = 0; $i < $iCnt; $i++) {
                 $strHTML .= $this->aChild[$i]->getHTML();
