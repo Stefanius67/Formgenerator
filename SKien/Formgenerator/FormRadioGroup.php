@@ -43,6 +43,8 @@ class FormRadioGroup extends FormInput
         
         $strHTML = $this->buildContainerDiv();
         
+        // TODO: create surrogates for unchecked/readonly (see FormCheck)
+        
         $iBtn = 0;
         $this->addStyle('float', 'left');
         foreach ($aOptions as $strName => $strValue) {
@@ -57,7 +59,7 @@ class FormRadioGroup extends FormInput
                     $strHTML .= ' checked';
                 }
                 $strHTML .= ' value="' . $strValue . '">';
-                $strHTML .= ' <label for="' . $this->strName . ++$iBtn . '"';
+                $strHTML .= ' <label for="' . $this->strName . $iBtn . '"';
                 if ($this->oFlags->isSet(FormFlags::HORZ_ARRANGE)) {
                     $strHTML .= ' style="float: left;"';
                 }
