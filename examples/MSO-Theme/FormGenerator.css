@@ -335,6 +335,85 @@ form .hint
     padding-top: 5px;
 }
 
+form .slider
+{
+	display: inline-flex;
+	height: calc(var(--theme-size-std) + 8px);
+    background-image: linear-gradient(to right, var(--theme-border-medium), var(--theme-border-medium));
+    background-repeat: no-repeat;
+    background-size: 100% 3px;
+    background-position: left 55%;
+    vertical-align: top;
+    padding-top: 2px;
+}
+
+form .slider_label
+{
+    display: block;
+    vertical-align: text-bottom;
+    font-weight: bold;
+}
+
+form input[type=range]
+{
+    -webkit-appearance: none;
+    width: 100%;
+    background: transparent;
+    border: unset;
+    cursor: pointer;
+    outline: 0;
+    user-select: auto;
+    margin: 0;
+}
+
+form input[type=range]:focus
+{
+    outline: none;
+    border: 1px dotted var(--theme-border-medium);
+}
+
+form input[type=range]::-ms-track
+{
+    cursor: pointer;
+    background: transparent;
+    border-color: transparent;
+    color: transparent;
+}
+
+form input[type=range]::-webkit-slider-thumb
+{
+    -webkit-appearance: none;
+    box-shadow: 1px 1px 1px var(--theme-border-dark), 0px 0px 1px var(--theme-border-medium);
+    border: 1px solid var(--theme-border-dark);
+    height: var(--theme-size-legend);
+    width: var(--theme-size-legend);
+    border-radius: 50%;
+    background: var(--theme-bkg-medium);
+    cursor: pointer;
+}
+
+form input[type=range]::-moz-range-thumb
+{
+    box-shadow: 1px 1px 1px var(--theme-border-dark), 0px 0px 1px var(--theme-border-medium);
+    border: 1px solid var(--theme-border-dark);
+    height: var(--theme-size-legend);
+    width: var(--theme-size-legend);
+    border-radius: 7px;
+    background: var(--theme-bkg-medium);
+    cursor: pointer;
+}
+
+form input[type=range]::-ms-thumb
+{
+    box-shadow: 1px 1px 1px var(--theme-border-dark), 0px 0px 1px var(--theme-border-medium);
+    border: 1px solid var(--theme-border-dark);
+    height: var(--theme-size-legend);
+    width: var(--theme-size-legend);
+    border-radius: 7px;
+    background: var(--theme-bkg-medium);
+    cursor: pointer;
+}
+
 #errorPopup
 {
     display: none;

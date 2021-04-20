@@ -37,9 +37,6 @@ function loadScriptfiles()
 }
 
 /**
- */
-
-/**
  * Initialization.
  * For initialization we lisen to the window onload-event. At this point the 
  * additionally loaded script files from the DOMContentLoaded-event should also be 
@@ -49,6 +46,7 @@ function loadScriptfiles()
  * - if form contains colorpicker(s) we have to initialize them
  * - contained date or time pickers also needs initialization
  * - embedded CKEditor have to be loaded and configured
+ * - add Eventlistener to display value of range elements in assigned value label
  */
 window.addEventListener('load', initFormGenerator);
 
@@ -68,6 +66,27 @@ function initFormGenerator()
         g_oCKEdit = new FormCKEditor(g_oConfigFromPHP, CKEDITOR);
         g_oCKEdit.load();
     }
+    
+	var oRanges = document.querySelector("input[type=range]");
+	
+	oRanges.addEventListener('change', rangeChanged);
+	oRanges.addEventListener('input', rangeChanged);
+}
+
+/**
+ * Event - handler for the 'change' and 'input' event trigerred by each range element in the form.
+ * If there exist a label element that is assigned to the triggering range through the 'for' attrib,
+ * the value of the range element is set as content of the label.
+ */
+function rangeChanged()
+{
+	var oRange = this;
+	var oLabels = document.getElementsByTagName('label');
+	for (var i = 0; i < oLabels.length; i++) {
+	    if (oLabels[i].htmlFor == oRange.id) {
+	    	oLabels[i].innerHTML = this.value;
+	    }
+	}	
 }
 
 /**

@@ -67,8 +67,9 @@ trait FormgeneratorHelper
             'btnCheck6' => 0,
         ];
         $aGenderSelect = ['' => '', 'männlich' => 'm', 'weiblich' => 'f', 'divers' => 'd'];
+        $aLinkList = ['Freiburg', 'Karlsruhe', 'Stuttgart'];
         $aCheckBtnValue = ['btnCheck1' => 'board'];
-        $oData = new ArrayFormData($aData, ['strGender' => $aGenderSelect], $aCheckBtnValue);
+        $oData = new ArrayFormData($aData, ['strGender' => $aGenderSelect, 'strLinklist' => $aLinkList], $aCheckBtnValue);
         
         return $oData;
     }

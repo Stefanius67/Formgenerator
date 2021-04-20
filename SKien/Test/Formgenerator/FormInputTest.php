@@ -203,4 +203,18 @@ class FormInputTest extends TestCase
         $reflectionConfig->setAccessible(true);
         $this->assertArrayHasKey('RichFilemanager', $reflectionConfig->getValue($oFG));
     }
+    
+    public function test_linkList() : void
+    {
+        $oFG = $this->createFG(true);
+        $oFL = $oFG->add(new FormLine('testline'));
+        $oInput = new FormInput('strLinklist', 10, FormFlags::BROWSE_SERVER);
+        $oFL->add($oInput);
+        $strHTML = $oInput->getHTML();
+        $this->assertNotFalse(strpos($strHTML, 'list="liststrLinklist"'));
+        $this->assertNotFalse(strpos($strHTML, '<datalist id="liststrLinklist"'));
+        $this->assertNotFalse(strpos($strHTML, '<option value="Freiburg">'));
+        $this->assertNotFalse(strpos($strHTML, '<option value="Karlsruhe">'));
+        $this->assertNotFalse(strpos($strHTML, '<option value="Stuttgart">'));
+    }
 }

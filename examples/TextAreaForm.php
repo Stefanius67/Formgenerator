@@ -17,7 +17,10 @@ $aPlaceholderSelect = ['Firstname' => '{{FN}}', 'Lastname' => '{{LN}}', 'Street'
 
 $oData = new ArrayFormData($aData, ['strPlaceholder' => $aPlaceholderSelect]);
 
-$oConfig = new JSONConfig('FormGenerator.json');
+$strTheme = './MSO-Theme/';
+//$strTheme = './';
+
+$oConfig = new JSONConfig($strTheme . 'FormGenerator.json');
 
 $oFG = new FormGenerator($oData);
 $oFG->setConfig($oConfig);
@@ -44,7 +47,7 @@ $strConfigFromPHP = $oFG->getScript();
 ?>
 <html>
 <head>
-<link type="text/css" rel="stylesheet" href="../style/FormGenerator.css">
+<link type="text/css" rel="stylesheet" href="<?= $strTheme; ?>FormGenerator.css">
 <style>
 body
 {

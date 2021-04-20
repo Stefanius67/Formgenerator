@@ -215,7 +215,7 @@ abstract class FormElement implements FormElementInterface
         }
         $strWidth = ($this->oParent ? $this->oParent->getColWidth($this->iCol) : '');
         if (!empty($strWidth)) {
-            $strStyle = rtrim($strStyle, ';');
+            $strStyle = rtrim($strStyle, '; ');
             $strStyle .= '; width: ' . $strWidth . ';';
         }
         $strHTML = '<div style="' . $strStyle . '">';

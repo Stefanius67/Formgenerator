@@ -11,7 +11,10 @@ use SKien\Formgenerator\FormCKEdit;
 use SKien\Formgenerator\FormHeader;
 use SKien\Formgenerator\ArrayFormData;
 
-$oConfig = new JSONConfig('FormGenerator.json');
+$strTheme = './MSO-Theme/';
+// $strTheme = './';
+
+$oConfig = new JSONConfig($strTheme . 'FormGenerator.json');
 $oData = new ArrayFormData([
         'strText' => 
             '<h1>This is the content</h1>' . PHP_EOL .
@@ -43,7 +46,7 @@ $strConfigFromPHP = $oFG->getScript();
 ?>
 <html>
 <head>
-<link type="text/css" rel="stylesheet" href="../style/FormGenerator.css">
+<link type="text/css" rel="stylesheet" href="<?= $strTheme; ?>FormGenerator.css">
 <style>
 body
 {

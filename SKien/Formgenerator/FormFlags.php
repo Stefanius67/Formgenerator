@@ -36,6 +36,8 @@ class FormFlags
     const   ERROR                   = 0x0000080;
     /** button with selectlist  */
     const   SELECT_BTN              = 0x0000100;
+    /** button with selectlist  */
+    const   SHOW_VALUE              = 0x0000100;
     /** connect edit/image with filemanager   */
     const   BROWSE_SERVER           = 0x0000200;
     /** field is disabled   */

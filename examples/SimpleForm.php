@@ -14,10 +14,10 @@ use SKien\Formgenerator\FormTime;
 use SKien\Config\JSONConfig;
 use SKien\Formgenerator\FormButtonBox;
 use SKien\Formgenerator\FormCur;
-use SKien\Formgenerator\FormInt;
 use SKien\Formgenerator\FormColor;
 use SKien\Formgenerator\FormHeader;
 use SKien\Formgenerator\FormFloat;
+use SKien\Formgenerator\FormRange;
 
 // $strTheme = './MSO-Theme/';
 $strTheme = './';
@@ -40,6 +40,7 @@ $aData = [
     'fltDue' => 1904,
     'strCatColor' => '#B0BED0',
     'fltWeight' => 71.3,
+    'iPriority' => 3,
 ];
 
 $aGenderSelect = ['' => '', 'männlich' => 'm', 'weiblich' => 'f', 'divers' => 'd'];
@@ -49,6 +50,8 @@ $oData = new ArrayFormData($aData, ['strGender' => $aGenderSelect, 'strCity' => 
 
 $oFG = new FormGenerator($oData);
 $oFG->setConfig($oConfig);
+$oFG->setAction('formaction.php');
+$oFG->setTarget('_blank');
 // $oFG->setReadOnly(true);
 // $oFG->setDebugMode(true);
 $oFG->setColWidth([20, 80], '%');
@@ -93,7 +96,8 @@ $oFloat = new FormFloat('fltWeight', 10, 1);
 $oFL->add($oFloat);
 $oFloat->setSuffix('kg');
 $oFL = $oFS->addLine('Priority:');
-$oFL->add(new FormInt('iPriority', 8));
+// $oFL->add(new FormInt('iPriority', 8));
+$oFL->add(new FormRange('iPriority', '70%', 1, 10, FormFlags::SHOW_VALUE));
 $oFL->add(new FormStatic('category:'));
 $oFL->add(new FormColor('strCatColor'));
 $oFL = $oFS->addLine('Resumé:');
