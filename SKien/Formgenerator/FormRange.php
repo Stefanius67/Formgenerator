@@ -28,7 +28,7 @@ class FormRange extends FormInput
      * @param int $iMax
      * @param int $wFlags       flags (default = 0)
      */
-    public function __construct(string $strName, string $strWidth, int $iMin=0, int $iMax=100, int $wFlags = 0) 
+    public function __construct(string $strName, string $strWidth, int $iMin = 0, int $iMax = 100, int $wFlags = 0) 
     {
         parent::__construct($strName, $strWidth, $wFlags);
         $this->strType = 'range';
