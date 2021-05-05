@@ -30,7 +30,7 @@ class FormInput extends FormElement
      * @param int|string $size number set the size-attribute, a string is used for the width attribute
      * @param int $wFlags       
      */
-    public function __construct(string $strName, $size, int $wFlags = 0) 
+    public function __construct(string $strName, $size, int $wFlags = 0, int $iMaxLength = 0) 
     {
         parent::__construct($wFlags);
         $this->strName = $strName;
@@ -41,6 +41,18 @@ class FormInput extends FormElement
         $this->strSuffix = '';
         
         $this->addFlags($wFlags);
+        if ($iMaxLength > 0) {
+            $this->addAttribute('maxlength', (string)$iMaxLength);
+        }
+    }
+    
+    /**
+     * Set the maxlength attribute of the element.
+     * @param int $iMaxLength
+     */
+    public function setMaxLength(int $iMaxLength) : void
+    {
+        $this->addAttribute('maxlength', (string)$iMaxLength);
     }
     
     /**

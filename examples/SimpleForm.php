@@ -60,9 +60,11 @@ $oFG->add(new FormHeader('Personnel data sheet', 1));
 
 $oFS = $oFG->addFieldSet('Name');
 $oFL = $oFS->addLine('Lastname:');
-$oFL->add(new FormInput('strLastname', '100%', FormFlags::MANDATORY));
+$oInput = new FormInput('strLastname', '100%', FormFlags::MANDATORY);
+$oInput->setMaxLength(50);
+$oFL->add($oInput);
 $oFL = $oFS->addLine('Firstname:');
-$oFL->add(new FormInput('strFirstname', '100%'));
+$oFL->add(new FormInput('strFirstname', '100%', 0, 50));
 $oFS = $oFG->addFieldSet('Address');
 $oFL = $oFS->addLine('Region:');
 $oEdit = new FormInput('strRegion', '100%');
