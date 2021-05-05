@@ -89,7 +89,8 @@
     },
 	"CKEditor": {
         "Path": "/packages/Formgenerator/ckeditor/",
-		"uiColor": "#B0BED0",
+		"uiColor": "#DDDDDD",
+        "skin": "moono-lisa",
 		"pasteFilter": "p; h1; h2; h3; ul; ol; li; a[!href]",
 		"colorbutton": {
 			"enableAutomatic": false,
