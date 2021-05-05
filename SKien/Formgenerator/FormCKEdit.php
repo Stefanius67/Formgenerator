@@ -290,6 +290,7 @@ class FormCKEdit extends FormTextArea
         }
         $aCKEditor = [
             'contentsCss' => $this->strContentsCss,
+            'skin' => $this->oFG->getConfig()->getString('CKEditor.skin', 'moonocolor'),
             'bodyId' => $this->strBodyID,
             'toolbar' => $this->buildToolbarDef(),
             'toolbarCanCollapse' => false,
