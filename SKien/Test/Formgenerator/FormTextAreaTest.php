@@ -8,7 +8,7 @@ use SKien\Formgenerator\FormTextArea;
 use SKien\Formgenerator\FormFlags;
 
 /**
- * @author Stefanius <s.kien@online.de>
+ * @author Stefanius <s.kientzler@online.de>
  * @copyright MIT License - see the LICENSE file for details
  */
 class FormTextAreaTest extends TestCase

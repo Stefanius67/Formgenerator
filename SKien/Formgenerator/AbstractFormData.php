@@ -5,7 +5,7 @@ namespace SKien\Formgenerator;
  * Abstract class representing data for the FormGenerator.
  *
  * @package Formgenerator
- * @author Stefanius <s.kien@online.de>
+ * @author Stefanius <s.kientzler@online.de>
  * @copyright MIT License - see the LICENSE file for details
  */
 abstract class AbstractFormData implements FormDataInterface

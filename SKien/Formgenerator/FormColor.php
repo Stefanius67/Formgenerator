@@ -11,7 +11,7 @@ namespace SKien\Formgenerator;
  * <b>!!! For commercial use take care of the JSColor licence conditions !!!</b>
  *
  * @package Formgenerator
- * @author Stefanius <s.kien@online.de>
+ * @author Stefanius <s.kientzler@online.de>
  * @copyright MIT License - see the LICENSE file for details
  * @link https://jscolor.com/
  */

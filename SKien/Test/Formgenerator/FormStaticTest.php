@@ -9,7 +9,7 @@ use SKien\Formgenerator\FormStatic;
 use SKien\Formgenerator\FormFlags;
 
 /**
- * @author Stefanius <s.kien@online.de>
+ * @author Stefanius <s.kientzler@online.de>
  * @copyright MIT License - see the LICENSE file for details
  */
 class FormStaticTest extends TestCase

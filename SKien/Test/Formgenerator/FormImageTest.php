@@ -8,7 +8,7 @@ use SKien\Formgenerator\FormLine;
 use SKien\Formgenerator\FormImage;
 
 /**
- * @author Stefanius <s.kien@online.de>
+ * @author Stefanius <s.kientzler@online.de>
  * @copyright MIT License - see the LICENSE file for details
  */
 class FormImageTest extends TestCase

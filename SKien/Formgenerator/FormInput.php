@@ -7,7 +7,7 @@ namespace SKien\Formgenerator;
  * Base-class for all elements intended to get user input.
  *
  * @package Formgenerator
- * @author Stefanius <s.kien@online.de>
+ * @author Stefanius <s.kientzler@online.de>
  * @copyright MIT License - see the LICENSE file for details
  */
 class FormInput extends FormElement

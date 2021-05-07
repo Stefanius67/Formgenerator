@@ -14,7 +14,7 @@ namespace SKien\Config;
  *
  * @package SKien/GCalendar
  * @version 1.0.0
- * @author Stefanius <s.kien@online.de>
+ * @author Stefanius <s.kientzler@online.de>
  * @copyright MIT License - see the LICENSE file for details
  */
 class NullConfig extends AbstractConfig

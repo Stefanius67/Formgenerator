@@ -9,7 +9,7 @@ namespace SKien\Formgenerator;
  *  elements for JS hide/show operations
  *
  * @package Formgenerator
- * @author Stefanius <s.kien@online.de>
+ * @author Stefanius <s.kientzler@online.de>
  * @copyright MIT License - see the LICENSE file for details
  */
 class FormDiv extends FormCollection

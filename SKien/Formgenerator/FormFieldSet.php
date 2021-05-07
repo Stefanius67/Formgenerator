@@ -7,7 +7,7 @@ namespace SKien\Formgenerator;
  * Class to create fieldset as parent of lines.
  *
  * @package Formgenerator
- * @author Stefanius <s.kien@online.de>
+ * @author Stefanius <s.kientzler@online.de>
  * @copyright MIT License - see the LICENSE file for details
  */
 class FormFieldSet extends FormCollection

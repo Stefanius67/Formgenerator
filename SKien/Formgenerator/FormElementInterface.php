@@ -7,7 +7,7 @@ namespace SKien\Formgenerator;
  * Interface all elements of a form have to implement.
  *
  * @package Formgenerator
- * @author Stefanius <s.kien@online.de>
+ * @author Stefanius <s.kientzler@online.de>
  * @copyright MIT License - see the LICENSE file for details
  */
 interface FormElementInterface

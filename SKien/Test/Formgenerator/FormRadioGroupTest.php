@@ -9,7 +9,7 @@ use SKien\Formgenerator\FormFlags;
 use SKien\Formgenerator\FormRadioGroup;
 
 /**
- * @author Stefanius <s.kien@online.de>
+ * @author Stefanius <s.kientzler@online.de>
  * @copyright MIT License - see the LICENSE file for details
  */
 class FormRadioGroupTest extends TestCase

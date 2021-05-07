@@ -7,7 +7,7 @@ namespace SKien\Formgenerator;
  * Checkbox input field.
  *
  * @package Formgenerator
- * @author Stefanius <s.kien@online.de>
+ * @author Stefanius <s.kientzler@online.de>
  * @copyright MIT License - see the LICENSE file for details
  */
 class FormCheck extends FormInput

@@ -7,7 +7,7 @@ namespace SKien\Formgenerator;
  * Static Text element.
  *
  * @package Formgenerator
- * @author Stefanius <s.kien@online.de>
+ * @author Stefanius <s.kientzler@online.de>
  * @copyright MIT License - see the LICENSE file for details
  */
 class FormStatic extends FormElement

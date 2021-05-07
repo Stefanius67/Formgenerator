@@ -11,7 +11,7 @@ use SKien\Formgenerator\ArrayFormData;
 use SKien\Formgenerator\FormFlags;
 
 /**
- * @author Stefanius <s.kien@online.de>
+ * @author Stefanius <s.kientzler@online.de>
  * @copyright MIT License - see the LICENSE file for details
  */
 class FormCKEditTest extends TestCase

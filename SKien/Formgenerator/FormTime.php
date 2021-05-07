@@ -9,7 +9,7 @@ namespace SKien\Formgenerator;
  * - field will be added to JS form validation
  *
  * @package Formgenerator
- * @author Stefanius <s.kien@online.de>
+ * @author Stefanius <s.kientzler@online.de>
  * @copyright MIT License - see the LICENSE file for details
  */
 class FormTime extends FormInput

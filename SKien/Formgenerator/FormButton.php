@@ -7,7 +7,7 @@ namespace SKien\Formgenerator;
  * HTML form button element (inpt type="button")
  *
  * @package Formgenerator
- * @author Stefanius <s.kien@online.de>
+ * @author Stefanius <s.kientzler@online.de>
  * @copyright MIT License - see the LICENSE file for details
  */
 class FormButton extends FormInput

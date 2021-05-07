@@ -6,7 +6,7 @@ namespace SKien\Formgenerator;
  * as form data to the formgenerator
  *
  * @package Formgenerator
- * @author Stefanius <s.kien@online.de>
+ * @author Stefanius <s.kientzler@online.de>
  * @copyright MIT License - see the LICENSE file for details
  */
 interface FormDataInterface

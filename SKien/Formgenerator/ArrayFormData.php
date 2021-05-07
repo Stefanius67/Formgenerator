@@ -5,7 +5,7 @@ namespace SKien\Formgenerator;
  * Data Class for the FormGenerator that can be initialized with arrays.
  *
  * @package Formgenerator
- * @author Stefanius <s.kien@online.de>
+ * @author Stefanius <s.kientzler@online.de>
  * @copyright MIT License - see the LICENSE file for details
  */
 class ArrayFormData extends AbstractFormData

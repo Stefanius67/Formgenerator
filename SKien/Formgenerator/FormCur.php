@@ -10,7 +10,7 @@ namespace SKien\Formgenerator;
  * - Currency symbol can be appended
  *
  * @package Formgenerator
- * @author Stefanius <s.kien@online.de>
+ * @author Stefanius <s.kientzler@online.de>
  * @copyright MIT License - see the LICENSE file for details
 */
 class FormCur extends FormFloat

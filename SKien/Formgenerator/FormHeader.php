@@ -7,7 +7,7 @@ namespace SKien\Formgenerator;
  * Class to display a header line inside of the form.
  *
  * @package Formgenerator
- * @author Stefanius <s.kien@online.de>
+ * @author Stefanius <s.kientzler@online.de>
  * @copyright MIT License - see the LICENSE file for details
  */
 class FormHeader extends FormElement

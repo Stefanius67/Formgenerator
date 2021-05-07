@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 use SKien\Formgenerator\FormScript;
 
 /**
- * @author Stefanius <s.kien@online.de>
+ * @author Stefanius <s.kientzler@online.de>
  * @copyright MIT License - see the LICENSE file for details
  */
 class FormScriptTest extends TestCase

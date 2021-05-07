@@ -8,7 +8,7 @@ use SKien\Formgenerator\FormCanvas;
 use SKien\Formgenerator\FormLine;
 
 /**
- * @author Stefanius <s.kien@online.de>
+ * @author Stefanius <s.kientzler@online.de>
  * @copyright MIT License - see the LICENSE file for details
  */
 class FormCanvasTest extends TestCase

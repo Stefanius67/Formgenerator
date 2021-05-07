@@ -14,7 +14,7 @@ namespace SKien\Formgenerator;
  *
  * @package Formgenerator
  * @version 1.1.0
- * @author Stefanius <s.kien@online.de>
+ * @author Stefanius <s.kientzler@online.de>
  * @copyright MIT License - see the LICENSE file for details
 */
 class FormFloat extends FormInput

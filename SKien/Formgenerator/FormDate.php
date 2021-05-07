@@ -8,7 +8,7 @@ namespace SKien\Formgenerator;
  * - size always 10
  *
  * @package Formgenerator
- * @author Stefanius <s.kien@online.de>
+ * @author Stefanius <s.kientzler@online.de>
  * @copyright MIT License - see the LICENSE file for details
  */
 class FormDate extends FormInput
