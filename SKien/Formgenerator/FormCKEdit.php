@@ -94,7 +94,23 @@ class FormCKEdit extends FormTextArea
         $this->strBodyID = 'editarea';
         $this->lToolbar = self::TB_CONTENT;
     } 
-
+    
+    /**
+     * {@inheritDoc}
+     * @see \SKien\Formgenerator\FormElement::fromXML()
+     */
+    static public function fromXML(\DOMElement $oXMLElement, FormCollection $oFormParent) : ?FormElement
+    {
+        $strName = self::getAttribString($oXMLElement, 'name', '');
+        $iRows = self::getAttribInt($oXMLElement, 'rows', 10);
+        $strWidth = self::getAttribString($oXMLElement, 'width', '100%');
+        $wFlags = self::getAttribFlags($oXMLElement);
+        $oFormElement = new self($strName, $iRows, $strWidth, $wFlags);
+        $oFormParent->add($oFormElement);
+        $oFormElement->readAdditionalXML($oXMLElement);
+        return $oFormElement;
+    }
+    
     /**
      * Set the CSS file to use in the edit area.
      * @param string $strContentsCss

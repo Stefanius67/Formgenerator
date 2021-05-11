@@ -40,7 +40,42 @@ class FormFieldSet extends FormCollection
         $this->iType = $iType;
         $this->iImageHeight = -1;
     }
+    
+    /**
+     * {@inheritDoc}
+     * @see \SKien\Formgenerator\FormElement::fromXML()
+     */
+    static public function fromXML(\DOMElement $oXMLElement, FormCollection $oFormParent) : ?FormElement
+    {
+        $strLegend = self::getAttribString($oXMLElement, 'legend', '');
+        $strId = self::getAttribString($oXMLElement, 'id', '');
+        $iType = self::TEXT;
+        $strType = self::getAttribString($oXMLElement, 'type', 'TEXT');
+        $strConstName = 'self::' . strtoupper($strType);
+        if (defined($strConstName)) {
+            $iType = constant($strConstName);
+        } else {
+            trigger_error('Unknown Constant [' . $strConstName . '] for the FieldSet-Type property!', E_USER_WARNING );
+        }
+        $oFormElement = new self($strLegend, $strId, $iType);
+        $oFormParent->add($oFormElement);
+        $oFormElement->readAdditionalXML($oXMLElement);
 
+        return $oFormElement;
+    }
+    
+    /**
+     * {@inheritDoc}
+     * @see \SKien\Formgenerator\FormElement::readAdditionalXML()
+     */
+    public function readAdditionalXML(\DOMElement $oXMLElement) : void
+    {
+        parent::readAdditionalXML($oXMLElement);
+        if (($iImageHeight = self::getAttribInt($oXMLElement, 'imageheight')) !== null) {
+            $this->setImageHeight($iImageHeight);
+        }
+    }
+    
     /**
      * Set height of legend image in pixels.
      * The default-height is 12px.

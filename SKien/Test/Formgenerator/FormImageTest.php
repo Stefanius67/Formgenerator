@@ -78,7 +78,7 @@ class FormImageTest extends TestCase
         $oImage = new FormImage('imgImage', 'image.png', 'testfunc()');
         $oFL->add($oImage);
         $strHTML = $oImage->getHTML();
-        $this->assertNotFalse(strpos($strHTML, 'onclick="testfunc();"'));
+        $this->assertNotFalse(strpos($strHTML, 'onclick="testfunc()"'));
     }
     
     /**

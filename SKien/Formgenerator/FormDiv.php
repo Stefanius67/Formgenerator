@@ -53,7 +53,29 @@ class FormDiv extends FormCollection
             break;
         }
     }
-
+    
+    /**
+     * {@inheritDoc}
+     * @see \SKien\Formgenerator\FormElement::fromXML()
+     */
+    static public function fromXML(\DOMElement $oXMLElement, FormCollection $oFormParent) : ?FormElement
+    {
+        $iAlign = self::CLEAR;
+        $strAlign = self::getAttribString($oXMLElement, 'align', 'CLEAR');
+        $strConstName = 'self::' . strtoupper($strAlign);
+        if (defined($strConstName)) {
+            $iAlign = constant($strConstName);
+        } else {
+            trigger_error('Unknown Constant [' . $strConstName . '] for the Div-Alignment property!', E_USER_WARNING );
+        }
+        $iWidth = self::getAttribInt($oXMLElement, 'width', 0);
+        $oFormElement = new self($iWidth, $iAlign);
+        $oFormParent->add($oFormElement);
+        $oFormElement->readAdditionalXML($oXMLElement);
+        
+        return $oFormElement;
+    }
+    
     /**
      * Build the HTML-notation for the div element.
      */

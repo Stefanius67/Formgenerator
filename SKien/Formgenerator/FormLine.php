@@ -35,7 +35,25 @@ class FormLine extends FormCollection
         $this->iCol = 0;
         $this->strID = '';
     }
-
+    
+    /**
+     * {@inheritDoc}
+     * @see \SKien\Formgenerator\FormElement::fromXML()
+     */
+    static public function fromXML(\DOMElement $oXMLElement, FormCollection $oFormParent) : ?FormElement
+    {
+        if (self::getAttribString($oXMLElement, 'horzline') !== null) {
+            $strLabel = self::HR;
+        } else {
+            $strLabel = self::getAttribString($oXMLElement, 'label', '&nbsp;');
+        }
+        $oFormElement = new self($strLabel);
+        $oFormParent->add($oFormElement);
+        $oFormElement->readAdditionalXML($oXMLElement);
+        
+        return $oFormElement;
+    }
+    
     /**
      * Add a child to the line.
      * next col index is passed to the element and the col count is inkremented with 

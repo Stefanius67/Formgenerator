@@ -3,15 +3,15 @@ declare(strict_types=1);
 
 require_once '../autoloader.php';
 
+use SKien\Config\JSONConfig;
+use SKien\Formgenerator\ArrayFormData;
 use SKien\Formgenerator\FormGenerator;
 use SKien\Formgenerator\FormInput;
 use SKien\Formgenerator\FormFlags;
-use SKien\Formgenerator\ArrayFormData;
 use SKien\Formgenerator\FormSelect;
 use SKien\Formgenerator\FormStatic;
 use SKien\Formgenerator\FormDate;
 use SKien\Formgenerator\FormTime;
-use SKien\Config\JSONConfig;
 use SKien\Formgenerator\FormButtonBox;
 use SKien\Formgenerator\FormCur;
 use SKien\Formgenerator\FormColor;
@@ -54,6 +54,7 @@ $oFG->setAction('formaction.php');
 $oFG->setTarget('_blank');
 // $oFG->setReadOnly(true);
 // $oFG->setDebugMode(true);
+
 $oFG->setColWidth([20, 80], '%');
 
 $oFG->add(new FormHeader('Personnel data sheet', 1));

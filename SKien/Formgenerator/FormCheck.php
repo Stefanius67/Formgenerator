@@ -34,6 +34,32 @@ class FormCheck extends FormInput
     }
     
     /**
+     * {@inheritDoc}
+     * @see \SKien\Formgenerator\FormElement::fromXML()
+     */
+    static public function fromXML(\DOMElement $oXMLElement, FormCollection $oFormParent) : ?FormElement
+    {
+        $strName = self::getAttribString($oXMLElement, 'name', '');
+        $wFlags = self::getAttribFlags($oXMLElement);
+        $oFormElement = new self($strName, $wFlags);
+        $oFormParent->add($oFormElement);
+        $oFormElement->readAdditionalXML($oXMLElement);
+        return $oFormElement;
+    }
+    
+    /**
+     * {@inheritDoc}
+     * @see \SKien\Formgenerator\FormElement::readAdditionalXML()
+     */
+    public function readAdditionalXML(\DOMElement $oXMLElement) : void
+    {
+        parent::readAdditionalXML($oXMLElement);
+        if (($strBtnValue = self::getAttribString($oXMLElement, 'btnvalue')) !== null) {
+            $this->setBtnValue($strBtnValue);
+        }
+    }
+    
+    /**
      * Set the value that is posted, when the element is checked.
      * @param string $strBtnValue
      */

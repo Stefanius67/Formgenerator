@@ -30,6 +30,21 @@ class FormColor extends FormInput
     }
     
     /**
+     * {@inheritDoc}
+     * @see \SKien\Formgenerator\FormElement::fromXML()
+     */
+    static public function fromXML(\DOMElement $oXMLElement, FormCollection $oFormParent) : ?FormElement
+    {
+        $strName = self::getAttribString($oXMLElement, 'name', '');
+        $strSize = self::getAttribString($oXMLElement, 'size', '6');
+        $wFlags = self::getAttribFlags($oXMLElement);
+        $oFormElement = new self($strName, $strSize, $wFlags);
+        $oFormParent->add($oFormElement);
+        $oFormElement->readAdditionalXML($oXMLElement);
+        return $oFormElement;
+    }
+    
+    /**
      * Pass some presets for the color picker to JS.
      * {@inheritDoc}
      * @see \SKien\Formgenerator\FormElement::onParentSet()

@@ -14,8 +14,6 @@ class FormButton extends FormInput
 {
     /** @var string button text     */
     protected string $strBtnText;
-    /** @var string onClick() JS handler     */
-    protected string $strOnClick;
 
     /**
      * Create button element.
@@ -33,13 +31,28 @@ class FormButton extends FormInput
         $this->oFlags = new FormFlags($wFlags);
         $this->strBtnText = $strBtnText;
         $this->strID = $strId;
-        $this->strOnClick = $strOnClick;
+        $this->addAttribute('onclick', $strOnClick);
         
         if (strlen($strStyle) > 0) {
-            $this->aStyle = self::parseStyle($strStyle);
+            $this->parseStyle($strStyle);
         }
     }
-
+    
+    /**
+     * {@inheritDoc}
+     * @see \SKien\Formgenerator\FormElement::fromXML()
+     */
+    static public function fromXML(\DOMElement $oXMLElement, FormCollection $oFormParent) : ?FormElement
+    {
+        $strId = self::getAttribString($oXMLElement, 'id', '');
+        $strText = self::getAttribString($oXMLElement, 'text', '');
+        $wFlags = self::getAttribFlags($oXMLElement);
+        $oFormElement = new self($strId, $strText, '', $wFlags);
+        $oFormParent->add($oFormElement);
+        $oFormElement->readAdditionalXML($oXMLElement);
+        return $oFormElement;
+    }
+    
     /**
      * Build the HTML-notation for the button.
      * @return string
@@ -58,9 +71,6 @@ class FormButton extends FormInput
         $strHTML .= $this->buildID();
         $strHTML .= $this->buildStyle();
         $strHTML .= $this->buildAttributes();
-        if (!empty($this->strOnClick)) {
-            $strHTML .= ' onclick="' . $this->strOnClick . ';" ';
-        }
         $strHTML .= ' value="' . $this->strBtnText . '"></div>' . PHP_EOL;
 
         return $strHTML;

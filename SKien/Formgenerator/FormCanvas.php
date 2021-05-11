@@ -31,7 +31,22 @@ class FormCanvas extends FormInput
         $this->addAttribute('height', (string)$iHeight);
         $this->addAttribute('width', (string)$iWidth);
     }
-
+    
+    /**
+     * {@inheritDoc}
+     * @see \SKien\Formgenerator\FormElement::fromXML()
+     */
+    static public function fromXML(\DOMElement $oXMLElement, FormCollection $oFormParent) : ?FormElement
+    {
+        $strId = self::getAttribString($oXMLElement, 'id', '');
+        $iWidth = self::getAttribInt($oXMLElement, 'width', 100);
+        $iHeight = self::getAttribInt($oXMLElement, 'height', 100);
+        $oFormElement = new self($strId, $iWidth, $iHeight);
+        $oFormParent->add($oFormElement);
+        $oFormElement->readAdditionalXML($oXMLElement);
+        return $oFormElement;
+    }
+    
     /**
      * build the HTML-notation for the cancas element
      *

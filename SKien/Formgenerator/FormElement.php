@@ -15,6 +15,8 @@ namespace SKien\Formgenerator;
  */
 abstract class FormElement implements FormElementInterface
 {
+    use XMLHelper;
+    
     /** @var FormGenerator the FormGenerator this element belongs to     */
     protected FormGenerator $oFG;
     /** @var FormCollection the parent element - only FormGenerator must has no parent     */
@@ -42,6 +44,39 @@ abstract class FormElement implements FormElementInterface
     public function __construct(int $wFlags)
     {
         $this->oFlags = new FormFlags($wFlags);
+    }
+    
+    /**
+     * Create the form element from the given XML-element.
+     * Because several subclasses of FormElement has different constructors, we
+     * need one uniform static function to be able to create all elements
+     * independent from the subclass within a loop.
+     * In the derived classes this function must return an instance of the
+     * requested class.
+     * @param \DOMElement $oXMLElement  the XML-element containing the information
+     * @param FormCollection $oFormParent   the form parent of the element to create
+     * @return FormElement|NULL the created element
+     */
+    abstract static public function fromXML(\DOMElement $oXMLElement, FormCollection $oFormParent) : ?FormElement;
+    
+    /**
+     * In addition to the parameters needed by the constructor of each separate class,
+     * some further attribs can be loaded after creation.
+     * In contrast to the static fromXML() method, this method can be defined in parent
+     * classes for general attributes.
+     * In the derived classes this method should called it's parent down through all
+     * parent-classes!
+     * @param \DOMElement $oXMLElement
+     */
+    public function readAdditionalXML(\DOMElement $oXMLElement) : void
+    {
+        if (($strStyle = self::getAttribString($oXMLElement, 'style')) !== null) {
+            $this->parseStyle($strStyle);
+        }
+        if (($strCSSClass = self::getAttribString($oXMLElement, 'class')) !== null) {
+            $this->addClass($strCSSClass);
+        }
+        $this->readElementAttributes($oXMLElement);
     }
     
     /**
@@ -319,22 +354,21 @@ abstract class FormElement implements FormElementInterface
     /**
      * Parse a given style attribute into the components it contains.
      * @param string $strStyle
-     * @return array
      */
-    static public function parseStyle($strStyle) : array
+    protected function parseStyle($strStyle) : void
     {
-        $aStyle = array();
+        if ($this->aStyle === null) {
+            $this->aStyle = array();
+        }
         $aStyles = explode(';', trim($strStyle));
         foreach ($aStyles as $strStyleDef) {
             $aStyleDef = explode(':', trim($strStyleDef));
             if (count($aStyleDef) == 2) {
                 $strName = trim($aStyleDef[0]);
-                $strValue = trim($aStyleDef[1]);
-                $strValue = rtrim($strValue, ';');
-                $aStyle[$strName] = $strValue;
+                $strValue = str_replace(';', '', $aStyleDef[1]);
+                $this->aStyle[$strName] = trim($strValue);
             }
         }
-        return $aStyle;
     }
     
 }

@@ -47,6 +47,8 @@ class FormGenerator extends FormCollection
     /**
      * Create a FormGenerator.
      * Set some values to default.
+     * @param FormDataInterface $oData
+     * @param string $strID
      */
     public function __construct(?FormDataInterface $oData, string $strID = 'FormGenerator') 
     {
@@ -62,6 +64,17 @@ class FormGenerator extends FormCollection
             $this->strAction .= '?' . $_SERVER['QUERY_STRING'];
         }
         $this->bDebugMode = (error_reporting() & (E_USER_ERROR | E_USER_WARNING)) != 0; 
+    }
+    
+    /**
+     * <big><b>!!!  The FormGenerator itself can't be created direct through the fromXML() - method !!!</b></big>
+     * {@inheritDoc}
+     * @see \SKien\Formgenerator\FormElement::fromXML()
+     */
+    static public function fromXML(\DOMElement $oXMLElement, FormCollection $oFormParent) : ?FormElement
+    {
+        trigger_error( 'Illegal call of static method fromXML(\DOMElement $oXMLElement, FormCollection $oFormParent)!', E_USER_ERROR);
+        return null;
     }
     
     /**

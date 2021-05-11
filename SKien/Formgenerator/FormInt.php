@@ -17,12 +17,37 @@ class FormInt extends FormInput
     
     /**
      * @param string $strName   name of input
-     * @param int $iSize     size in digits
+     * @param int|string $iSize     size in digits
      * @param int $wFlags    flags (default = 0)
      */
-    public function __construct(string $strName, int $iSize, int $wFlags = 0) 
+    public function __construct(string $strName, $iSize, int $wFlags = 0) 
     {
         parent::__construct($strName, $iSize, $wFlags);
+    }
+    
+    /**
+     * {@inheritDoc}
+     * @see \SKien\Formgenerator\FormElement::fromXML()
+     */
+    static public function fromXML(\DOMElement $oXMLElement, FormCollection $oFormParent) : ?FormElement
+    {
+        $strName = self::getAttribString($oXMLElement, 'name', '');
+        $strSize = self::getAttribString($oXMLElement, 'size', '');
+        $wFlags = self::getAttribFlags($oXMLElement);
+        $oFormElement = new self($strName, $strSize, $wFlags);
+        $oFormParent->add($oFormElement);
+        $oFormElement->readAdditionalXML($oXMLElement);
+        return $oFormElement;
+    }
+    
+    /**
+     * {@inheritDoc}
+     * @see \SKien\Formgenerator\FormElement::readAdditionalXML()
+     */
+    public function readAdditionalXML(\DOMElement $oXMLElement) : void
+    {
+        parent::readAdditionalXML($oXMLElement);
+        $this->setMinMax(self::getAttribInt($oXMLElement, 'min'), self::getAttribInt($oXMLElement, 'max'));
     }
     
     /**

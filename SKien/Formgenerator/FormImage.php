@@ -29,8 +29,6 @@ class FormImage extends FormElement
     protected $img;
     /** @var string CSS styles     */
     protected string $strStyle;
-    /** @var string JS onclick() handler     */
-    protected string $strOnClick;
     /** @var string image is bound to this input element    */
     protected string $strBoundTo = '';
     /** @var string image to use, if no image set    */
@@ -49,13 +47,47 @@ class FormImage extends FormElement
         parent::__construct($wFlags);
         $this->strName = $strName;
         $this->img = $img;
-        $this->strOnClick = $strOnClick;
+        $this->addAttribute('onclick', $strOnClick);
 
         if (strlen($strStyle) > 0) {
-            $this->aStyle = self::parseStyle($strStyle);
+            $this->parseStyle($strStyle);
         }
         if (!isset($this->aStyle['vertical-align'])) {
             $this->addStyle('vertical-align', 'text-bottom');
+        }
+    }
+    
+    /**
+     * {@inheritDoc}
+     * @see \SKien\Formgenerator\FormElement::fromXML()
+     */
+    static public function fromXML(\DOMElement $oXMLElement, FormCollection $oFormParent) : ?FormElement
+    {
+        $strName = self::getAttribString($oXMLElement, 'name', '');
+        $image = self::getAttribString($oXMLElement, 'image', '');
+        $strConstName = 'self::' . strtoupper($image);
+        if (defined($strConstName)) {
+            $image = constant($strConstName);
+        }
+        $wFlags = self::getAttribFlags($oXMLElement);
+        $oFormElement = new self($strName, $image, '', $wFlags);
+        $oFormParent->add($oFormElement);
+        $oFormElement->readAdditionalXML($oXMLElement);
+        return $oFormElement;
+    }
+    
+    /**
+     * {@inheritDoc}
+     * @see \SKien\Formgenerator\FormElement::readAdditionalXML()
+     */
+    public function readAdditionalXML(\DOMElement $oXMLElement) : void
+    {
+        parent::readAdditionalXML($oXMLElement);
+        if (($strBindTo = self::getAttribString($oXMLElement, 'bindto')) !== null) {
+            $this->bindTo($strBindTo);
+        }
+        if (($strDefault = self::getAttribString($oXMLElement, 'default')) !== null) {
+            $this->setDefault($strDefault);
         }
     }
     
@@ -98,9 +130,6 @@ class FormImage extends FormElement
             $strHTML .= ' id="' . $this->strName . '"';
         }
         $strHTML .= $this->buildStyle();
-        if (!empty($this->strOnClick)) {
-            $strHTML .= ' onclick="' . $this->strOnClick . ';"';
-        }
         $strHTML .= $this->buildClass();
         $strHTML .= $this->buildID();
         $strHTML .= $this->buildAttributes();

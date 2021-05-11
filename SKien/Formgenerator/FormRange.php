@@ -37,6 +37,35 @@ class FormRange extends FormInput
     }
     
     /**
+     * {@inheritDoc}
+     * @see \SKien\Formgenerator\FormElement::fromXML()
+     */
+    static public function fromXML(\DOMElement $oXMLElement, FormCollection $oFormParent) : ?FormElement
+    {
+        $strName = self::getAttribString($oXMLElement, 'name', '');
+        $strWidth = self::getAttribString($oXMLElement, 'width', '');
+        $iMin = self::getAttribInt($oXMLElement, 'min', 0);
+        $iMax = self::getAttribInt($oXMLElement, 'max', 100);
+        $wFlags = self::getAttribFlags($oXMLElement);
+        $oFormElement = new self($strName, $strWidth, $iMin, $iMax, $wFlags);
+        $oFormParent->add($oFormElement);
+        $oFormElement->readAdditionalXML($oXMLElement);
+        return $oFormElement;
+    }
+    
+    /**
+     * {@inheritDoc}
+     * @see \SKien\Formgenerator\FormElement::readAdditionalXML()
+     */
+    public function readAdditionalXML(\DOMElement $oXMLElement) : void
+    {
+        parent::readAdditionalXML($oXMLElement);
+        if (($iStep = self::getAttribInt($oXMLElement, 'step')) !== null) {
+            $this->setStep($iStep);
+        }
+    }
+    
+    /**
      * Set min/max value accepted by input field. 
      * @param int $iMin - set to null, if no limitation wanted
      * @param int $iMax - set to null, if no limitation wanted

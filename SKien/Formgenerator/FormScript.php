@@ -20,7 +20,19 @@ class FormScript extends FormElement
         parent::__construct(0);
         $this->strScript = $strScript;
     }
-
+    
+    /**
+     * {@inheritDoc}
+     * @see \SKien\Formgenerator\FormElement::fromXML()
+     */
+    static public function fromXML(\DOMElement $oXMLElement, FormCollection $oFormParent) : ?FormElement
+    {
+        $strScript = $oXMLElement->textContent;
+        $oFormElement = new self($strScript);
+        $oFormParent->add($oFormElement);
+        return $oFormElement;
+    }
+    
     /**
      * Insert the script at current position of the form.
      * @return string

@@ -31,13 +31,29 @@ class FormFloat extends FormInput
     /**
      * Creates input field for float values.
      * @param string $strName
-     * @param int $iSize
+     * @param int|string $iSize
      * @param int $wFlags    default value = 0
      */
-    public function __construct(string $strName, int $iSize, int $iDecimalPoints, int $wFlags = 0) 
+    public function __construct(string $strName, $iSize, int $iDecimalPoints, int $wFlags = 0) 
     {
         parent::__construct($strName, $iSize, $wFlags);
         $this->iDec = $iDecimalPoints;
+    }
+    
+    /**
+     * {@inheritDoc}
+     * @see \SKien\Formgenerator\FormElement::fromXML()
+     */
+    static public function fromXML(\DOMElement $oXMLElement, FormCollection $oFormParent) : ?FormElement
+    {
+        $strName = self::getAttribString($oXMLElement, 'name', '');
+        $strSize = self::getAttribString($oXMLElement, 'size', '');
+        $iDecimalPoints = self::getAttribInt($oXMLElement, 'digits', 1);
+        $wFlags = self::getAttribFlags($oXMLElement);
+        $oFormElement = new self($strName, $strSize, $iDecimalPoints, $wFlags);
+        $oFormParent->add($oFormElement);
+        $oFormElement->readAdditionalXML($oXMLElement);
+        return $oFormElement;
     }
     
     /**

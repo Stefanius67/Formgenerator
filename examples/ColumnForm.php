@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 require_once '../autoloader.php';
 
+use SKien\Formgenerator\ArrayFormData;
+use SKien\Config\JSONConfig;
 use SKien\Formgenerator\FormGenerator;
 use SKien\Formgenerator\FormInput;
 use SKien\Formgenerator\FormFlags;
-use SKien\Formgenerator\ArrayFormData;
-use SKien\Config\JSONConfig;
 use SKien\Formgenerator\FormButtonBox;
 use SKien\Formgenerator\FormHeader;
 use SKien\Formgenerator\FormDiv;
@@ -50,6 +50,7 @@ $oFG = new FormGenerator($oData);
 $oFG->setConfig($oConfig);
 $oFG->setAction('formaction.php');
 $oFG->setTarget('_blank');
+
 $oFG->setColWidth([25, 75], '%');
 
 $oFG->add(new FormHeader('Personnel data sheet', 1));

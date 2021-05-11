@@ -28,6 +28,18 @@ abstract class FormCollection extends FormElement
     }
     
     /**
+     * {@inheritDoc}
+     * @see \SKien\Formgenerator\FormElement::readAdditionalXML()
+     */
+    public function readAdditionalXML(\DOMElement $oXMLElement) : void
+    {
+        $strWidthDim = self::getAttribString($oXMLElement, 'widthdim', '%');
+        if (($aColWidth = self::getAttribIntArray($oXMLElement, 'colwidth')) !== null) {
+            $this->setColWidth($aColWidth, $strWidthDim);
+        }
+    }
+        
+    /**
      * Add a child to this element.
      * @param FormElementInterface $oElement
      * @return FormElementInterface

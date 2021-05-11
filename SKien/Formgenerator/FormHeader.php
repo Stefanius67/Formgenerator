@@ -30,6 +30,19 @@ class FormHeader extends FormElement
     }
     
     /**
+     * {@inheritDoc}
+     * @see \SKien\Formgenerator\FormElement::fromXML()
+     */
+    static public function fromXML(\DOMElement $oXMLElement, FormCollection $oFormParent) : ?FormElement
+    {
+        $strText = self::getAttribString($oXMLElement, 'text', '');
+        $iLevel = self::getAttribInt($oXMLElement, 'level', 2);
+        $oFormElement = new self($strText, $iLevel);
+        $oFormParent->add($oFormElement);
+        return $oFormElement;
+    }
+    
+    /**
      * Build the HTML-notation for the header text
      * @return string
      */

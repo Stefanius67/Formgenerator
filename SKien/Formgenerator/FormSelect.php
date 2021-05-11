@@ -39,6 +39,33 @@ class FormSelect extends FormInput
     }
     
     /**
+     * {@inheritDoc}
+     * @see \SKien\Formgenerator\FormElement::fromXML()
+     */
+    static public function fromXML(\DOMElement $oXMLElement, FormCollection $oFormParent) : ?FormElement
+    {
+        $strName = self::getAttribString($oXMLElement, 'name', '');
+        $iSize = self::getAttribInt($oXMLElement, 'size', 1);
+        $wFlags = self::getAttribFlags($oXMLElement);
+        $oFormElement = new self($strName, $iSize, $wFlags);
+        $oFormParent->add($oFormElement);
+        $oFormElement->readAdditionalXML($oXMLElement);
+        return $oFormElement;
+    }
+    
+    /**
+     * {@inheritDoc}
+     * @see \SKien\Formgenerator\FormElement::readAdditionalXML()
+     */
+    public function readAdditionalXML(\DOMElement $oXMLElement) : void
+    {
+        parent::readAdditionalXML($oXMLElement);
+        if (($strSelectBtnText = self::getAttribString($oXMLElement, 'selectbtntext')) !== null) {
+            $this->setSelectBtnText($strSelectBtnText);
+        }
+    }
+    
+    /**
      * Build the HTML code for the element
      * @return string
      */

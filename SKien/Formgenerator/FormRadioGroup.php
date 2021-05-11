@@ -27,6 +27,20 @@ class FormRadioGroup extends FormInput
     }
     
     /**
+     * {@inheritDoc}
+     * @see \SKien\Formgenerator\FormElement::fromXML()
+     */
+    static public function fromXML(\DOMElement $oXMLElement, FormCollection $oFormParent) : ?FormElement
+    {
+        $strName = self::getAttribString($oXMLElement, 'name', '');
+        $wFlags = self::getAttribFlags($oXMLElement);
+        $oFormElement = new self($strName, $wFlags);
+        $oFormParent->add($oFormElement);
+        $oFormElement->readAdditionalXML($oXMLElement);
+        return $oFormElement;
+    }
+    
+    /**
      * Build the HTML-markup for the checkbox.
      * Checkbox is a special case, as it behaves particularly with regard to the transferred 
      * value and does not support read-only mode.

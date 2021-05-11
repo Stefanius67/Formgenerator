@@ -54,7 +54,7 @@ class FormButtonTest extends TestCase
         $oBtn = new FormButton('btnSelect', 'Select', 'testfunc()');
         $oFL->add($oBtn);
         $strHTML = $oBtn->getHTML();
-        $this->assertNotFalse(strpos($strHTML, 'onclick="testfunc();"'));
+        $this->assertNotFalse(strpos($strHTML, 'onclick="testfunc()"'));
     }
     
     /**

@@ -32,7 +32,24 @@ class FormTextArea extends FormInput
         $this->iRows = $iRows;
         $this->addStyle('width', $strWidth);
     }
-
+    
+    /**
+     * {@inheritDoc}
+     * @see \SKien\Formgenerator\FormElement::fromXML()
+     */
+    static public function fromXML(\DOMElement $oXMLElement, FormCollection $oFormParent) : ?FormElement
+    {
+        $strName = self::getAttribString($oXMLElement, 'name', '');
+        $iCols = self::getAttribInt($oXMLElement, 'cols', 80);
+        $iRows = self::getAttribInt($oXMLElement, 'rows', 10);
+        $strWidth = self::getAttribString($oXMLElement, 'width', '95%');
+        $wFlags = self::getAttribFlags($oXMLElement);
+        $oFormElement = new self($strName, $iCols, $iRows, $strWidth, $wFlags);
+        $oFormParent->add($oFormElement);
+        $oFormElement->readAdditionalXML($oXMLElement);
+        return $oFormElement;
+    }
+    
     /**
      * Build the HTML-notation for the textarea
      * @return string

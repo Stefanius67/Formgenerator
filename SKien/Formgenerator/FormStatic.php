@@ -27,6 +27,20 @@ class FormStatic extends FormElement
     }
     
     /**
+     * {@inheritDoc}
+     * @see \SKien\Formgenerator\FormElement::fromXML()
+     */
+    static public function fromXML(\DOMElement $oXMLElement, FormCollection $oFormParent) : ?FormElement
+    {
+        $strText = self::getAttribString($oXMLElement, 'text', '');
+        $wFlags = self::getAttribFlags($oXMLElement);
+        $oFormElement = new self($strText, $wFlags);
+        $oFormParent->add($oFormElement);
+
+        return $oFormElement;
+    }
+    
+    /**
      * Build the HTML-notation for the static text
      * @return string
      */

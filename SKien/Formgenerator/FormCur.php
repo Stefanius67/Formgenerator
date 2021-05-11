@@ -18,12 +18,27 @@ class FormCur extends FormFloat
     /**
      * Creates input field for currency values.
      * @param string $strName
-     * @param int $iSize
+     * @param int|string $iSize
      * @param int $wFlags    default value = 0
      */
-    public function __construct(string $strName, int $iSize, int $wFlags = 0) 
+    public function __construct(string $strName, $iSize, int $wFlags = 0) 
     {
         parent::__construct($strName, $iSize, 2, $wFlags);
+    }
+    
+    /**
+     * {@inheritDoc}
+     * @see \SKien\Formgenerator\FormElement::fromXML()
+     */
+    static public function fromXML(\DOMElement $oXMLElement, FormCollection $oFormParent) : ?FormElement
+    {
+        $strName = self::getAttribString($oXMLElement, 'name', '');
+        $strSize = self::getAttribString($oXMLElement, 'size', '');
+        $wFlags = self::getAttribFlags($oXMLElement);
+        $oFormElement = new self($strName, $strSize, $wFlags);
+        $oFormParent->add($oFormElement);
+        $oFormElement->readAdditionalXML($oXMLElement);
+        return $oFormElement;
     }
     
     /**

@@ -47,6 +47,42 @@ class FormInput extends FormElement
     }
     
     /**
+     * {@inheritDoc}
+     * @see \SKien\Formgenerator\FormElement::fromXML()
+     */
+    static public function fromXML(\DOMElement $oXMLElement, FormCollection $oFormParent) : ?FormElement
+    {
+        if ($oXMLElement->nodeName !== 'Input') {
+            trigger_error('Try to create Form' . $oXMLElement->nodeName . ' - Element from XML without defined method!', E_USER_ERROR);
+        }
+        $strName = self::getAttribString($oXMLElement, 'name', '');
+        $strSize = self::getAttribString($oXMLElement, 'size', '');
+        $wFlags = self::getAttribFlags($oXMLElement);
+        $oFormElement = new self($strName, $strSize, $wFlags);
+        $oFormParent->add($oFormElement);
+        $oFormElement->readAdditionalXML($oXMLElement);
+        return $oFormElement;
+    }
+    
+    /**
+     * {@inheritDoc}
+     * @see \SKien\Formgenerator\FormElement::readAdditionalXML()
+     */
+    public function readAdditionalXML(\DOMElement $oXMLElement) : void
+    {
+        parent::readAdditionalXML($oXMLElement);
+        if (($strSuffix = self::getAttribString($oXMLElement, 'suffix')) !== null) {
+            $this->setSuffix($strSuffix);
+        }
+        if (($strSelectImg = self::getAttribString($oXMLElement, 'selectimg')) !== null) {
+            $this->setSelectImg($strSelectImg, self::getAttribString($oXMLElement, 'selectimgtitle', ''));
+        }
+        if (($strExpandFolder = self::getAttribString($oXMLElement, 'expandfolder')) !== null) {
+            $this->setExpandFolder($strExpandFolder);
+        }
+    }
+    
+    /**
      * Set the maxlength attribute of the element.
      * @param int $iMaxLength
      */

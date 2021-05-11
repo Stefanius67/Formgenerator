@@ -52,6 +52,30 @@ class FormButtonBox extends FormElement
     }
     
     /**
+     * {@inheritDoc}
+     * @see \SKien\Formgenerator\FormElement::fromXML()
+     */
+    static public function fromXML(\DOMElement $oXMLElement, FormCollection $oFormParent) : ?FormElement
+    {
+        $iBtns = 0;
+        if (($aBtns = self::getAttribStringArray($oXMLElement, 'buttons')) !== null) {
+            foreach ($aBtns as $strBtn) {
+                $strConstName = 'self::' . strtoupper($strBtn);
+                if (defined($strConstName)) {
+                    $iBtns += constant($strConstName);
+                } else {
+                    trigger_error('Unknown Constant [' . $strConstName . '] for the Button property!', E_USER_WARNING );
+                }
+            }
+        }
+        $wFlags = self::getAttribFlags($oXMLElement);
+        $oFormElement = new self($iBtns, $wFlags);
+        $oFormParent->add($oFormElement);
+        $oFormElement->readAdditionalXML($oXMLElement); // TODO: support of custom buttons through XML
+        return $oFormElement;
+    }
+    
+    /**
      * Add custom button to the buttonbox.
      * Position of the button inside the box can be specified with the param $iAfterBtn: <ul>
      * <li> self::FIRST </li>
