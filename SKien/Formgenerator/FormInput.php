@@ -52,9 +52,11 @@ class FormInput extends FormElement
      */
     static public function fromXML(\DOMElement $oXMLElement, FormCollection $oFormParent) : ?FormElement
     {
+        /* only while development
         if ($oXMLElement->nodeName !== 'Input') {
             trigger_error('Try to create Form' . $oXMLElement->nodeName . ' - Element from XML without defined method!', E_USER_ERROR);
         }
+        */
         $strName = self::getAttribString($oXMLElement, 'name', '');
         $strSize = self::getAttribString($oXMLElement, 'size', '');
         $wFlags = self::getAttribFlags($oXMLElement);

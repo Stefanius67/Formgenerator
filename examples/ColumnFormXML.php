@@ -40,15 +40,20 @@ $oFG->setConfig($oConfig);
 $oFG->setAction('formaction.php');
 $oFG->setTarget('_blank');
 
-$oFG->loadXML('ColumnForm.xml');
+if ($oFG->loadXML('ColumnForm.xml') == XMLForm::E_OK) {
+    // isn't supported by XMLForm so far
+    $oFG->adjustColHeight('col1', 'col2');
+    
+    // generate HTML-markup and JS configuration data
+    $strFormHTML = $oFG->getForm();
+    $strStyleFromPHP = $oFG->getStyle();
+    $strConfigFromPHP = $oFG->getScript();
+} else {
+    $strFormHTML = $oFG->getErrorMsg();
+    $strStyleFromPHP = '';
+    $strConfigFromPHP = '';
+}
 
-// isn't supported by XMLForm so far
-$oFG->adjustColHeight('col1', 'col2');
-
-// generate HTML-markup and JS configuration data
-$strFormHTML = $oFG->getForm();
-$strStyleFromPHP = $oFG->getStyle();
-$strConfigFromPHP = $oFG->getScript();
 ?>
 <html>
 <head>
