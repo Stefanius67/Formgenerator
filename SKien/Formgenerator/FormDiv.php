@@ -66,7 +66,7 @@ class FormDiv extends FormCollection
         if (defined($strConstName)) {
             $iAlign = constant($strConstName);
         } else {
-            trigger_error('Unknown Constant [' . $strConstName . '] for the Div-Alignment property!', E_USER_WARNING );
+            trigger_error('Unknown Constant [' . $strConstName . '] for the Div-Alignment property!', E_USER_WARNING);
         }
         $iWidth = self::getAttribInt($oXMLElement, 'width', 0);
         $oFormElement = new self($iWidth, $iAlign);

@@ -64,7 +64,7 @@ class FormButtonBox extends FormElement
                 if (defined($strConstName)) {
                     $iBtns += constant($strConstName);
                 } else {
-                    trigger_error('Unknown Constant [' . $strConstName . '] for the Button property!', E_USER_WARNING );
+                    trigger_error('Unknown Constant [' . $strConstName . '] for the Button property!', E_USER_WARNING);
                 }
             }
         }

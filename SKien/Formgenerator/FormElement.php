@@ -76,7 +76,7 @@ abstract class FormElement implements FormElementInterface
         if (($strCSSClass = self::getAttribString($oXMLElement, 'class')) !== null) {
             $this->addClass($strCSSClass);
         }
-        $this->readElementAttributes($oXMLElement);
+        $this->aAttrib = $this->readElementAttributes($oXMLElement, $this->aAttrib);
     }
     
     /**

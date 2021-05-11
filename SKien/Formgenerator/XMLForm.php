@@ -63,12 +63,12 @@ class XMLForm extends FormGenerator
         if (!$oXMLParent->hasChildNodes()) {
             return $iResult;
         }
-        foreach($oXMLParent->childNodes as $oXMLChild) {
+        foreach ($oXMLParent->childNodes as $oXMLChild) {
             if (strtolower($oXMLChild->nodeName) == '#text') {
                 continue;
             }
             $strClassname = __NAMESPACE__ . '\Form' . $oXMLChild->nodeName;
-            if (class_exists($strClassname) && is_subclass_of($strClassname, __NAMESPACE__ . '\FormElement') ) {
+            if (class_exists($strClassname) && is_subclass_of($strClassname, __NAMESPACE__ . '\FormElement')) {
                 $oFormElement = $strClassname::fromXML($oXMLChild, $oFormParent);
                 // recursive call for collection element (div, fieldset, line)
                 if ($oFormElement instanceof FormCollection) {

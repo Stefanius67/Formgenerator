@@ -20,9 +20,10 @@ trait XMLHelper
      */
     static protected function getAttribString(\DOMElement $oXMLElement, string $strName, ?string $strDefault = null) : ?string
     {
-        $oAttrib = $oXMLElement->attributes->getNamedItem($strName);
-        $strValue = $oAttrib ? $oAttrib->nodeValue : $strDefault;
-        return $strValue;
+        if (!$oXMLElement->hasAttribute($strName)) {
+            return $strDefault;
+        }
+        return $oXMLElement->getAttribute($strName);
     }
     
     /**
@@ -34,9 +35,10 @@ trait XMLHelper
      */
     static protected function getAttribInt(\DOMElement $oXMLElement, string $strName, ?int $iDefault = null) : ?int
     {
-        $oAttrib = $oXMLElement->attributes->getNamedItem($strName);
-        $iValue = $oAttrib ? intval($oAttrib->nodeValue) : $iDefault;
-        return $iValue;
+        if (!$oXMLElement->hasAttribute($strName)) {
+            return $iDefault;
+        }
+        return intval($oXMLElement->getAttribute($strName));
     }
     
     /**
@@ -49,9 +51,8 @@ trait XMLHelper
     static protected function getAttribStringArray(\DOMElement $oXMLElement, string $strName) : ?array
     {
         $aValues = null;
-        $oAttrib = $oXMLElement->attributes->getNamedItem($strName);
-        if ($oAttrib) {
-            $strArray = $oAttrib->nodeValue;
+        $strArray = $oXMLElement->getAttribute($strName);
+        if (strlen($strArray) > 0) {
             $aValues = array_map('trim', explode(',', $strArray));
         }
         return $aValues;
@@ -67,9 +68,8 @@ trait XMLHelper
     static protected function getAttribIntArray(\DOMElement $oXMLElement, string $strName) : ?array
     {
         $aValues = null;
-        $oAttrib = $oXMLElement->attributes->getNamedItem($strName);
-        if ($oAttrib) {
-            $strArray = $oAttrib->nodeValue;
+        $strArray = $oXMLElement->getAttribute($strName);
+        if (strlen($strArray) > 0) {
             $aValues = array_map('intval', explode(',', $strArray));
         }
         return $aValues;
@@ -92,7 +92,7 @@ trait XMLHelper
                 if (defined($strConstName)) {
                     $wFlags += constant($strConstName);
                 } else {
-                    trigger_error('Unknown Constant [' . $strConstName . '] for the FormFlag property!', E_USER_WARNING );
+                    trigger_error('Unknown Constant [' . $strConstName . '] for the FormFlag property!', E_USER_WARNING);
                 }
             }
         }
@@ -103,9 +103,9 @@ trait XMLHelper
      * Read all known attributes that don't need any further processing. 
      * @param \DOMElement $oXMLElement
      */
-    public function readElementAttributes(\DOMElement $oXMLElement) : void
+    public function readElementAttributes(\DOMElement $oXMLElement, ?array $aAttributes) : array
     {
-        $aAttributes = [
+        $aAttributesToRead = [
             'onclick', 
             'ondblclick', 
             'onchange', 
@@ -119,10 +119,14 @@ trait XMLHelper
             'placeholder', 
             'maxlength', 
         ];
-        foreach ($aAttributes as $strAttribute) {
+        if ($aAttributes == null) {
+            $aAttributes = array();
+        }
+        foreach ($aAttributesToRead as $strAttribute) {
             if (($strValue = self::getAttribString($oXMLElement, $strAttribute)) !== null) {
-                $this->addAttribute($strAttribute, $strValue);
+                $aAttributes[$strAttribute] = $strValue;
             }
         }
+        return $aAttributes;
     }
 }

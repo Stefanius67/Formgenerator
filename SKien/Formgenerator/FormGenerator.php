@@ -73,7 +73,7 @@ class FormGenerator extends FormCollection
      */
     static public function fromXML(\DOMElement $oXMLElement, FormCollection $oFormParent) : ?FormElement
     {
-        trigger_error( 'Illegal call of static method fromXML(\DOMElement $oXMLElement, FormCollection $oFormParent)!', E_USER_ERROR);
+        trigger_error('Illegal call of static method fromXML(\DOMElement $oXMLElement, FormCollection $oFormParent)!', E_USER_ERROR);
         return null;
     }
     
