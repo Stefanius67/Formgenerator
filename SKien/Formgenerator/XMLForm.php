@@ -19,7 +19,7 @@ class XMLForm extends FormGenerator
     const E_XSD_ERROR = 3;
     const E_MISSING_ROOT = 4;
     const E_MISSING_FORM = 5;
-    const E_UNKNOWN_FORM_ELEMENT = 5;
+    const E_UNKNOWN_FORM_ELEMENT = 6;
 
     const XML_SCHEMA = 'FormGenerator.xsd';
 
@@ -51,9 +51,8 @@ class XMLForm extends FormGenerator
         $iResult = self::E_XML_ERROR;
         $oXMLForm = new \DOMDocument();
         if ($oXMLForm->load($strXMLFile)) {
-            $iResult = self::E_OK;
             // the XML schema is allways expected in the same directory as the XML file itself
-            $strXSDFile = pathinfo($strXMLFile, PATHINFO_DIRNAME) . DIRECTORY_SEPARATOR . self::XML_SCHEMA;
+            $strXSDFile = (string)pathinfo($strXMLFile, PATHINFO_DIRNAME) . DIRECTORY_SEPARATOR . self::XML_SCHEMA;
             $oRoot = $oXMLForm->documentElement;
             if ($this->bSchemaValidate && !$oXMLForm->schemaValidate($strXSDFile)) {
                 $iResult = self::E_XSD_ERROR;
@@ -140,5 +139,26 @@ class XMLForm extends FormGenerator
     public function setSchemaValidation(bool $bSchemaValidate) : void
     {
         $this->bSchemaValidate = $bSchemaValidate;
+    }
+
+    /**
+     * Get formated list of detailed XML error.
+     * this method only works, if <i><b>libxml_use_internal_errors(true);</b></i> is called
+     * before parsing the xml and/or validating the xml against XSD file.
+     * @param bool $bPlainText
+     * @return string
+     */
+    protected function getFormatedXMLError(bool $bPlainText) : string
+    {
+        $errors = libxml_get_errors();
+        $aLevel = [LIBXML_ERR_WARNING => 'Warning ', LIBXML_ERR_ERROR => 'Error ', LIBXML_ERR_FATAL => 'Fatal Error '];
+        $strCR = ($bPlainText ? PHP_EOL : '<br/>');
+        $strErrorMsg = '';
+        foreach ($errors as $error) {
+            $strErrorMsg .= $strCR . $aLevel[$error->level] . $error->code;
+            $strErrorMsg .= ' (Line ' . $error->line . ', Col ' . $error->column . ') ';
+            $strErrorMsg .= trim($error->message);
+        }
+        return $strErrorMsg;
     }
 }

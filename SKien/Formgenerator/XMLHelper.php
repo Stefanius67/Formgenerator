@@ -55,7 +55,7 @@ trait XMLHelper
         if (strlen($strArray) > 0) {
             // to make it validateable by XSD-schema, we use a whitespace-separated list since
             // there is no way to define the delimiter for xs:list in XSD...
-             $aValues = array_map('trim', preg_split('/\s+/', trim($strArray)));
+            $aValues = array_map('trim', preg_split('/\s+/', trim($strArray)));
         }
         return $aValues;
     }
@@ -144,31 +144,11 @@ trait XMLHelper
     {
         $oList = $oXMLElement->getElementsByTagName($strName);
         if ($oList->count() === 1) {
-            if ($oList->item(0) instanceof \DOMElement) {
-                return $oList->item(0);
+            $oChild = $oList->item(0);
+            if ($oChild instanceof \DOMElement) {
+                return $oChild;
             }
         }
         return null;
-    }
-
-    /**
-     * Get formated list of detailed XML error.
-     * this method only works, if <i><b>libxml_use_internal_errors(true);</b></i> is called
-     * before parsing the xml and/or validating the xml against XSD file.
-     * @param bool $bPlainText
-     * @return string
-     */
-    public function getFormatedXMLError(bool $bPlainText) : string
-    {
-        $errors = libxml_get_errors();
-        $aLevel = [LIBXML_ERR_WARNING => 'Warning ', LIBXML_ERR_ERROR => 'Error ', LIBXML_ERR_FATAL => 'Fatal Error '];
-        $strCR = ($bPlainText ? PHP_EOL : '<br/>');
-        $strErrorMsg = '';
-        foreach ($errors as $error) {
-            $strErrorMsg .= $strCR . $aLevel[$error->level] . $error->code;
-            $strErrorMsg .= ' (Line ' . $error->line . ', Col ' . $error->column . ') ';
-            $strErrorMsg .= trim($error->message);
-        }
-        return $strErrorMsg;
     }
 }
