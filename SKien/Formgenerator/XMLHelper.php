@@ -138,13 +138,15 @@ trait XMLHelper
      * Get the child with the given tag name.
      * The given parent must only contain one chuld with this name!
      * @param string $strName
-     * @return \DOMNode
+     * @return \DOMElement|null
      */
-    public function getXMLChild(\DOMElement $oXMLElement, string $strName) : ?\DOMNode
+    public function getXMLChild(\DOMElement $oXMLElement, string $strName) : ?\DOMElement
     {
         $oList = $oXMLElement->getElementsByTagName($strName);
         if ($oList->count() === 1) {
-            return $oList->item(0);
+            if ($oList->item(0) instanceof \DOMElement) {
+                return $oList->item(0);
+            }
         }
         return null;
     }
