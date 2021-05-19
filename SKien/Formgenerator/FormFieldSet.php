@@ -16,7 +16,7 @@ class FormFieldSet extends FormCollection
     const   TEXT    = 0;
     /** legend of the fieldset contains an image    */
     const   IMAGE   = 1;
-    
+
     /** @var string text or image for the legend     */
     protected string $strLegend;
     /** @var int type of the legend (FormFieldSet::TXET or FormFieldSet::IMAGE)    */
@@ -32,7 +32,7 @@ class FormFieldSet extends FormCollection
      * @param string $strID
      * @param int $iType
      */
-    public function __construct(string $strLegend, string $strID = '', int $iType = self::TEXT) 
+    public function __construct(string $strLegend, string $strID = '', int $iType = self::TEXT)
     {
         parent::__construct(0);
         $this->strLegend = $strLegend;
@@ -40,7 +40,7 @@ class FormFieldSet extends FormCollection
         $this->iType = $iType;
         $this->iImageHeight = -1;
     }
-    
+
     /**
      * {@inheritDoc}
      * @see \SKien\Formgenerator\FormElement::fromXML()
@@ -48,7 +48,6 @@ class FormFieldSet extends FormCollection
     static public function fromXML(\DOMElement $oXMLElement, FormCollection $oFormParent) : ?FormElement
     {
         $strLegend = self::getAttribString($oXMLElement, 'legend', '');
-        $strId = self::getAttribString($oXMLElement, 'id', '');
         $iType = self::TEXT;
         $strType = self::getAttribString($oXMLElement, 'type', 'TEXT');
         $strConstName = 'self::' . strtoupper($strType);
@@ -57,13 +56,13 @@ class FormFieldSet extends FormCollection
         } else {
             trigger_error('Unknown Constant [' . $strConstName . '] for the FieldSet-Type property!', E_USER_WARNING);
         }
-        $oFormElement = new self($strLegend, $strId, $iType);
+        $oFormElement = new self($strLegend, '', $iType);
         $oFormParent->add($oFormElement);
         $oFormElement->readAdditionalXML($oXMLElement);
 
         return $oFormElement;
     }
-    
+
     /**
      * {@inheritDoc}
      * @see \SKien\Formgenerator\FormElement::readAdditionalXML()
@@ -75,13 +74,13 @@ class FormFieldSet extends FormCollection
             $this->setImageHeight($iImageHeight);
         }
     }
-    
+
     /**
      * Set height of legend image in pixels.
      * The default-height is 12px.
      * @param int $iHeight
      */
-    public function setImageHeight(int $iHeight) : void 
+    public function setImageHeight(int $iHeight) : void
     {
         $this->iImageHeight = $iHeight;
     }
@@ -104,7 +103,7 @@ class FormFieldSet extends FormCollection
                 $strHTML .= $this->strLegend;
             } else {
                 // special case for style because legend is not treated as standalone element...
-                $this->iImageHeight > 0 ? $strStyle = ' style="height: ' . $this->iImageHeight . 'px;"' : $strStyle = ''; 
+                $this->iImageHeight > 0 ? $strStyle = ' style="height: ' . $this->iImageHeight . 'px;"' : $strStyle = '';
                 $strHTML .= '<img src="' . $this->strLegend . '" alt="Legend"' . $strStyle . '>';
             }
             $strHTML .= '</legend>' . PHP_EOL;

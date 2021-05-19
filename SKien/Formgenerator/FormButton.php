@@ -19,40 +19,40 @@ class FormButton extends FormInput
      * Create button element.
      * Note: <br/>
      * Alignment self::ALIGN_CENTER / self::ALIGN_RIGHT set through the $wFlags dont affect the
-     * alignment of the text within the button but the alignment of the button within the col! 
+     * alignment of the text within the button but the alignment of the button within the col!
      * @param string $strId        button id
      * @param string $strBtnText   button text (value)
      * @param string $strOnClick   onClick() handler
-     * @param int $wFlags       
+     * @param int $wFlags
      * @param string $strStyle     CSS style(s) (default: '')
      */
-    public function __construct(string $strId, string $strBtnText, string $strOnClick, int $wFlags = 0, string $strStyle = '') 
+    public function __construct(string $strId, string $strBtnText, string $strOnClick, int $wFlags = 0, string $strStyle = '')
     {
         $this->oFlags = new FormFlags($wFlags);
         $this->strBtnText = $strBtnText;
         $this->strID = $strId;
         $this->addAttribute('onclick', $strOnClick);
-        
+
         if (strlen($strStyle) > 0) {
             $this->parseStyle($strStyle);
         }
     }
-    
+
     /**
      * {@inheritDoc}
      * @see \SKien\Formgenerator\FormElement::fromXML()
      */
     static public function fromXML(\DOMElement $oXMLElement, FormCollection $oFormParent) : ?FormElement
     {
-        $strId = self::getAttribString($oXMLElement, 'id', '');
+        // id comes from FormElement::readAdditionalXML() !!
         $strText = self::getAttribString($oXMLElement, 'text', '');
         $wFlags = self::getAttribFlags($oXMLElement);
-        $oFormElement = new self($strId, $strText, '', $wFlags);
+        $oFormElement = new self('', $strText, '', $wFlags);
         $oFormParent->add($oFormElement);
         $oFormElement->readAdditionalXML($oXMLElement);
         return $oFormElement;
     }
-    
+
     /**
      * Build the HTML-notation for the button.
      * @return string

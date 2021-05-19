@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 require_once '../autoloader.php';
 
-use SKien\Formgenerator\ArrayFormData;
 use SKien\Config\JSONConfig;
+use SKien\Formgenerator\ArrayFormData;
 use SKien\Formgenerator\XMLForm;
 
 $strTheme = './MSO-Theme/';
@@ -40,10 +40,10 @@ $oFG->setConfig($oConfig);
 $oFG->setAction('formaction.php');
 $oFG->setTarget('_blank');
 
-if ($oFG->loadXML('ColumnForm.xml') == XMLForm::E_OK) {
+if ($oFG->loadXML('xml/ColumnForm.xml') == XMLForm::E_OK) {
     // isn't supported by XMLForm so far
     $oFG->adjustColHeight('col1', 'col2');
-    
+
     // generate HTML-markup and JS configuration data
     $strFormHTML = $oFG->getForm();
     $strStyleFromPHP = $oFG->getStyle();

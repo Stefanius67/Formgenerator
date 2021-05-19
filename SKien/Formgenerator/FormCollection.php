@@ -18,7 +18,7 @@ abstract class FormCollection extends FormElement
     protected ?array $aColWidth = null;
     /** @var string dimension of the width values ('%', 'px', 'em')     */
     protected string $strWidthDim = '%';
-    
+
     /**
      * @param int $wFlags
      */
@@ -26,19 +26,20 @@ abstract class FormCollection extends FormElement
     {
         parent::__construct($wFlags);
     }
-    
+
     /**
      * {@inheritDoc}
      * @see \SKien\Formgenerator\FormElement::readAdditionalXML()
      */
     public function readAdditionalXML(\DOMElement $oXMLElement) : void
     {
+        parent::readAdditionalXML($oXMLElement);
         $strWidthDim = self::getAttribString($oXMLElement, 'widthdim', '%');
         if (($aColWidth = self::getAttribIntArray($oXMLElement, 'colwidth')) !== null) {
             $this->setColWidth($aColWidth, $strWidthDim);
         }
     }
-        
+
     /**
      * Add a child to this element.
      * @param FormElementInterface $oElement
@@ -49,10 +50,10 @@ abstract class FormCollection extends FormElement
         $oElement->setParent($this);
         $this->aChild[] = $oElement;
         $this->oFG->addElement($oElement);
-        
+
         return $oElement;
     }
-    
+
     /**
      * Set width for the cols included in this element.
      * @param array $aColWidth
@@ -63,7 +64,7 @@ abstract class FormCollection extends FormElement
         $this->aColWidth = $aColWidth;
         $this->strWidthDim = $strDim;
     }
-    
+
     /**
      * Get colwidth for requested element.
      * If no width set, we try to get the width throught the parent.
@@ -83,7 +84,7 @@ abstract class FormCollection extends FormElement
         }
         return $strWidth;
     }
-    
+
     /**
      * Add a new div as child.
      * @param int $iWidth   width of the div in percent
@@ -96,10 +97,10 @@ abstract class FormCollection extends FormElement
         $oDiv = new FormDiv($iWidth, $iAlign);
         $oDiv->SetID($strID);
         $this->add($oDiv);
-        
+
         return $oDiv;
     }
-    
+
     /**
      * Add a new fieldset to the element.
      * @param string $strLegend text or image of the legend
@@ -111,10 +112,10 @@ abstract class FormCollection extends FormElement
     {
         $oFS = new FormFieldSet($strLegend, $strID, $iType);
         $this->add($oFS);
-        
+
         return $oFS;
     }
-    
+
     /**
      * Add new line to this fieldset
      * @param string $strLabel (default: '&nbsp;')
@@ -124,10 +125,10 @@ abstract class FormCollection extends FormElement
     {
         $oFL = new FormLine($strLabel);
         $this->add($oFL);
-        
+
         return $oFL;
     }
-    
+
     /**
      * Build the HTML-notation for the element and/or all child elements.
      * @return string
@@ -141,7 +142,7 @@ abstract class FormCollection extends FormElement
         }
         return $strHTML;
     }
-    
+
     /**
      * Get styles from all child elements.
      * This method gives each element the chance to add special styles to the

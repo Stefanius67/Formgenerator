@@ -5,7 +5,7 @@ namespace SKien\Formgenerator;
 
 /**
  * Base-class for all elements of a form.
- * Starting with a FormGenerator-element, the form can contain any count 
+ * Starting with a FormGenerator-element, the form can contain any count
  * of elements.
  * The elements usuallay be arranged within FormFieldSet- and FormLine-elements
  *
@@ -16,7 +16,7 @@ namespace SKien\Formgenerator;
 abstract class FormElement implements FormElementInterface
 {
     use XMLHelper;
-    
+
     /** @var FormGenerator the FormGenerator this element belongs to     */
     protected FormGenerator $oFG;
     /** @var FormCollection the parent element - only FormGenerator must has no parent     */
@@ -37,7 +37,7 @@ abstract class FormElement implements FormElementInterface
     protected ?array $aAttrib = null;
     /** @var array (CSS) styles of the element     */
     protected ?array $aStyle = null;
-    
+
     /**
      * @param int $wFlags
      */
@@ -45,7 +45,7 @@ abstract class FormElement implements FormElementInterface
     {
         $this->oFlags = new FormFlags($wFlags);
     }
-    
+
     /**
      * Create the form element from the given XML-element.
      * Because several subclasses of FormElement has different constructors, we
@@ -58,7 +58,7 @@ abstract class FormElement implements FormElementInterface
      * @return FormElement|NULL the created element
      */
     abstract static public function fromXML(\DOMElement $oXMLElement, FormCollection $oFormParent) : ?FormElement;
-    
+
     /**
      * In addition to the parameters needed by the constructor of each separate class,
      * some further attribs can be loaded after creation.
@@ -70,6 +70,9 @@ abstract class FormElement implements FormElementInterface
      */
     public function readAdditionalXML(\DOMElement $oXMLElement) : void
     {
+        if (($strID = self::getAttribString($oXMLElement, 'id')) !== null) {
+            $this->setID($strID);
+        }
         if (($strStyle = self::getAttribString($oXMLElement, 'style')) !== null) {
             $this->parseStyle($strStyle);
         }
@@ -78,7 +81,7 @@ abstract class FormElement implements FormElementInterface
         }
         $this->aAttrib = $this->readElementAttributes($oXMLElement, $this->aAttrib);
     }
-    
+
     /**
      * Return the FormGenerator this element belongs to.
      * @return FormGenerator
@@ -90,21 +93,21 @@ abstract class FormElement implements FormElementInterface
 
     /**
      * Set the parent of this element.
-     * The Formgenerator of the parent is adopted for this element. 
+     * The Formgenerator of the parent is adopted for this element.
      * If there are global flags set for the FormGenerator, this flags are added.
      * @param FormCollection $oParent
      */
-    public function setParent(FormCollection $oParent) : void 
+    public function setParent(FormCollection $oParent) : void
     {
         $this->oParent = $oParent;
         $this->oFG = $oParent->oFG;
         $this->addFlags($this->oFG->getGlobalFlags());
         $this->onParentSet();
     }
-    
+
     /**
      * Set the current col.
-     * If this element is added as a child of a FormLine, the column is set in 
+     * If this element is added as a child of a FormLine, the column is set in
      * order to be able to calculate the correct width of the element.
      * @param int $iCol
      */
@@ -112,27 +115,27 @@ abstract class FormElement implements FormElementInterface
     {
         $this->iCol = $iCol;
     }
-    
+
     /**
      * Set ID for the element.
      * @param string $strID
      */
-    public function setID(string $strID) : void 
+    public function setID(string $strID) : void
     {
         $this->strID = $strID;
     }
-    
+
     /**
      * Set text for the elements title attribute.
      * @param string $strTitle
      */
-    public function setTitle(string $strTitle) : void 
+    public function setTitle(string $strTitle) : void
     {
         if (strlen($strTitle) > 0) {
             $this->addAttribute('title', $strTitle);
         }
     }
-    
+
     /**
      * Set the tab index of the element.
      * Method is called from the PageGenerator after an element is added to the form.
@@ -143,23 +146,23 @@ abstract class FormElement implements FormElementInterface
     {
         return 0;
     }
-    
+
     /**
-     * Add flags to element. 
+     * Add flags to element.
      * @param int $wFlags
      */
-    public function addFlags(int $wFlags) : void 
+    public function addFlags(int $wFlags) : void
     {
         $this->oFlags->add($wFlags);
     }
-    
+
     /**
      * Add any attribute.
      * If the attribute allready exist, the value will be overwritten.
      * @param string $strName
      * @param string $strValue
      */
-    public function addAttribute(string $strName, string $strValue = '') : void 
+    public function addAttribute(string $strName, string $strValue = '') : void
     {
         $strName = strtolower($strName);
         if ($this->aAttrib == null) {
@@ -178,7 +181,7 @@ abstract class FormElement implements FormElementInterface
      * @param string $strName
      * @param string $strValue
      */
-    public function addStyle(string $strName, string $strValue) : void 
+    public function addStyle(string $strName, string $strValue) : void
     {
         $strName = strtolower($strName);
         if ($this->aStyle == null) {
@@ -192,28 +195,28 @@ abstract class FormElement implements FormElementInterface
      * Any previously setting will be overwritten.
      * @param string $strClass
      */
-    public function setClass(string $strClass) : void 
+    public function setClass(string $strClass) : void
     {
         $this->strClass = $strClass;
     }
-    
+
     /**
      * Add additional class to element.
      * Class is added to the existing classname separated with a blank <br/>
      * Generates a notice, if no class set so far!
      * @param string $strClass
      */
-    public function addClass(string $strClass) : void 
+    public function addClass(string $strClass) : void
     {
         if (strlen($this->strClass) == 0) {
             trigger_error('no class set so far!', E_USER_NOTICE);
         }
         $this->strClass .= ' ' . $strClass;
     }
-    
+
     /**
      * Get styles related to this element.
-     * This method gives each element the chance to add special styles to the 
+     * This method gives each element the chance to add special styles to the
      * current page. <br/>
      * <b>This method is only called for elements having member bCreateStyle set to true!</b>
      * @return string
@@ -231,12 +234,12 @@ abstract class FormElement implements FormElementInterface
     /**
      * Method called, after parent amd formgenerator is set properly.
      * Enhancing classes can use this method, to initialize properties that
-     * nneds the parent or formgenerator (... configuration, global settings) 
+     * nneds the parent or formgenerator (... configuration, global settings)
      */
     protected function onParentSet() : void
     {
     }
-    
+
     /**
      * Build the 'container' div arround the current element.
      * Additional styles (alignment, ...) can be passed.
@@ -257,7 +260,7 @@ abstract class FormElement implements FormElementInterface
 
         return $strHTML;
     }
-    
+
     /**
      * Build the style attribute for the element.
      * @return string
@@ -292,17 +295,17 @@ abstract class FormElement implements FormElementInterface
         }
         return $strAttrib;
     }
-    
+
     /**
      * Build the markup for the value attribute.
-     * Retrieve value for the element from the FormData. 
+     * Retrieve value for the element from the FormData.
      * @return string Empty string if no value set, complete attribute if set
      */
     protected function buildValue() : string
     {
         $strHTML = '';
         $strValue = $this->oFG->getData()->getValue($this->strName);
-        
+
         if ($this->oFlags->isSet(FormFlags::TRIM)) {
             $strValue = trim($strValue);
         }
@@ -337,7 +340,7 @@ abstract class FormElement implements FormElementInterface
         }
         return $strID;
     }
-    
+
     /**
      * Build the markup for the tabindex attribute.
      * @return string Empty string if $iTabindex = 0, complete attribute if set
@@ -350,7 +353,7 @@ abstract class FormElement implements FormElementInterface
         }
         return $strTabindex;
     }
-    
+
     /**
      * Parse a given style attribute into the components it contains.
      * @param string $strStyle
@@ -370,6 +373,6 @@ abstract class FormElement implements FormElementInterface
             }
         }
     }
-    
+
 }
 

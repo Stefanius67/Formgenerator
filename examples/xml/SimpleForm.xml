@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FormGenerator
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns="http://www.skien.de/FormGenerator"
+    xsi:schemaLocation="http://www.skien.de/FormGenerator FormGenerator.xsd">
+    
+    <Form colwidth="20, 80">
+        <Header text="Personnel data sheet" level="1"/>
+        <FieldSet legend="Name">
+            <Line label="Lastname:">
+                <Input name="strLastname" size="100%" flags="MANDATORY" maxlength="50"/>
+            </Line>
+            <Line label="Firstname:">
+                <Input name="strFirstname" size="100%" maxlength="50"/>
+            </Line>
+        </FieldSet>
+        <FieldSet legend="Address">
+            <Line label="Region:">
+                <Input name="strRegion" size="100%" maxlength="50" placeholder="enter Region"/>
+            </Line>
+            <Line label="Street:">
+                <Input name="strStreet" size="100%" maxlength="100"/>
+            </Line>
+            <Line label="Postcode, City:" colwidth="20, 20, 60">
+                <Input name="strPostcode" size="90%" maxlength="10"/>
+                <Input name="strCity" size="100%" maxlength="100"/>
+            </Line>
+        </FieldSet>
+        <FieldSet legend="some personal Data" colwidth="20, 30, 20, 30">
+            <Line colwidth="0, 100">
+                <Static text="And here are some informations..." flags="INFO    BOLD"/>
+            </Line>
+            <Line label="Gender:">
+                <Select name="strGender" size="1" flags="MANDATORY"/>
+                <Static text="Date of Birth:"/>
+                <Date name="dateDoB" flags="NO_ZERO ADD_DATE_PICKER"/>
+            </Line>
+            <Line label="Available from:">
+                <Time name="timeAvailableFrom" flags="ADD_TIME_PICKER"/>
+                <Static text="to:"/>
+                <Time name="timeAvailableTo" flags="NO_ZERO ADD_TIME_PICKER "/>
+            </Line>
+            <Line label="Member due:">
+                <Cur name="fltDue" size="10" flags="ADD_CUR"/>
+                <Static text="extra fee:"/>
+                <Cur name="fltExtra" size="10" flags="ADD_CUR NO_ZERO"/>
+            </Line>
+            <Line label="Weight:">
+                <Float name="fltWeight" size="10" digits="1" suffix="kg"/>
+            </Line>
+            <Line label="Priority:">
+                <Range name="iPriority" width="70%" min="1" max="10" step="2" flags="SHOW_VALUE"/>
+                <Static text="category:"/>
+                <Color name="strCatColor"/>
+            </Line>
+            <Line label="Resumé:" colwidth="20, 80">
+                <Input name="strResumeFile" size="calc(100% - 45px)" flags="BROWSE_SERVER READ_ONLY" expandfolder="files/"/>
+            </Line>
+        </FieldSet>
+        <FieldSet legend="internal processing">
+            <Line label="Validated:">
+                <Input name="strValidated" size="30" flags="ADD_DTU READ_ONLY"/>
+            </Line>
+        </FieldSet>
+        <ButtonBox buttons="SAVE DISCARD" flags="ALIGN_RIGHT"/>
+    </Form>
+</FormGenerator>

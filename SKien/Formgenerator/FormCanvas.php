@@ -13,7 +13,7 @@ namespace SKien\Formgenerator;
 class FormCanvas extends FormInput
 {
     /**
-     * Create o canvas element. 
+     * Create o canvas element.
      * All attributes and styles can except height and width can be set through
      * the methods <ul>
      * <li> addAttribute() </li>
@@ -22,7 +22,7 @@ class FormCanvas extends FormInput
      * @param int $iWidth
      * @param int $iHeight
      */
-    public function __construct(string $strID, int $iWidth, int $iHeight) 
+    public function __construct(string $strID, int $iWidth, int $iHeight)
     {
         $this->oFlags = new FormFlags();
         $this->strID = $strID;
@@ -31,22 +31,22 @@ class FormCanvas extends FormInput
         $this->addAttribute('height', (string)$iHeight);
         $this->addAttribute('width', (string)$iWidth);
     }
-    
+
     /**
      * {@inheritDoc}
      * @see \SKien\Formgenerator\FormElement::fromXML()
      */
     static public function fromXML(\DOMElement $oXMLElement, FormCollection $oFormParent) : ?FormElement
     {
-        $strId = self::getAttribString($oXMLElement, 'id', '');
+        // id comes from FormElement::readAdditionalXML() !!
         $iWidth = self::getAttribInt($oXMLElement, 'width', 100);
         $iHeight = self::getAttribInt($oXMLElement, 'height', 100);
-        $oFormElement = new self($strId, $iWidth, $iHeight);
+        $oFormElement = new self('', $iWidth, $iHeight);
         $oFormParent->add($oFormElement);
         $oFormElement->readAdditionalXML($oXMLElement);
         return $oFormElement;
     }
-    
+
     /**
      * build the HTML-notation for the cancas element
      *
@@ -61,7 +61,7 @@ class FormCanvas extends FormInput
         $strHTML .= $this->buildAttributes();
         $strHTML .= '></canvas>' . PHP_EOL;
         $strHTML .= '</div>' . PHP_EOL;
-        
+
         return $strHTML;
     }
 }
