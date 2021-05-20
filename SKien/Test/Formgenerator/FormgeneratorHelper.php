@@ -3,16 +3,17 @@ declare(strict_types=1);
 
 namespace SKien\Test\Formgenerator;
 
-use SKien\Formgenerator\FormGenerator;
-use SKien\Formgenerator\ArrayFormData;
-use SKien\Formgenerator\FormDataInterface;
 use SKien\Config\ConfigInterface;
 use SKien\Config\JSONConfig;
+use SKien\Formgenerator\ArrayFormData;
+use SKien\Formgenerator\FormDataInterface;
 use SKien\Formgenerator\FormFlags;
+use SKien\Formgenerator\FormGenerator;
+use SKien\Formgenerator\XMLForm;
 
 /**
  * Base testcase for all Formgenerator testcases.
- * 
+ *
  * @author Stefanius <s.kientzler@online.de>
  * @copyright MIT License - see the LICENSE file for details
  */
@@ -27,15 +28,27 @@ trait FormgeneratorHelper
         if (!$bDefault) {
             $oFG->setConfig($this->createConfig());
         }
-        
+
         return $oFG;
     }
-    
+
+    protected function createXMLFG(bool $bDefault) : XMLForm
+    {
+        $_SERVER['DOCUMENT_ROOT'] = "/var/www/html";
+        $oFG = new XMLForm($this->createData());
+        $oFG->setSchemaValidation(false);
+        if (!$bDefault) {
+            $oFG->setConfig($this->createConfig());
+        }
+
+        return $oFG;
+    }
+
     protected function createConfig() : ConfigInterface
     {
         return new JSONConfig(__DIR__ . DIRECTORY_SEPARATOR . 'testdata/FormGeneratorDE.json');
     }
-    
+
     protected function createData() : FormDataInterface
     {
         $dtTo = new \DateTime();
@@ -70,10 +83,10 @@ trait FormgeneratorHelper
         $aLinkList = ['Freiburg', 'Karlsruhe', 'Stuttgart'];
         $aCheckBtnValue = ['btnCheck1' => 'board'];
         $oData = new ArrayFormData($aData, ['strGender' => $aGenderSelect, 'strLinklist' => $aLinkList], $aCheckBtnValue);
-        
+
         return $oData;
     }
-    
+
     public function provideAlignFlag()
     {
         return [

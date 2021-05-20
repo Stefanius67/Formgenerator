@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FormGenerator>
+    <Form colwidth="25, 75">
+        <Div align="INVALID">
+            <Line label="Test Line">
+                <Unknown name="strLastname" size="100%" flags="MANDATORY" maxlength="100" suffix="test" selectimg="testimg.png"/>
+            </Line>
+        </Div>
+    </Form>
+</FormGenerator>

@@ -2,9 +2,9 @@
 <phpunit
     verbose="true"
     colors="true"
-	bootstrap ="autoloader.php">
+    bootstrap ="autoloader.php">
     <testsuites>
-        <testsuite name="PNServer">
+        <testsuite name="Formgenerator">
             <directory>SKien/Test/Formgenerator</directory>
         </testsuite>
     </testsuites>

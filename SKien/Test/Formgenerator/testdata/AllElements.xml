@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FormGenerator>
+    <Form colwidth="25, 75">
+        <Header text="Header" level="1"/>
+        <Static text="Static" class="overview"/>
+        <Div width="100">
+            <FieldSet type="IMAGE" imageheight="20">
+                <Line label="Test Line">
+                    <Input name="strInput" size="100%" flags="MANDATORY" length="100"/>
+                </Line>
+                <Line label="Test Line">
+                    <Button id="btnTest" text="Test" style="width: 50px;"/>
+                </Line>
+                <Line label="Test Line">
+                    <Canvas id="canvasTest" width="200px" height="200px"/>
+                </Line>
+                <Line label="Test Line">
+                    <Check name="bTest" btnvalue="set"/>
+                </Line>
+                <!--
+                <Line label="Test Line">
+                    <CKEdit name="strTest" rows="5" content-css="test.css" body-id="test_body_id"/>
+                </Line>
+                -->
+                <Line label="Test Line">
+                    <Color name="clrTest"/>
+                </Line>
+                <Line label="Test Line">
+                    <Cur name="fltTest" size="10"/>
+                </Line>
+                <Line label="Test Line">
+                    <Date name="dateTest" size="10"/>
+                </Line>
+                <Line label="Test Line">
+                    <Float name="fltTest" size="10" digits="3"/>
+                </Line>
+                <Line label="Test Line">
+                    <Image name="imgTest" image="IMG_SEARCH" bindto="strTest" default="test.img"/>
+                </Line>
+                <Line label="Test Line">
+                    <RadioGroup name="iTest"/>
+                </Line>
+                <Line label="Test Line">
+                    <Range name="iTest" min="0" max="100" step="10"/>
+                </Line>
+                <Line label="Test Line">
+                    <Select name="strGender" size="1" selectbtntext="Select" flags="SELECT_BTN"/>
+                </Line>
+                <Line label="Test Line">
+                    <TextArea name="strTest" rows="5" cols="50"/>
+                </Line>
+                <Line label="Test Line">
+                    <Int name="iInt" size="10"/>
+                </Line>
+                <Line label="Test Line">
+                    <Time name="dateTest" size="10"/>
+                </Line>
+            </FieldSet>
+        </Div>
+        <ButtonBox buttons="SAVE DISCARD" flags="ALIGN_RIGHT"/>
+        <Script>
+            <![CDATA[
+                function SelectImage()
+                {
+                    browseServer('strImage', 'imgImage', '/images');
+                }
+                function ResetImage()
+                {
+                    resetElement('imgImage');
+                }
+            ]]>
+        </Script>
+    </Form>
+</FormGenerator>
