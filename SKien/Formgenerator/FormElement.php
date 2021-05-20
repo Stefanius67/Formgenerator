@@ -208,10 +208,10 @@ abstract class FormElement implements FormElementInterface
      */
     public function addClass(string $strClass) : void
     {
-        if (strlen($this->strClass) == 0) {
-            trigger_error('no class set so far!', E_USER_NOTICE);
+        if (strlen($this->strClass) > 0) {
+            $this->strClass .= ' ';
         }
-        $this->strClass .= ' ' . $strClass;
+        $this->strClass .= $strClass;
     }
 
     /**

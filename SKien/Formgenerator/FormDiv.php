@@ -5,7 +5,7 @@ namespace SKien\Formgenerator;
 
 /**
  *  Represents a <div> inside of the form.
- *  It can be used to arrange some fieldset horizontally or to group some 
+ *  It can be used to arrange some fieldset horizontally or to group some
  *  elements for JS hide/show operations
  *
  * @package Formgenerator
@@ -19,7 +19,7 @@ class FormDiv extends FormCollection
     const   CLEAR   = 0;
     const   LEFT    = 1;
     const   RIGHT   = 2;
-    
+
     /** @var int width of the div in percent     */
     protected int  $iWidth;
     /** @var int align of the div (FormDiv::NONE, FormDiv::LEFT, FormDiv::RIGHT, FormDiv::CLEAR)     */
@@ -53,7 +53,7 @@ class FormDiv extends FormCollection
             break;
         }
     }
-    
+
     /**
      * {@inheritDoc}
      * @see \SKien\Formgenerator\FormElement::fromXML()
@@ -66,16 +66,16 @@ class FormDiv extends FormCollection
         if (defined($strConstName)) {
             $iAlign = constant($strConstName);
         } else {
-            trigger_error('Unknown Constant [' . $strConstName . '] for the Div-Alignment property!', E_USER_WARNING);
+            trigger_error('Unknown Constant [' . $strConstName . '] for the Div-Alignment property!', E_USER_ERROR);
         }
         $iWidth = self::getAttribInt($oXMLElement, 'width', 0);
         $oFormElement = new self($iWidth, $iAlign);
         $oFormParent->add($oFormElement);
         $oFormElement->readAdditionalXML($oXMLElement);
-        
+
         return $oFormElement;
     }
-    
+
     /**
      * Build the HTML-notation for the div element.
      */

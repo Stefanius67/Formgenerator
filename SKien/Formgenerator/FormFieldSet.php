@@ -54,7 +54,7 @@ class FormFieldSet extends FormCollection
         if (defined($strConstName)) {
             $iType = constant($strConstName);
         } else {
-            trigger_error('Unknown Constant [' . $strConstName . '] for the FieldSet-Type property!', E_USER_WARNING);
+            trigger_error('Unknown Constant [' . $strConstName . '] for the FieldSet-Type property!', E_USER_ERROR);
         }
         $oFormElement = new self($strLegend, '', $iType);
         $oFormParent->add($oFormElement);

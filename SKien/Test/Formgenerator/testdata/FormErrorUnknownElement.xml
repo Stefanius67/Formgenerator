@@ -3,7 +3,7 @@
     <Form colwidth="25, 75">
         <FieldSet legend="Test Fieldset" id="FS1">
             <Line label="Test Line">
-                <Input name="strLastname" size="100%" flags="MANDATORY" maxlength="100" suffix="test" selectimg="testimg.png"/>
+                <Unknown name="strLastname" size="100%" flags="MANDATORY" maxlength="100" suffix="test" selectimg="testimg.png"/>
             </Line>
             <Line label="Test Line">
                 <Input name="strCity" size="100%" expandfolder="files/"/>

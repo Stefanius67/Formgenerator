@@ -8,6 +8,6 @@
             <Line label="Test Line">
                 <Input name="strCity" size="100%" expandfolder="files/"/>
             </Line>
-        </FieldSet>
+        </Fieldset>
     </Form>
 </FormGenerator>

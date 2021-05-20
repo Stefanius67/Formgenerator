@@ -14,18 +14,18 @@ class FormStatic extends FormElement
 {
     /** @var string the text to display     */
     protected string $strText;
-    
+
     /**
      * Create a static text element.
      * @param string $strText
      * @param int $wFlags
      */
-    public function __construct($strText, $wFlags = 0) 
+    public function __construct($strText, $wFlags = 0)
     {
         $this->strText = $strText;
         parent::__construct($wFlags);
     }
-    
+
     /**
      * {@inheritDoc}
      * @see \SKien\Formgenerator\FormElement::fromXML()
@@ -36,15 +36,16 @@ class FormStatic extends FormElement
         $wFlags = self::getAttribFlags($oXMLElement);
         $oFormElement = new self($strText, $wFlags);
         $oFormParent->add($oFormElement);
+        $oFormElement->readAdditionalXML($oXMLElement);
 
         return $oFormElement;
     }
-    
+
     /**
      * Build the HTML-notation for the static text
      * @return string
      */
-    public function getHTML() : string 
+    public function getHTML() : string
     {
         // no container div!
         $this->addStyle('float', 'left');
@@ -71,7 +72,7 @@ class FormStatic extends FormElement
         } else if ($this->oFlags->isSet(FormFlags::INFO)) {
             $this->strClass = $strSep . 'forminfo';
         }
-        
+
         $strHTML  = '';
         $strHTML .= '<div';
         $strHTML .= $this->buildID();

@@ -1,8 +1,11 @@
-<FieldSet legend="Test Fieldset" id="FS1">
-	<Line label="Test Line">
-		<Input name="strLastname" size="100%" flags="MANDATORY" maxlength="100" suffix="test" selectimg="testimg.png"/>
-	</Line>
-	<Line label="Test Line">
-		<Input name="strCity" size="100%" expandfolder="files/"/>
-	</Line>
-</FieldSet>
+<?xml version="1.0" encoding="UTF-8"?>
+<Form>
+    <FieldSet legend="Test Fieldset" id="FS1">
+        <Line label="Test Line">
+            <Input name="strLastname" size="100%" flags="MANDATORY" maxlength="100" suffix="test" selectimg="testimg.png"/>
+        </Line>
+        <Line label="Test Line">
+            <Input name="strCity" size="100%" expandfolder="files/"/>
+        </Line>
+    </FieldSet>
+</Form>

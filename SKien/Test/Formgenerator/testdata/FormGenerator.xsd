@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified" targetNamespace="http://www.skien.de/FormGenerator" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fg="http://www.skien.de/FormGenerator">
+
+<!-- 
+    This XSD schema was developed using the 'venetian blind' design to meet the following 
+    requirements of the XML structure to be validated
+    - The elements contained are based on a hierarchical structure that is mapped by 
+      expanding the defined types accordingly.
+    - The various elements can be nested variably. This can be specified much more 
+      clearly and in a more maintainable manner by using the types rather than specifying 
+      each element individually.  
+ -->
+ 
+    <xs:element name="FormGenerator" type="fg:FormGeneratorType"/>
+
+    <!--
+        The Root element MUST contain exact one &lt;Form&gt; element as parent of the whole form definition.
+    -->
+    <xs:complexType name="FormGeneratorType" >
+        <xs:sequence>
+            <xs:element name="Form" type="fg:FormType"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!--
+        The Form element is the one and only parent element of all further elements.
+        
+        It can contain any of the container-elements (Div, Fieldset, Line) or any of the
+        simple elements defined in the package!
+        There is no rule for the order, the elements appears in the form.
+    -->
+    <xs:complexType name="FormType">
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+            <xs:element type="fg:DivType" name="Div"/>
+            <xs:element type="fg:FieldSetType" name="FieldSet"/>
+            <xs:element type="fg:LineType" name="Line"/>
+            <xs:element type="fg:StaticType" name="Static"/>
+            <xs:element type="fg:HeaderType" name="Header"/>
+            <xs:element type="fg:ButtonBoxType" name="ButtonBox"/>
+            <xs:element type="fg:InputType" name="Input"/>
+            <xs:element type="fg:ButtonType" name="Button"/>
+            <xs:element type="fg:CheckType" name="Check"/>
+            <xs:element type="fg:ColorType" name="Color"/>
+            <xs:element type="fg:CurType" name="Cur"/>
+            <xs:element type="fg:DateType" name="Date"/>
+            <xs:element type="fg:FloatType" name="Float"/>
+            <xs:element type="fg:ImageType" name="Image"/>
+            <xs:element type="fg:IntType" name="Int"/>
+            <xs:element type="fg:RadioGroupType" name="RadioGroup"/>
+            <xs:element type="fg:RangeType" name="Range"/>
+            <xs:element type="fg:SelectType" name="Select"/>
+            <xs:element type="fg:TextAreaType" name="TextArea"/>
+            <xs:element type="fg:TimeType" name="Time"/>
+            <xs:element type="xs:string" name="Script"/>
+        </xs:choice>
+        <xs:attribute type="xs:string" name="id"/>
+        <xs:attribute type="fg:ColWidthAttrib" name="colwidth"/>
+        <xs:attribute type="fg:WidthDimAttrib" name="widthdim" default="%"/>
+        <xs:attribute type="xs:string" name="style"/>
+        <xs:attribute type="xs:string" name="class"/>
+    </xs:complexType>
+
+    <xs:complexType name="DivType">
+        <xs:complexContent>
+            <xs:extension base="fg:FormType">
+                <xs:attribute type="xs:integer" name="width"/>
+                <xs:attribute type="fg:DivAlignAttrib" name="align"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="FieldSetType">
+        <xs:complexContent>
+            <xs:extension base="fg:FormType">
+                <xs:attribute type="xs:string" name="legend"/>
+                <xs:attribute type="fg:FieldSetTypeAttrib" name="type"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="LineType">
+        <xs:complexContent>
+            <xs:extension base="fg:FormType">
+                <xs:attribute type="xs:string" name="label"/>
+                <xs:attribute type="xs:string" name="horzline"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="ElementType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="style"/>
+                <xs:attribute type="xs:string" name="class"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType name="StaticType">
+        <xs:simpleContent>
+            <xs:extension base="fg:ElementType">
+                <xs:attribute type="xs:string" name="text"/>
+                <xs:attribute type="fg:FlagsAttrib" name="flags"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType name="HeaderType">
+        <xs:simpleContent>
+            <xs:extension base="fg:ElementType">
+                <xs:attribute type="xs:string" name="text"/>
+                <xs:attribute type="xs:integer" name="level"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+	<xs:complexType name="ButtonBoxType">
+		<xs:simpleContent>
+            <xs:extension base="fg:ElementType">
+				<xs:attribute type="fg:ButtonsAttrib" name="buttons"/>
+				<xs:attribute type="fg:FlagsAttrib" name="flags"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+
+    <xs:complexType name="InputType">
+        <xs:simpleContent>
+            <xs:extension base="fg:ElementType">
+                <xs:attribute type="xs:string" name="id"/>
+                <xs:attribute type="xs:string" name="name"/>
+                <xs:attribute type="xs:string" name="size"/>
+                <xs:attribute type="fg:FlagsAttrib" name="flags"/>
+                <xs:attribute type="xs:integer" name="maxlength"/>
+                <xs:attribute type="xs:string" name="placeholder"/>
+                <xs:attribute type="xs:string" name="expandfolder"/>
+                <xs:attribute type="xs:string" name="suffix"/>
+                <xs:attribute type="xs:string" name="selectimg"/>
+		        <xs:attribute type="xs:string" name="onclick"/>
+                <xs:attribute type="xs:string" name="ondblclick"/>
+                <xs:attribute type="xs:string" name="onchange"/>
+                <xs:attribute type="xs:string" name="oninput"/>
+                <xs:attribute type="xs:string" name="onfocus"/>
+                <xs:attribute type="xs:string" name="onblur"/>
+                <xs:attribute type="xs:string" name="onkeydown"/>
+                <xs:attribute type="xs:string" name="onkeypress"/>
+                <xs:attribute type="xs:string" name="onkeyup"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType name="ButtonType">
+        <xs:simpleContent>
+            <xs:extension base="fg:InputType">
+		        <xs:attribute type="xs:string" name="text"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+	<xs:complexType name="CanvasType">
+		<xs:simpleContent>
+            <xs:extension base="fg:InputType">
+				<xs:attribute type="xs:integer" name="width"/>
+				<xs:attribute type="xs:integer" name="height"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+
+    <xs:complexType name="CheckType">
+        <xs:simpleContent>
+            <xs:extension base="fg:InputType">
+		        <xs:attribute type="xs:string" name="btnvalue"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType name="ColorType">
+        <xs:simpleContent>
+            <xs:extension base="fg:InputType"/>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType name="CurType">
+        <xs:simpleContent>
+            <xs:extension base="fg:InputType"/>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType name="DateType">
+        <xs:simpleContent>
+            <xs:extension base="fg:InputType"/>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType name="FloatType">
+        <xs:simpleContent>
+            <xs:extension base="fg:InputType">
+                <xs:attribute type="xs:integer" name="digits" default="1"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+	<xs:complexType name="ImageType">
+		<xs:simpleContent>
+            <xs:extension base="fg:InputType">
+				<xs:attribute type="xs:string" name="default"/>
+				<xs:attribute type="xs:string" name="bindto"/>
+				<xs:attribute type="xs:string" name="title"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+
+    <xs:complexType name="IntType">
+        <xs:simpleContent>
+            <xs:extension base="fg:InputType">
+		        <xs:attribute type="xs:integer" name="min"/>
+		        <xs:attribute type="xs:integer" name="max"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType name="RadioGroupType">
+        <xs:simpleContent>
+            <xs:extension base="fg:InputType"/>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType name="RangeType">
+        <xs:simpleContent>
+            <xs:extension base="fg:InputType">
+                <xs:attribute type="xs:string" name="width"/>
+		        <xs:attribute type="xs:integer" name="min"/>
+		        <xs:attribute type="xs:integer" name="max"/>
+		        <xs:attribute type="xs:integer" name="step"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType name="SelectType">
+        <xs:simpleContent>
+            <xs:extension base="fg:InputType">
+                <xs:attribute type="xs:string" name="selectbtntext"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType name="TextAreaType">
+        <xs:simpleContent>
+            <xs:extension base="fg:InputType">
+                <xs:attribute type="xs:integer" name="rows"/>
+                <xs:attribute type="xs:integer" name="cols"/>
+                <xs:attribute type="xs:string" name="width"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType name="TimeType">
+        <xs:simpleContent>
+            <xs:extension base="fg:InputType"/>
+        </xs:simpleContent>
+    </xs:complexType>
+
+	<xs:simpleType name="ColWidthAttrib">
+		<xs:restriction base="xs:token">
+			<xs:pattern value="[0-9]*(, ?[0-9]*)*"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="WidthDimAttrib">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="%"/>
+			<xs:enumeration value="px"/>
+			<xs:enumeration value="pt"/>
+			<xs:enumeration value="en"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="DivAlignAttrib">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="NONE"/>
+			<xs:enumeration value="CLEAR"/>
+			<xs:enumeration value="LEFT"/>
+			<xs:enumeration value="RIGHT"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="FieldSetTypeAttrib">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="TEXT"/>
+			<xs:enumeration value="IMAGE"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+    <xs:simpleType name="FlagsAttrib">
+        <xs:list>
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="ALIGN_LEFT"/>
+                    <xs:enumeration value="MANDATORY"/>
+                    <xs:enumeration value="HIDDEN"/>
+                    <xs:enumeration value="READ_ONLY"/>
+                    <xs:enumeration value="ALIGN_RIGHT"/>
+                    <xs:enumeration value="ADD_DTU"/>
+                    <xs:enumeration value="ADD_SELBTN"/>
+                    <xs:enumeration value="HINT"/>
+                    <xs:enumeration value="ERROR"/>
+                    <xs:enumeration value="SELECT_BTN"/>
+                    <xs:enumeration value="SHOW_VALUE"/>
+                    <xs:enumeration value="BROWSE_SERVER"/>
+                    <xs:enumeration value="DISABLED"/>
+                    <xs:enumeration value="INFO"/>
+                    <xs:enumeration value="ALIGN_CENTER"/>
+                    <xs:enumeration value="ADD_DATE_PICKER"/>
+                    <xs:enumeration value="ADD_TIME_PICKER"/>
+                    <xs:enumeration value="NO_ZERO"/>
+                    <xs:enumeration value="PASSWORD"/>
+                    <xs:enumeration value="FILE"/>
+                    <xs:enumeration value="ADD_CUR"/>
+                    <xs:enumeration value="TRIM"/>
+                    <xs:enumeration value="SET_JSON_DATA"/>
+                    <xs:enumeration value="BOLD"/>
+                    <xs:enumeration value="REPLACE_BR_CR"/>
+                    <xs:enumeration value="HORZ_ARRANGE"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:list>
+    </xs:simpleType>
+    
+    <xs:simpleType name="ButtonsAttrib">
+        <xs:list>
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="OK"/>
+                    <xs:enumeration value="OPEN"/>
+                    <xs:enumeration value="SAVE"/>
+                    <xs:enumeration value="YES"/>
+                    <xs:enumeration value="NO"/>
+                    <xs:enumeration value="CANCEL"/>
+                    <xs:enumeration value="CLOSE"/>
+                    <xs:enumeration value="DISCARD"/>
+                    <xs:enumeration value="APPLY"/>
+                    <xs:enumeration value="RESET"/>
+                    <xs:enumeration value="RETRY"/>
+                    <xs:enumeration value="IGNORE"/>
+                    <xs:enumeration value="BACK"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:list>
+    </xs:simpleType>    
+	
+</xs:schema>

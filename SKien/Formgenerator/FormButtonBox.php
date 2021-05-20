@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace SKien\Formgenerator;
 
 /**
- * Button-Box with standrad buttons to control the form.
- * 
+ * Button-Box with standard buttons to control the form.
+ *
  * Supports the most used 'control' buttons for a form like
  * [OK] [Save] [Cancel] ...
  * Custom defined buttons can also be added.
@@ -33,10 +33,10 @@ class FormButtonBox extends FormElement
     public const RETRY      = 0x0400; // A "Retry" button for submit.
     public const IGNORE     = 0x0800; // An "Ignore" button
     public const BACK       = 0x1000; // A "Back" button
-    
+
     public const YES_NO_CANCEL = self::YES | self::NO | self::CANCEL;
     public const SAVE_CANCEL = self::SAVE | self::CANCEL;
-    
+
     /** @var integer Buttons, the box containing     */
     protected int $iBtns = 0;
     /** @var array user defined button(s)     */
@@ -50,7 +50,7 @@ class FormButtonBox extends FormElement
         $this->iBtns = $iBtns;
         parent::__construct($wFlags);
     }
-    
+
     /**
      * {@inheritDoc}
      * @see \SKien\Formgenerator\FormElement::fromXML()
@@ -64,7 +64,7 @@ class FormButtonBox extends FormElement
                 if (defined($strConstName)) {
                     $iBtns += constant($strConstName);
                 } else {
-                    trigger_error('Unknown Constant [' . $strConstName . '] for the Button property!', E_USER_WARNING);
+                    trigger_error('Unknown Constant [' . $strConstName . '] for the Button property!', E_USER_ERROR);
                 }
             }
         }
@@ -72,9 +72,10 @@ class FormButtonBox extends FormElement
         $oFormElement = new self($iBtns, $wFlags);
         $oFormParent->add($oFormElement);
         $oFormElement->readAdditionalXML($oXMLElement); // TODO: support of custom buttons through XML
+
         return $oFormElement;
     }
-    
+
     /**
      * Add custom button to the buttonbox.
      * Position of the button inside the box can be specified with the param $iAfterBtn: <ul>
@@ -88,7 +89,7 @@ class FormButtonBox extends FormElement
      */
     public function addButton(string $strText, string $strID, int $iAfterBtn = self::LAST, bool $bSubmit = false) : void
     {
-        $this->aCustomButtons[$iAfterBtn] = ['text' => $strText, 'id' => $strID, 'type' => ($bSubmit ? 'submit' : 'button')]; 
+        $this->aCustomButtons[$iAfterBtn] = ['text' => $strText, 'id' => $strID, 'type' => ($bSubmit ? 'submit' : 'button')];
     }
 
     /**
@@ -106,9 +107,9 @@ class FormButtonBox extends FormElement
         } else if ($this->oFlags->isSet(FormFlags::ALIGN_RIGHT)) {
             $this->addStyle('text-align', 'right');
         }
-        
+
         $aButtonDef = $this->loadButtonDef();
-        
+
         $strHTML = '<div id=buttonbox' . $this->buildStyle() . '>' . PHP_EOL;
         $iBtn = 0x0001;
         $strHTML .= $this->getCustomButton(self::FIRST);
@@ -121,10 +122,10 @@ class FormButtonBox extends FormElement
         }
         $strHTML .= $this->getCustomButton(self::LAST);
         $strHTML .= '</div>' . PHP_EOL;
-        
+
         return $strHTML;
     }
-    
+
     /**
      * Set the tab index of first button.
      * Method is called from the PageGenerator after an element is added to the form.
@@ -136,7 +137,7 @@ class FormButtonBox extends FormElement
         $this->iTabindex = $iTabindex;
         return $this->getButtonCount();
     }
-    
+
     /**
      * Build the markup for the button.
      * @param array $aBtn
@@ -156,7 +157,7 @@ class FormButtonBox extends FormElement
         }
         $strHTML .= ' value="' . $aBtn['text'] . '"';
         $strHTML .= '>' . PHP_EOL;
-        
+
         return $strHTML;
     }
 
@@ -187,7 +188,7 @@ class FormButtonBox extends FormElement
         }
         return $iCount + count($this->aCustomButtons);
     }
-    
+
     /**
      * Get Textlabels for all buttons.
      * Default they are initialized with the english Text.
@@ -211,10 +212,10 @@ class FormButtonBox extends FormElement
             self::IGNORE => ['text' => 'Ignore', 'id' => 'btnIgnore', 'type' => 'button'],
             self::BACK => ['text' => 'Back', 'id' => 'btnBack', 'type' => 'button'],
         ];
-        
+
         $aConfig = $this->oFG->getConfig()->getArray('ButtonBox.ButtonText');
-        // To make it easier to read, the configuration contains the names of the constants 
-        // as keys. So we have to convert the names into the values and assign the texts 
+        // To make it easier to read, the configuration contains the names of the constants
+        // as keys. So we have to convert the names into the values and assign the texts
         // accordingly.
         foreach ($aConfig as $strName => $strText) {
             $iBtn = constant('self::' . $strName);

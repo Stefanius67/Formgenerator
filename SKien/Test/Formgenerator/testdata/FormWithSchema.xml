@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<FormGenerator>
+<FormGenerator
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns="http://www.skien.de/FormGenerator"
+    xsi:schemaLocation="http://www.skien.de/FormGenerator FormGenerator.xsd">
+    
     <Form colwidth="25, 75">
         <Line label="Test Line">
             <Input name="strLastname" size="100%" flags="MANDATORY" maxlength="100" suffix="test" selectimg="testimg.png"/>

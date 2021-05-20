@@ -96,7 +96,7 @@ trait XMLHelper
                 if (defined($strConstName)) {
                     $wFlags += constant($strConstName);
                 } else {
-                    trigger_error('Unknown Constant [' . $strConstName . '] for the FormFlag property!', E_USER_WARNING);
+                    trigger_error('Unknown Constant [' . $strConstName . '] for the FormFlag property!', E_USER_ERROR);
                 }
             }
         }
