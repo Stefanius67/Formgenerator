@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace SKien\Test\Formgenerator;
 
-use PHPUnit\Framework\TestCase;
 use SKien\Config\ConfigInterface;
 use SKien\Formgenerator\FormDataInterface;
 use SKien\Formgenerator\XMLForm;
@@ -12,7 +11,7 @@ use SKien\Formgenerator\XMLForm;
  * @author Stefanius <s.kientzler@online.de>
  * @copyright MIT License - see the LICENSE file for details
  */
-class XMLFormTest extends TestCase
+class XMLFormTest extends FormBaseTestCase
 {
     use FormgeneratorHelper;
 
@@ -32,7 +31,7 @@ class XMLFormTest extends TestCase
         $oFG = $this->createXMLFG(true);
         $result = $oFG->loadXML(__DIR__ . DIRECTORY_SEPARATOR . 'testdata/AllElements.xml');
         $this->assertEquals(XMLForm::E_OK, $result);
-        $this->assertIsString($oFG->getForm());
+        $this->assertValidHtmlBlock($oFG->getForm());
     }
 
     public function test_loadSchemaValidate() : void
@@ -73,7 +72,7 @@ class XMLFormTest extends TestCase
         $oFG = $this->createXMLFG(true);
         $result = $oFG->loadXML(__DIR__ . DIRECTORY_SEPARATOR . 'testdata/FormErrorXML.xml');
         $this->assertEquals(XMLForm::E_XML_ERROR, $result);
-        $this->assertStringContainsString('<br/>', $oFG->getErrorMsg());
+        $this->assertValidHtmlBlock($oFG->getErrorMsg());
     }
 
     public function test_loadErrorXMLPlain() : void
@@ -82,7 +81,7 @@ class XMLFormTest extends TestCase
         $oFG->setPlainError(true);
         $result = $oFG->loadXML(__DIR__ . DIRECTORY_SEPARATOR . 'testdata/FormErrorXML.xml');
         $this->assertEquals(XMLForm::E_XML_ERROR, $result);
-        $this->assertStringNotContainsString('<br/>', $oFG->getErrorMsg());
+        $this->assertContainsNoHtmlTag($oFG->getErrorMsg());
     }
 
     public function test_loadErrorUnknownElement() : void

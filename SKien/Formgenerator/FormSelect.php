@@ -13,15 +13,15 @@ namespace SKien\Formgenerator;
 class FormSelect extends FormInput
 {
     /** @var string text for selectbutton     */
-    protected string $strSelectBtnText; 
-    
+    protected string $strSelectBtnText;
+
     /**
      * Create HTML select element.
      * If $wFlags contain SELECT_BTN property, the display of the selected
      * value is replaced by a button with text specified with setSelectBtnText.
      * (default text: 'Auswählen')
      * @see FormSelect::setSelectBtnText()
-     *  
+     *
      * @param string $strName    name and id
      * @param int $iSize         size of list. 1 => dropdown list (default: 1)
      * @param int $wFlags        flags (default: 0)
@@ -37,7 +37,7 @@ class FormSelect extends FormInput
         }
         $this->strSelectBtnText = 'Auswählen';
     }
-    
+
     /**
      * {@inheritDoc}
      * @see \SKien\Formgenerator\FormElement::fromXML()
@@ -52,7 +52,7 @@ class FormSelect extends FormInput
         $oFormElement->readAdditionalXML($oXMLElement);
         return $oFormElement;
     }
-    
+
     /**
      * {@inheritDoc}
      * @see \SKien\Formgenerator\FormElement::readAdditionalXML()
@@ -64,7 +64,7 @@ class FormSelect extends FormInput
             $this->setSelectBtnText($strSelectBtnText);
         }
     }
-    
+
     /**
      * Build the HTML code for the element
      * @return string
@@ -72,10 +72,10 @@ class FormSelect extends FormInput
     public function getHTML() : string
     {
         $this->processFlags();
-        
+
         $strSelect = $this->oFG->getData()->getValue($this->strName);
         $aOptions = $this->oFG->getData()->getSelectOptions($this->strName);
-        
+
         $strWidth = ($this->oParent ? $this->oParent->getColWidth($this->iCol) : '');
         $strHTML  = '';
         $strHTML .= '       ';
@@ -106,23 +106,27 @@ class FormSelect extends FormInput
                 if ($strValue == $strSelect) {
                     $strHTML .= 'selected ';
                 }
+                if (strlen($strOption) == 0) {
+                    // to prevent HTML5 validation error "Element option without attribute label must not be empty."
+                    $strOption = '&nbsp;';
+                }
                 $strHTML .= 'value="' . $strValue . '">' . $strOption . '</option>' . PHP_EOL;
             }
         } else if ($this->size == 1) {
-            // dropdown selectlist without options... 
+            // dropdown selectlist without options...
             trigger_error('empty select options set!', E_USER_NOTICE);
         }
-            
+
         $strHTML .= '       </select></div>' . PHP_EOL;
-        
+
         return $strHTML;
     }
-    
+
     /**
      * set text for selectbutton.
      * @param string $strSelectBtnText
      */
-    public function setSelectBtnText(string $strSelectBtnText) : void 
+    public function setSelectBtnText(string $strSelectBtnText) : void
     {
         if (!$this->oFlags->isSet(FormFlags::SELECT_BTN)) {
             trigger_error('SELECT_BTN flag must be set!', E_USER_NOTICE);

@@ -42,12 +42,17 @@ $oFG->setAction('formaction.php');
 $oFG->setTarget('_blank');
 // $oFG->setReadOnly(true);
 // $oFG->setDebugMode(true);
-$oFG->loadXML('SimpleForm.xml');
 
-// generate HTML-markup and JS configuration data
-$strFormHTML = $oFG->getForm();
-$strStyleFromPHP = $oFG->getStyle();
-$strConfigFromPHP = $oFG->getScript();
+if ($oFG->loadXML('xml/SimpleForm.xml') == XMLForm::E_OK) {
+    // generate HTML-markup and JS configuration data
+    $strFormHTML = $oFG->getForm();
+    $strStyleFromPHP = $oFG->getStyle();
+    $strConfigFromPHP = $oFG->getScript();
+} else {
+    $strFormHTML = $oFG->getErrorMsg();
+    $strStyleFromPHP = '';
+    $strConfigFromPHP = '';
+}
 ?>
 <html>
 <head>

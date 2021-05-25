@@ -3,20 +3,20 @@ declare(strict_types=1);
 
 require_once '../autoloader.php';
 
-use SKien\Formgenerator\FormGenerator;
-use SKien\Formgenerator\FormFlags;
 use SKien\Config\JSONConfig;
+use SKien\Formgenerator\ArrayFormData;
 use SKien\Formgenerator\FormButtonBox;
 use SKien\Formgenerator\FormCKEdit;
+use SKien\Formgenerator\FormFlags;
+use SKien\Formgenerator\FormGenerator;
 use SKien\Formgenerator\FormHeader;
-use SKien\Formgenerator\ArrayFormData;
 
 $strTheme = './MSO-Theme/';
 // $strTheme = './';
 
 $oConfig = new JSONConfig($strTheme . 'FormGenerator.json');
 $oData = new ArrayFormData([
-        'strText' => 
+        'strText' =>
             '<h1>This is the content</h1>' . PHP_EOL .
             '<p>with a  little text...</p>'
     ]);
@@ -44,8 +44,10 @@ $strFormHTML = $oFG->getForm();
 $strStyleFromPHP = $oFG->getStyle();
 $strConfigFromPHP = $oFG->getScript();
 ?>
+<!DOCTYPE html>
 <html>
 <head>
+<title>Test</title>
 <link type="text/css" rel="stylesheet" href="<?= $strTheme; ?>FormGenerator.css">
 <style>
 body
@@ -84,9 +86,9 @@ function btnPreviewClicked()
     strOptions += ",height=" + parseInt(iHeight);
     strOptions += ",left=" + parseInt(iLeft);
     strOptions += ",top=" + parseInt(iTop);
-    	
+
 	var win = window.open("", "Preview", strOptions);
-	win.document.body.innerHTML = g_oCKEdit.oEditor.getData();	
+	win.document.body.innerHTML = g_oCKEdit.oEditor.getData();
 }
 </script>
 </head>

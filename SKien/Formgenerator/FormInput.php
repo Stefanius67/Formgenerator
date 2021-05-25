@@ -24,13 +24,13 @@ class FormInput extends FormElement
     protected string $strExpandFolder = '';
     /** @var string suffix directly after the element     */
     protected string $strSuffix = '';
-    
+
     /**
      * @param string $strName Name (also used as ID, if not set separate)
      * @param int|string $size number set the size-attribute, a string is used for the width attribute
-     * @param int $wFlags       
+     * @param int $wFlags
      */
-    public function __construct(string $strName, $size, int $wFlags = 0, int $iMaxLength = 0) 
+    public function __construct(string $strName, $size, int $wFlags = 0, int $iMaxLength = 0)
     {
         parent::__construct($wFlags);
         $this->strName = $strName;
@@ -39,13 +39,13 @@ class FormInput extends FormElement
         $this->strSelectImg = '';
         $this->strSelectImgTitle = '';
         $this->strSuffix = '';
-        
+
         $this->addFlags($wFlags);
         if ($iMaxLength > 0) {
             $this->addAttribute('maxlength', (string)$iMaxLength);
         }
     }
-    
+
     /**
      * {@inheritDoc}
      * @see \SKien\Formgenerator\FormElement::fromXML()
@@ -65,7 +65,7 @@ class FormInput extends FormElement
         $oFormElement->readAdditionalXML($oXMLElement);
         return $oFormElement;
     }
-    
+
     /**
      * {@inheritDoc}
      * @see \SKien\Formgenerator\FormElement::readAdditionalXML()
@@ -83,7 +83,7 @@ class FormInput extends FormElement
             $this->setExpandFolder($strExpandFolder);
         }
     }
-    
+
     /**
      * Set the maxlength attribute of the element.
      * @param int $iMaxLength
@@ -92,7 +92,7 @@ class FormInput extends FormElement
     {
         $this->addAttribute('maxlength', (string)$iMaxLength);
     }
-    
+
     /**
      * Set placeholder to display on empty input element.
      * @param string $strPlaceholder
@@ -103,7 +103,7 @@ class FormInput extends FormElement
             $this->addAttribute('placeholder', $strPlaceholder);
         }
     }
-    
+
     /**
      * set image and title for select-button (leave strImg blank for default 'search')
      * @param string $strImg
@@ -114,7 +114,7 @@ class FormInput extends FormElement
         $this->strSelectImg = $strImg;
         $this->strSelectImgTitle = $strTitle;
     }
-    
+
     /**
      * Set the folder to expand when call the filemanager.
      * @param string $strExpandFolder
@@ -123,7 +123,7 @@ class FormInput extends FormElement
     {
         $this->strExpandFolder = $strExpandFolder;
     }
-    
+
     /**
      * @param string $strSuffix
      */
@@ -131,7 +131,7 @@ class FormInput extends FormElement
     {
         $this->strSuffix = $strSuffix;
     }
-    
+
     /**
      * {@inheritDoc}
      * @see \SKien\Formgenerator\FormElement::onParentSet()
@@ -142,7 +142,7 @@ class FormInput extends FormElement
             $this->oFG->addConfigForJS('RichFilemanager', $this->oFG->getConfig()->getArray('RichFilemanager'));
         }
     }
-    
+
     /**
      * Build the HTML-notation for the input element.
      * {@inheritDoc}
@@ -153,9 +153,9 @@ class FormInput extends FormElement
         $this->processFlags();
         $this->setSize();
         $strHTML = $this->buildContainerDiv();
-        
+
         $this->strID = $this->strID ?: $this->strName;
-        
+
         $strHTML .= '<input';
         $strHTML .= ' type="' . $this->strType . '"';
         $strHTML .= ' name="' . $this->strName . '"';
@@ -167,16 +167,16 @@ class FormInput extends FormElement
         $strHTML .= $this->buildAttributes();
         $strHTML .= $this->buildListLink();
         $strHTML .= '>';
-        
+
         $strHTML .= $this->buildSelectButton();
         $strHTML .= $this->buildSuffix();
         $strHTML .= $this->buildDatalist();
-        
+
         $strHTML .= '</div>' . PHP_EOL;
-        
+
         return $strHTML;
     }
-    
+
     /**
      * Set the tab index of the element.
      * Method is called from the PageGenerator after an element is added to the form.
@@ -191,14 +191,14 @@ class FormInput extends FormElement
         $this->iTabindex = $iTabindex;
         return 1;
     }
-    
+
     /**
      * Process the current flags before the HTML is generated.
      */
     protected function processFlags() : void
     {
         $this->setTypeFromFlags();
-        
+
         if ($this->oFlags->isSet(FormFlags::MANDATORY)) {
             $this->addAttribute('required');
         }
@@ -227,12 +227,12 @@ class FormInput extends FormElement
             }
         }
     }
-    
+
     /**
      * Set the size of the element.
      * If property $size contains numeric value, the HTML attrib 'size' is set, in case of a
      * string a width information including dimension (px, em, ...) is assumed.
-     * 
+     *
      */
     protected function setSize() : void
     {
@@ -262,7 +262,7 @@ class FormInput extends FormElement
         }
         return parent::buildClass();
     }
-    
+
     /**
      * Build the markup for a suffix succeeding the input element.
      * @return string
@@ -279,7 +279,7 @@ class FormInput extends FormElement
         }
         return $strHTML;
     }
-    
+
     /**
      * Build attrib for associated datalist.
      * If the dataprovider contains a datalist in the selectoptions with the same name
@@ -295,10 +295,10 @@ class FormInput extends FormElement
         }
         return $strLink;
     }
-    
+
     /**
      * Build the markup for associated datalist.
-     * If the dataprovider contains a datalist in the selectoptions with the same name 
+     * If the dataprovider contains a datalist in the selectoptions with the same name
      * as the element, we build this datalist.
      * @return string
      */
@@ -317,7 +317,7 @@ class FormInput extends FormElement
         }
         return $strHTML;
     }
-    
+
     /**
      * Build the markup for the select button(s).
      * If input  is set to readonly, an additional 'delete' button is appended.
@@ -330,12 +330,12 @@ class FormInput extends FormElement
         if ($wButtonFlags === 0 || $this->oFlags->isSet(FormFlags::HIDDEN)) {
             return '';
         }
-        
+
         $strImg = '';
         $strTitle = '';
         $strOnClick = '';
         $strID = '';
-        
+
         // only one of the button flags is allowed - so we can use switch-case!
         switch ($wButtonFlags) {
         case FormFlags::ADD_DTU:
@@ -374,7 +374,7 @@ class FormInput extends FormElement
         }
         return $strHTML;
     }
-    
+
     /**
      * Build the markup for a selectimage.
      * @param string $strImg

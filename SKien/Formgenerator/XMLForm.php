@@ -71,8 +71,8 @@ class XMLForm extends FormGenerator
             }
         }
         if ($iResult != self::E_OK && strlen($this->strErrorMsg) == 0) {
-            $this->strErrorMsg = ($iResult != self::E_XSD_ERROR ? 'XML error: ' : 'XSD Schema validation error: ');
-            $this->strErrorMsg .= $this->getFormatedXMLError($this->bPlainError);
+            $strErrorMsg = ($iResult != self::E_XSD_ERROR ? 'XML error' : 'XSD Schema validation error');
+            $this->strErrorMsg .= $this->getFormatedXMLError($strErrorMsg, $this->bPlainError);
         }
         libxml_clear_errors();
         return $iResult;
@@ -148,16 +148,25 @@ class XMLForm extends FormGenerator
      * @param bool $bPlainText
      * @return string
      */
-    protected function getFormatedXMLError(bool $bPlainText) : string
+    protected function getFormatedXMLError(string $strError, bool $bPlainText) : string
     {
+        $strErrorMsg = '';
         $errors = libxml_get_errors();
         $aLevel = [LIBXML_ERR_WARNING => 'Warning ', LIBXML_ERR_ERROR => 'Error ', LIBXML_ERR_FATAL => 'Fatal Error '];
-        $strCR = ($bPlainText ? PHP_EOL : '<br/>');
-        $strErrorMsg = '';
-        foreach ($errors as $error) {
-            $strErrorMsg .= $strCR . $aLevel[$error->level] . $error->code;
-            $strErrorMsg .= ' (Line ' . $error->line . ', Col ' . $error->column . ') ';
-            $strErrorMsg .= trim($error->message);
+        if ($bPlainText) {
+            $strErrorMsg = $strError . ': ';
+            foreach ($errors as $error) {
+                $strErrorMsg .= PHP_EOL . $aLevel[$error->level] . $error->code;
+                $strErrorMsg .= ' (Line ' . $error->line . ', Col ' . $error->column . ') ';
+                $strErrorMsg .= PHP_EOL . trim($error->message);
+            }
+        } else {
+            $strErrorMsg = '<h2>' . $strError . '</h2>';
+            foreach ($errors as $error) {
+                $strErrorMsg .= '<h3>' . $aLevel[$error->level] . $error->code . '</h3>';
+                $strErrorMsg .= '<ul><li>Line: ' . $error->line . '</li><li>Col: ' . $error->column . '</li></ul>';
+                $strErrorMsg .= '<p>' . trim($error->message) . '</p>';
+            }
         }
         return $strErrorMsg;
     }

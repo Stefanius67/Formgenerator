@@ -53,7 +53,6 @@ if ($oFG->loadXML('xml/ColumnForm.xml') == XMLForm::E_OK) {
     $strStyleFromPHP = '';
     $strConfigFromPHP = '';
 }
-
 ?>
 <html>
 <head>
