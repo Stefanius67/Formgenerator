@@ -52,6 +52,7 @@
 		}
 	},
     "Images": {
+        "Path": "./MSO-Theme",
         "StdImages": {
             "Delete": {
                 "Image": "delete.png",

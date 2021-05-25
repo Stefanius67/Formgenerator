@@ -40,7 +40,7 @@
     --theme-txt-hover: #EEEEEE;
     --theme-txt-disabled: #444444;
     --theme-txt-error: darkred;
-    --theme-txt-info: #00005F;
+    --theme-txt-info: #333333;
 
     --gradient-start-h1: #AAAAAA;
     --gradient-stop-h1: #AAAAAA;
@@ -274,7 +274,7 @@ form .forminfo
     border-radius: var(--radius-medium);
     padding-left: 5px;
     margin: 4px 0px;
-    background: var(--theme-bkg-info) url(../images/info.png) no-repeat right  4px top 3px;
+    background: var(--theme-bkg-info) url(info.png) no-repeat right  4px top 3px;
 }
 
 form .sbSelect
@@ -421,7 +421,7 @@ form input[type=range]::-ms-thumb
     width: calc(100% - 14px);
     border: 1px solid var(--theme-border-dark);
     color: var(--theme-txt-error);
-    background: var(--theme-bkg-error) url(../images/window_close.png) no-repeat right 5px top 5px;
+    background: var(--theme-bkg-error) url(window_close.png) no-repeat right 5px top 5px;
     margin: 10px 7px;
     padding: 5px 25px 5px 5px;
     box-sizing: border-box;
@@ -482,7 +482,7 @@ form input[type=range]::-ms-thumb
     font-size: var(--theme-size-h1);
     font-weight: bold;
     box-sizing: border-box;
-    background-image: url(../images/window_close.png);
+    background-image: url(window_close.png);
     background-repeat: no-repeat;
     background-position: top 4px right 4px;
 }

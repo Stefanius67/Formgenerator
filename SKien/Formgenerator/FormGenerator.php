@@ -139,6 +139,7 @@ class FormGenerator extends FormCollection
         if ($this->strImgPath == '') {
             $this->strImgPath = str_replace(rtrim($_SERVER['DOCUMENT_ROOT'], DIRECTORY_SEPARATOR), '', __DIR__);
             $this->strImgPath .= DIRECTORY_SEPARATOR . 'StdImages';
+            $this->strImgPath = $this->getConfig()->getString('Images.Path', $this->strImgPath);
         }
         return rtrim($this->strImgPath, DIRECTORY_SEPARATOR);
     }

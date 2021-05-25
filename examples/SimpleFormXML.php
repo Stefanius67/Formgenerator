@@ -7,8 +7,8 @@ use SKien\Config\JSONConfig;
 use SKien\Formgenerator\ArrayFormData;
 use SKien\Formgenerator\XMLForm;
 
-// $strTheme = './MSO-Theme/';
-$strTheme = './';
+$strTheme = './MSO-Theme/';
+// $strTheme = './';
 
 $oConfig = new JSONConfig($strTheme . 'FormGenerator.json');
 
