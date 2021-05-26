@@ -145,7 +145,7 @@ class FormGenerator extends FormCollection
     }
 
     /**
-     * Get filename for predifined standard images
+     * Get filename for predefined standard images
      * @param int $iImage
      * @return array
      */

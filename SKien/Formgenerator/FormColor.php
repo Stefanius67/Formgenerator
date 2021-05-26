@@ -6,7 +6,7 @@ namespace SKien\Formgenerator;
 /**
  * Element to select Color.
  * Uses the JSColor - picker version 2.4.5  (https://jscolor.com/)
- * 
+ *
  * <br/><br/>
  * <b>!!! For commercial use take care of the JSColor licence conditions !!!</b>
  *
@@ -23,12 +23,12 @@ class FormColor extends FormInput
      * @param int|string $size number set the size-attribute, a string is used for the width attribute
      * @param int $wFlags    default 0
      */
-    public function __construct(string $strName, $size = 6, int $wFlags = 0) 
+    public function __construct(string $strName, $size = 6, int $wFlags = 0)
     {
         parent::__construct($strName, $size, $wFlags);
         $this->addAttribute('data-jscolor', '{}');
     }
-    
+
     /**
      * {@inheritDoc}
      * @see \SKien\Formgenerator\FormElement::fromXML()
@@ -43,7 +43,7 @@ class FormColor extends FormInput
         $oFormElement->readAdditionalXML($oXMLElement);
         return $oFormElement;
     }
-    
+
     /**
      * Pass some presets for the color picker to JS.
      * {@inheritDoc}
@@ -60,7 +60,7 @@ class FormColor extends FormInput
             'position' => $this->oFG->getConfig()->getString('Color.position', 'bottom'),
             'borderColor' => $this->oFG->getConfig()->getString('Color.borderColor', '#000000'),
             'backgroundColor' => $this->oFG->getConfig()->getString('Color.backgroundColor', '#FFFFFF'),
-            'borderRadius' => $this->oFG->getConfig()->getInt('Color.borderRadius', 7),
+            'borderRadius' => $this->oFG->getConfig()->getInt('Color.borderRadius', 0),
             'padding' => $this->oFG->getConfig()->getInt('Color.padding', 12),
         ];
         $aPalette = $this->oFG->getConfig()->getArray('Color.palette');
