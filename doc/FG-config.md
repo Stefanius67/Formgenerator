@@ -29,7 +29,7 @@ requirements.
 **all values are case sensitive.**
 
 ## Location of the needed Javascript files
-Some Javascript files are needed from the Foermgenerator to work properly.
+Some Javascript files are needed from the Formgenerator to work properly.
 You can find all needed Files in the directory ***script***.
 
 In the PHP script for your form you only have to include the *FormGenerator.js* file
