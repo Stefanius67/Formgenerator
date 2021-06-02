@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FormGenerator
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns="http://www.skien.de/FormGenerator"
+    xsi:schemaLocation="http://www.skien.de/FormGenerator FormGenerator.xsd">
+    
+    <Form colwidth="20, 80">
+        <Header text="Quick Start Example" level="1"/>
+        <FieldSet legend="Name">
+            <Line label="Lastname:">
+                <Input name="strLastname" size="100%" flags="MANDATORY" maxlength="50"/>
+            </Line>
+            <Line label="Firstname:">
+                <Input name="strFirstname" size="100%" maxlength="50"/>
+            </Line>
+            <Line label="Nickname:">
+                <Input name="strNickname" size="100%" maxlength="50"/>
+            </Line>
+        </FieldSet>
+        <FieldSet legend="Personal Data" colwidth="20, 25, 20, 35">
+            <Line label="Gender:">
+                <Select name="strGender" size="1" flags="MANDATORY">
+                    <option value=""></option>
+                    <option value="m">male</option>
+                    <option value="f">female</option>
+                    <option value="d">diverse</option>
+                </Select>
+                <Static text="Birthday:"/>
+                <Date name="dateDoB" flags="NO_ZERO ADD_DATE_PICKER"/>
+            </Line>
+            <Line label="Height:">
+                <Int name="iHeight" size="4" suffix="cm"/>
+                <Static text="Weight:"/>
+                <Float name="fltWeight" size="5" digits="1" suffix="kg"/>
+            </Line>
+        </FieldSet>
+        <ButtonBox buttons="SAVE DISCARD" flags="ALIGN_RIGHT"/>
+    </Form>
+</FormGenerator>
