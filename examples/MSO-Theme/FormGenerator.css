@@ -147,6 +147,7 @@ form input, form textarea, form select
     font-weight: normal;
     font-family: var(--theme-font);
     border: 1px solid var(--theme-border-medium);
+    margin: 2px 0;
 }
 
 form input[disabled],
@@ -300,7 +301,7 @@ form .sbBtn
     clear: both;
     margin: 10px 10px 0 10px;
     padding:  10px 0px 10px 0px;    /* t, r, b, l */
-    /* border-top: 1px solid var(--theme-border-light); */
+    border-top: 1px solid var(--theme-border-medium);
 }
 
 #buttonbox input[type=submit], #buttonbox input[type=button], #buttonbox input[type=file]

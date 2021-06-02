@@ -145,6 +145,7 @@ form input, form textarea, form select
     font-weight: normal;
     font-family: var(--theme-font);
     border: 1px solid var(--theme-border-medium);
+    margin: 2px 0;
 }
 
 form input[disabled],
