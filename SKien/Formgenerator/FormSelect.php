@@ -68,7 +68,7 @@ class FormSelect extends FormInput
         $oOptions = $oXMLElement->getElementsByTagName('option');
         if ($oOptions->length > 0) {
             $this->aOptions = [];
-            foreach($oOptions as $oOption) {
+            foreach ($oOptions as $oOption) {
                 $this->aOptions[$oOption->nodeValue] = self::getAttribString($oOption, 'value');
             }
         }
