@@ -3,18 +3,18 @@ declare(strict_types=1);
 
 require_once '../autoloader.php';
 
-use SKien\Formgenerator\ArrayFormData;
 use SKien\Config\JSONConfig;
-use SKien\Formgenerator\FormGenerator;
-use SKien\Formgenerator\FormInput;
-use SKien\Formgenerator\FormFlags;
-use SKien\Formgenerator\FormButtonBox;
-use SKien\Formgenerator\FormHeader;
-use SKien\Formgenerator\FormDiv;
-use SKien\Formgenerator\FormImage;
+use SKien\Formgenerator\ArrayFormData;
 use SKien\Formgenerator\FormButton;
-use SKien\Formgenerator\FormDate;
+use SKien\Formgenerator\FormButtonBox;
 use SKien\Formgenerator\FormCheck;
+use SKien\Formgenerator\FormDate;
+use SKien\Formgenerator\FormDiv;
+use SKien\Formgenerator\FormFlags;
+use SKien\Formgenerator\FormGenerator;
+use SKien\Formgenerator\FormHeader;
+use SKien\Formgenerator\FormImage;
+use SKien\Formgenerator\FormInput;
 use SKien\Formgenerator\FormLine;
 use SKien\Formgenerator\FormRadioGroup;
 
@@ -42,9 +42,7 @@ $aData = [
     'bBoardMember' => true,
 ];
 
-$aGenderSelect = ['' => '', 'male' => 'm', 'female' => 'f', 'diverse' => 'd'];
-
-$oData = new ArrayFormData($aData, ['strGender' => $aGenderSelect]);
+$oData = new ArrayFormData($aData);
 
 $oFG = new FormGenerator($oData);
 $oFG->setConfig($oConfig);
@@ -69,7 +67,9 @@ $oFL->add(new FormInput('strPostcode', '90%'));
 $oFL->add(new FormInput('strCity', '100%'));
 $oFL = $oFS->addLine(FormLine::HR);
 $oFL = $oFS->addLine('Gender:');
-$oFL->add(new FormRadioGroup('strGender', FormFlags::HORZ_ARRANGE));
+$oCtrl = new FormRadioGroup('strGender', FormFlags::HORZ_ARRANGE);
+$oCtrl->setSelectOptions(['' => '', 'male' => 'm', 'female' => 'f', 'diverse' => 'd']);
+$oFL->add($oCtrl);
 $oFL = $oFS->addLine('Birthday:');
 $oFL->add(new FormDate('dateDoB', FormFlags::ADD_DATE_PICKER));
 $oFL = $oFS->addLine();

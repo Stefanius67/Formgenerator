@@ -38,13 +38,22 @@
                     <Image name="imgTest" image="IMG_SEARCH" bindto="strTest" default="test.img"/>
                 </Line>
                 <Line label="Test Line">
-                    <RadioGroup name="iTest"/>
+                    <RadioGroup name="iTest">
+                        <option value="0">zero</option>
+                        <option value="1">one</option>
+                    </RadioGroup>
                 </Line>
                 <Line label="Test Line">
                     <Range name="iTest" min="0" max="100" step="10"/>
                 </Line>
                 <Line label="Test Line">
                     <Select name="strGender" size="1" selectbtntext="Select" flags="SELECT_BTN"/>
+                </Line>
+                <Line label="Test Line">
+                    <Select name="strSelect">
+                        <option value="0">zero</option>
+                        <option value="1">one</option>
+                    </Select>
                 </Line>
                 <Line label="Test Line">
                     <TextArea name="strTest" rows="5" cols="50"/>

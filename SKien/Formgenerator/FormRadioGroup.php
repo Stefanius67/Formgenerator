@@ -12,12 +12,15 @@ namespace SKien\Formgenerator;
  */
 class FormRadioGroup extends FormInput
 {
+    /** @var array available select option */
+    protected ?array $aOptions = null;
+
     /**
      * Create a radio group.
      * @param string $strName   name AND id of the element
      * @param int $wFlags    (default: 0)
      */
-    public function __construct(string $strName, int $wFlags = 0) 
+    public function __construct(string $strName, int $wFlags = 0)
     {
         $this->oFlags = new FormFlags($wFlags);
         $this->strName = $strName;
@@ -25,7 +28,7 @@ class FormRadioGroup extends FormInput
             $this->addAttribute('disabled');
         }
     }
-    
+
     /**
      * {@inheritDoc}
      * @see \SKien\Formgenerator\FormElement::fromXML()
@@ -39,50 +42,79 @@ class FormRadioGroup extends FormInput
         $oFormElement->readAdditionalXML($oXMLElement);
         return $oFormElement;
     }
-    
+
     /**
-     * Build the HTML-markup for the checkbox.
-     * Checkbox is a special case, as it behaves particularly with regard to the transferred 
-     * value and does not support read-only mode.
-     * There is special treatment for both cases, which is explained in more detail in the 
-     * respective code areas bolow.  
-     * @return string
+     * {@inheritDoc}
+     * @see \SKien\Formgenerator\FormElement::readAdditionalXML()
      */
-    public function getHTML() : string 
+    public function readAdditionalXML(\DOMElement $oXMLElement) : void
     {
-        $this->processFlags();
-        
-        $strSelect = $this->oFG->getData()->getValue($this->strName);
-        $aOptions = $this->oFG->getData()->getSelectOptions($this->strName);
-        
-        $strHTML = $this->buildContainerDiv();
-        
-        // TODO: create surrogates for unchecked/readonly (see FormCheck)
-        
-        $iBtn = 0;
-        $this->addStyle('float', 'left');
-        foreach ($aOptions as $strName => $strValue) {
-            if ($strName !== '') {
-                $strHTML .= '<input type="radio"';
-                $strHTML .= $this->buildStyle();
-                $strHTML .= $this->buildAttributes();
-                $strHTML .= $this->buildTabindex();
-                $strHTML .= ' id="' . $this->strName . ++$iBtn . '"';
-                $strHTML .= ' name="' . $this->strName . '"';
-                if ($strSelect === $strValue) {
-                    $strHTML .= ' checked';
-                }
-                $strHTML .= ' value="' . $strValue . '">';
-                $strHTML .= ' <label for="' . $this->strName . $iBtn . '"';
-                if ($this->oFlags->isSet(FormFlags::HORZ_ARRANGE)) {
-                    $strHTML .= ' style="float: left;"';
-                }
-                $strHTML .= ' class="radio">' . $strName . '</label>' . PHP_EOL;
+        parent::readAdditionalXML($oXMLElement);
+        $oOptions = $oXMLElement->getElementsByTagName('option');
+        if ($oOptions->length > 0) {
+            $this->aOptions = [];
+            foreach($oOptions as $oOption) {
+                $this->aOptions[$oOption->nodeValue] = self::getAttribString($oOption, 'value');
             }
         }
-        
+    }
+
+    /**
+     * Build the HTML-markup for the radio group.
+     * @return string
+     */
+    public function getHTML() : string
+    {
+        $this->processFlags();
+
+        $strSelect = $this->oFG->getData()->getValue($this->strName);
+        $aOptions = $this->aOptions ?: $this->oFG->getData()->getSelectOptions($this->strName);
+
+        $strHTML = $this->buildContainerDiv();
+
+        // TODO: create surrogates for unchecked/readonly (see FormCheck)
+
+        $iBtn = 0;
+        $this->addStyle('float', 'left');
+        if (count($aOptions) > 0) {
+            foreach ($aOptions as $strName => $strValue) {
+                if ($strName !== '') {
+                    $strHTML .= '<input type="radio"';
+                    $strHTML .= $this->buildStyle();
+                    $strHTML .= $this->buildAttributes();
+                    $strHTML .= $this->buildTabindex();
+                    $strHTML .= ' id="' . $this->strName . ++$iBtn . '"';
+                    $strHTML .= ' name="' . $this->strName . '"';
+                    if ($strSelect === $strValue) {
+                        $strHTML .= ' checked';
+                    }
+                    $strHTML .= ' value="' . $strValue . '">';
+                    $strHTML .= ' <label for="' . $this->strName . $iBtn . '"';
+                    if ($this->oFlags->isSet(FormFlags::HORZ_ARRANGE)) {
+                        $strHTML .= ' style="float: left;"';
+                    }
+                    $strHTML .= ' class="radio">' . $strName . '</label>' . PHP_EOL;
+                }
+            }
+        } else {
+            // radiogroup without options...
+            trigger_error('empty radiogroup defined!', E_USER_NOTICE);
+        }
+
         $strHTML .= '</div>' . PHP_EOL;
 
         return $strHTML;
+    }
+
+    /**
+     * Set the select options for the element.
+     * If no selection options are passed to the element via this method, an
+     * attempt is made in the getHTML () method to determine an assigned list
+     * via the data provider.
+     * @param array $aOptions
+     */
+    public function setSelectOptions(array $aOptions) : void
+    {
+        $this->aOptions = $aOptions;
     }
 }

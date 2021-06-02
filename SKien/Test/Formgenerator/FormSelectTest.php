@@ -3,19 +3,18 @@ declare(strict_types=1);
 
 namespace SKien\Test\Formgenerator;
 
-use PHPUnit\Framework\TestCase;
+use SKien\Formgenerator\FormFlags;
 use SKien\Formgenerator\FormLine;
 use SKien\Formgenerator\FormSelect;
-use SKien\Formgenerator\FormFlags;
 
 /**
  * @author Stefanius <s.kientzler@online.de>
  * @copyright MIT License - see the LICENSE file for details
  */
-class FormSelectTest extends TestCase
+class FormSelectTest extends FormBaseTestCase
 {
     use FormgeneratorHelper;
-    
+
     public function test__construct() : void
     {
         $oFG = $this->createFG(false);
@@ -25,7 +24,7 @@ class FormSelectTest extends TestCase
         $strHTML = $oSelect->getHTML();
         $this->assertNotFalse(strpos($strHTML, '<select'));
     }
-    
+
     public function test_SelectBtn() : void
     {
         $oFG = $this->createFG(false);
@@ -36,7 +35,7 @@ class FormSelectTest extends TestCase
         $strHTML = $oSelect->getHTML();
         $this->assertNotFalse(strpos($strHTML, '<button class="sbBtn">'));
     }
-    
+
     public function test_width() : void
     {
         $oFG = $this->createFG(false);
@@ -47,7 +46,17 @@ class FormSelectTest extends TestCase
         $strHTML = $oSelect->getHTML();
         $this->assertNotFalse(strpos($strHTML, 'width: 70%'));
     }
-    
+
+    public function test_selectOptions() : void
+    {
+        $oFG = $this->createFG(false);
+        $oFL = $oFG->add(new FormLine('testline'));
+        $oSelect = new FormSelect('strTest', 1);
+        $oSelect->setSelectOptions(['zero' => 0, 'one' => 1]);
+        $oFL->add($oSelect);
+        $this->assertValidHtmlBlock($oSelect->getHTML());
+    }
+
     public function test_error1() : void
     {
         $oFG = $this->createFG(false);
@@ -57,7 +66,7 @@ class FormSelectTest extends TestCase
         $oSelect = new FormSelect('strGender', 2, FormFlags::SELECT_BTN);
         $oFL->add($oSelect);
     }
-    
+
     public function test_error2() : void
     {
         $oFG = $this->createFG(false);
@@ -68,7 +77,7 @@ class FormSelectTest extends TestCase
         $this->expectError();
         $oSelect->getHTML();
     }
-    
+
     public function test_error3() : void
     {
         $oFG = $this->createFG(false);

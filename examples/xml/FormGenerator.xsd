@@ -88,43 +88,39 @@
     </xs:complexType>
 
     <xs:complexType name="ElementType">
-        <xs:simpleContent>
-            <xs:extension base="xs:string">
                 <xs:attribute type="xs:string" name="style"/>
                 <xs:attribute type="xs:string" name="class"/>
-            </xs:extension>
-        </xs:simpleContent>
     </xs:complexType>
 
     <xs:complexType name="StaticType">
-        <xs:simpleContent>
+        <xs:complexContent>
             <xs:extension base="fg:ElementType">
                 <xs:attribute type="xs:string" name="text"/>
                 <xs:attribute type="fg:FlagsAttrib" name="flags"/>
             </xs:extension>
-        </xs:simpleContent>
+        </xs:complexContent>
     </xs:complexType>
 
     <xs:complexType name="HeaderType">
-        <xs:simpleContent>
+        <xs:complexContent>
             <xs:extension base="fg:ElementType">
                 <xs:attribute type="xs:string" name="text"/>
                 <xs:attribute type="xs:integer" name="level"/>
             </xs:extension>
-        </xs:simpleContent>
+        </xs:complexContent>
     </xs:complexType>
 
 	<xs:complexType name="ButtonBoxType">
-		<xs:simpleContent>
+		<xs:complexContent>
             <xs:extension base="fg:ElementType">
 				<xs:attribute type="fg:ButtonsAttrib" name="buttons"/>
 				<xs:attribute type="fg:FlagsAttrib" name="flags"/>
 			</xs:extension>
-		</xs:simpleContent>
+		</xs:complexContent>
 	</xs:complexType>
 
     <xs:complexType name="InputType">
-        <xs:simpleContent>
+        <xs:complexContent>
             <xs:extension base="fg:ElementType">
                 <xs:attribute type="xs:string" name="id"/>
                 <xs:attribute type="xs:string" name="name"/>
@@ -145,119 +141,134 @@
                 <xs:attribute type="xs:string" name="onkeypress"/>
                 <xs:attribute type="xs:string" name="onkeyup"/>
             </xs:extension>
-        </xs:simpleContent>
+        </xs:complexContent>
     </xs:complexType>
 
     <xs:complexType name="ButtonType">
-        <xs:simpleContent>
+        <xs:complexContent>
             <xs:extension base="fg:InputType">
 		        <xs:attribute type="xs:string" name="text"/>
             </xs:extension>
-        </xs:simpleContent>
+        </xs:complexContent>
     </xs:complexType>
 
 	<xs:complexType name="CanvasType">
-		<xs:simpleContent>
+		<xs:complexContent>
             <xs:extension base="fg:InputType">
 				<xs:attribute type="xs:integer" name="width"/>
 				<xs:attribute type="xs:integer" name="height"/>
 			</xs:extension>
-		</xs:simpleContent>
+		</xs:complexContent>
 	</xs:complexType>
 
     <xs:complexType name="CheckType">
-        <xs:simpleContent>
+        <xs:complexContent>
             <xs:extension base="fg:InputType">
 		        <xs:attribute type="xs:string" name="btnvalue"/>
             </xs:extension>
-        </xs:simpleContent>
+        </xs:complexContent>
     </xs:complexType>
 
     <xs:complexType name="ColorType">
-        <xs:simpleContent>
+        <xs:complexContent>
             <xs:extension base="fg:InputType"/>
-        </xs:simpleContent>
+        </xs:complexContent>
     </xs:complexType>
 
     <xs:complexType name="CurType">
-        <xs:simpleContent>
+        <xs:complexContent>
             <xs:extension base="fg:InputType"/>
-        </xs:simpleContent>
+        </xs:complexContent>
     </xs:complexType>
 
     <xs:complexType name="DateType">
-        <xs:simpleContent>
+        <xs:complexContent>
             <xs:extension base="fg:InputType"/>
-        </xs:simpleContent>
+        </xs:complexContent>
     </xs:complexType>
 
     <xs:complexType name="FloatType">
-        <xs:simpleContent>
+        <xs:complexContent>
             <xs:extension base="fg:InputType">
                 <xs:attribute type="xs:integer" name="digits" default="1"/>
             </xs:extension>
-        </xs:simpleContent>
+        </xs:complexContent>
     </xs:complexType>
 
 	<xs:complexType name="ImageType">
-		<xs:simpleContent>
+		<xs:complexContent>
             <xs:extension base="fg:InputType">
 				<xs:attribute type="xs:string" name="default"/>
 				<xs:attribute type="xs:string" name="bindto"/>
 				<xs:attribute type="xs:string" name="title"/>
 			</xs:extension>
-		</xs:simpleContent>
+		</xs:complexContent>
 	</xs:complexType>
 
     <xs:complexType name="IntType">
-        <xs:simpleContent>
+        <xs:complexContent>
             <xs:extension base="fg:InputType">
 		        <xs:attribute type="xs:integer" name="min"/>
 		        <xs:attribute type="xs:integer" name="max"/>
             </xs:extension>
-        </xs:simpleContent>
+        </xs:complexContent>
     </xs:complexType>
 
     <xs:complexType name="RadioGroupType">
-        <xs:simpleContent>
-            <xs:extension base="fg:InputType"/>
-        </xs:simpleContent>
+        <xs:complexContent>
+            <xs:extension base="fg:InputType">
+                <xs:sequence>
+                    <xs:element type="fg:OptionType" name="option" maxOccurs="unbounded" minOccurs="0"/>
+                </xs:sequence>            
+            </xs:extension>
+        </xs:complexContent>
     </xs:complexType>
 
     <xs:complexType name="RangeType">
-        <xs:simpleContent>
+        <xs:complexContent>
             <xs:extension base="fg:InputType">
                 <xs:attribute type="xs:string" name="width"/>
 		        <xs:attribute type="xs:integer" name="min"/>
 		        <xs:attribute type="xs:integer" name="max"/>
 		        <xs:attribute type="xs:integer" name="step"/>
             </xs:extension>
-        </xs:simpleContent>
+        </xs:complexContent>
     </xs:complexType>
 
     <xs:complexType name="SelectType">
-        <xs:simpleContent>
+        <xs:complexContent>
             <xs:extension base="fg:InputType">
+                <xs:sequence>
+                    <xs:element type="fg:OptionType" name="option" maxOccurs="unbounded" minOccurs="0"/>
+                </xs:sequence>            
                 <xs:attribute type="xs:string" name="selectbtntext"/>
             </xs:extension>
-        </xs:simpleContent>
+        </xs:complexContent>
     </xs:complexType>
 
     <xs:complexType name="TextAreaType">
-        <xs:simpleContent>
+        <xs:complexContent>
             <xs:extension base="fg:InputType">
                 <xs:attribute type="xs:integer" name="rows"/>
                 <xs:attribute type="xs:integer" name="cols"/>
                 <xs:attribute type="xs:string" name="width"/>
             </xs:extension>
-        </xs:simpleContent>
+        </xs:complexContent>
     </xs:complexType>
 
     <xs:complexType name="TimeType">
-        <xs:simpleContent>
+        <xs:complexContent>
             <xs:extension base="fg:InputType"/>
-        </xs:simpleContent>
+        </xs:complexContent>
     </xs:complexType>
+    
+    <xs:complexType name="OptionType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="value" use="required"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>    
 
 	<xs:simpleType name="ColWidthAttrib">
 		<xs:restriction base="xs:token">

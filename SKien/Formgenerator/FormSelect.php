@@ -12,6 +12,8 @@ namespace SKien\Formgenerator;
  */
 class FormSelect extends FormInput
 {
+    /** @var array available select option */
+    protected ?array $aOptions = null;
     /** @var string text for selectbutton     */
     protected string $strSelectBtnText;
 
@@ -63,6 +65,13 @@ class FormSelect extends FormInput
         if (($strSelectBtnText = self::getAttribString($oXMLElement, 'selectbtntext')) !== null) {
             $this->setSelectBtnText($strSelectBtnText);
         }
+        $oOptions = $oXMLElement->getElementsByTagName('option');
+        if ($oOptions->length > 0) {
+            $this->aOptions = [];
+            foreach($oOptions as $oOption) {
+                $this->aOptions[$oOption->nodeValue] = self::getAttribString($oOption, 'value');
+            }
+        }
     }
 
     /**
@@ -74,7 +83,7 @@ class FormSelect extends FormInput
         $this->processFlags();
 
         $strSelect = $this->oFG->getData()->getValue($this->strName);
-        $aOptions = $this->oFG->getData()->getSelectOptions($this->strName);
+        $aOptions = $this->aOptions ?: $this->oFG->getData()->getSelectOptions($this->strName);
 
         $strWidth = ($this->oParent ? $this->oParent->getColWidth($this->iCol) : '');
         $strHTML  = '';
@@ -112,7 +121,7 @@ class FormSelect extends FormInput
                 }
                 $strHTML .= 'value="' . $strValue . '">' . $strOption . '</option>' . PHP_EOL;
             }
-        } else if ($this->size == 1) {
+        } else {
             // dropdown selectlist without options...
             trigger_error('empty select options set!', E_USER_NOTICE);
         }
@@ -132,5 +141,17 @@ class FormSelect extends FormInput
             trigger_error('SELECT_BTN flag must be set!', E_USER_NOTICE);
         }
         $this->strSelectBtnText = $strSelectBtnText;
+    }
+
+    /**
+     * Set the select options for the element.
+     * If no selection options are passed to the element via this method, an
+     * attempt is made in the getHTML () method to determine an assigned list
+     * via the data provider.
+     * @param array $aOptions
+     */
+    public function setSelectOptions(array $aOptions) : void
+    {
+        $this->aOptions = $aOptions;
     }
 }
