@@ -28,13 +28,22 @@ and integrated JS validation of
 The input formats can be configured to meet country-specific requirements.
 The design can be completely adapted to your own needs using an individual stylesheet.
 
-The package also contains an element that can be used to integrate the WYSIWYG editor 'CKEditor 4' into a form. The complete 
-configuration is done from the PHP side. A connector to the open source file manager 'RichFilemanager' is included for 
-selecting graphics or to create links to other files on the server. 
+The form definition can be made directly in the PHP code or within a XML file (for this
+purposes a XSD schema is provided with the package to make it easy to check the validation 
+of the XML definition).
 
+The package also contains an element that can be used to integrate the WYSIWYG editor 
+'CKEditor 4' into a form. The complete configuration is done from the PHP side. A 
+connector to the open source file manager 'RichFilemanager' is included for selecting 
+graphics or to create links to other files on the server. 
 
-#### ... to be continued
+## Documentation
+As this package supplies a wide range of functionality that can be configured individual,
+the documentation is splitted into multiple parts:
 
-## History
-##### 2021-02-18	Version 0.80  first public GitHub Version
-##### 2021-04-20	Version 0.81  added Range
+1. [The configuration of the package](./doc/FG-config.md)
+2. [Quickstart with a simple example form](./doc/FG-quickstart.md)
+3. ... to be continued
+
+In the *example* directory you will find sample forms that show the use of all supported 
+elements and currently provides two different themes.
