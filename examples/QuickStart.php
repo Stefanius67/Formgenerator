@@ -40,8 +40,7 @@ $oFG->setConfig($oConfig);
 $oFG->setAction('formaction.php');
 $oFG->setTarget('_blank');
 
-//$oFG->setColWidth([20, 80], '%');
-$oFG->setColWidth([100, 100], '%');
+$oFG->setColWidth([20, 80], '%');
 
 $oFG->add(new FormInput('ID', 0, FormFlags::HIDDEN));
 
@@ -56,8 +55,7 @@ $oFL = $oFS->addLine('Nickname:');
 $oFL->add(new FormInput('strNickname', '100%', 0, 50));
 
 $oFS = $oFG->addFieldSet('Personal Data');
-//$oFS->setColWidth([20, 25, 20, 35], '%');
-$oFS->setColWidth([35, 65, 35, 65], '%');
+$oFS->setColWidth([20, 25, 20, 35], '%');
 $oFL = $oFS->addLine('Gender:');
 $oCtrl = new FormSelect('strGender', 1, FormFlags::MANDATORY);
 $oCtrl->setSelectOptions(['' => '', 'male' => 'm', 'female' => 'f', 'diverse' => 'd']);
