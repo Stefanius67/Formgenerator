@@ -4,24 +4,34 @@ declare(strict_types=1);
 namespace SKien\Formgenerator;
 
 /**
- * Element to select Color.
- * Uses the JSColor - picker version 2.4.5  (https://jscolor.com/)
+ * Element for color input with picker.
  *
- * <br/><br/>
- * <b>!!! For commercial use take care of the JSColor licence conditions !!!</b>
+ * Some settings for the picker can be modified through the configuration: <ul>
+ * <li>border color  </li>
+ * <li>border radius  </li>
+ * <li>padding  </li>
+ * <li>background color  </li>
+ * <li>position (bottom, left, right,top  </li>
+ * <li>palette colors for selection  </li></ul>
+ * The posted value is the color in HTML notation.
+ *
+ * Uses the JSColor-picker version 2.4.5  (https://jscolor.com/)
+ *
+ * > <b>!!! For commercial use take care of the JSColor licence conditions !!!</b>
+ *
+ * @SKienImage FormColor.png
  *
  * @package Formgenerator
  * @author Stefanius <s.kientzler@online.de>
  * @copyright MIT License - see the LICENSE file for details
- * @link https://jscolor.com/
  */
 class FormColor extends FormInput
 {
     /**
      * Creates input field for color values.
-     * @param string $strName
-     * @param int|string $size number set the size-attribute, a string is used for the width attribute
-     * @param int $wFlags    default 0
+     * @param string $strName   Name (if no ID specified, name is used also as ID)
+     * @param int|string $size  number set the size-attribute, a string is used for the width attribute
+     * @param int $wFlags       any combination of FormFlag constants
      */
     public function __construct(string $strName, $size = 6, int $wFlags = 0)
     {
@@ -32,6 +42,7 @@ class FormColor extends FormInput
     /**
      * {@inheritDoc}
      * @see \SKien\Formgenerator\FormElement::fromXML()
+     * @internal
      */
     static public function fromXML(\DOMElement $oXMLElement, FormCollection $oFormParent) : ?FormElement
     {

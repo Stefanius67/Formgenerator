@@ -5,6 +5,8 @@ namespace SKien\Formgenerator;
 
 /**
  * Input element for integer value.
+ * The default align of the input field is right - this can be overwritten
+ * in the configuration.
  *
  * @package Formgenerator
  * @author Stefanius <s.kientzler@online.de>
@@ -14,20 +16,21 @@ class FormInt extends FormInput
 {
     /** @var bool empty entries allowed. If false, empty input is set to '0' */
     protected bool $bEmptyAllowed = false;
-    
+
     /**
-     * @param string $strName   name of input
-     * @param int|string $iSize     size in digits
-     * @param int $wFlags    flags (default = 0)
+     * @param string $strName       Name of input
+     * @param int|string $iSize     integer value set the size-attribute, a string is used for the width attribute
+     * @param int $wFlags           any combination of FormFlag constants
      */
-    public function __construct(string $strName, $iSize, int $wFlags = 0) 
+    public function __construct(string $strName, $iSize, int $wFlags = 0)
     {
         parent::__construct($strName, $iSize, $wFlags);
     }
-    
+
     /**
      * {@inheritDoc}
      * @see \SKien\Formgenerator\FormElement::fromXML()
+     * @internal
      */
     static public function fromXML(\DOMElement $oXMLElement, FormCollection $oFormParent) : ?FormElement
     {
@@ -39,17 +42,18 @@ class FormInt extends FormInput
         $oFormElement->readAdditionalXML($oXMLElement);
         return $oFormElement;
     }
-    
+
     /**
      * {@inheritDoc}
      * @see \SKien\Formgenerator\FormElement::readAdditionalXML()
+     * @internal
      */
     public function readAdditionalXML(\DOMElement $oXMLElement) : void
     {
         parent::readAdditionalXML($oXMLElement);
         $this->setMinMax(self::getAttribInt($oXMLElement, 'min'), self::getAttribInt($oXMLElement, 'max'));
     }
-    
+
     /**
      * We 'ask' the configuration for alignment.
      * $this->oFG is not available until the parent is set!
@@ -59,7 +63,7 @@ class FormInt extends FormInput
         if ($this->oFG->getConfig()->getBool('Integer.RightAlign', true)) {
             $this->addFlags(FormFlags::ALIGN_RIGHT);
         }
-        
+
         // if readonly, don't set the 'number' type...
         if (!$this->oFlags->isSet(FormFlags::READ_ONLY)) {
             $this->strType = 'number';
@@ -67,13 +71,13 @@ class FormInt extends FormInput
         }
         $this->addAttribute('data-validation', 'integer:' . ($this->bEmptyAllowed ? 'e' : 'x'));
     }
-    
+
     /**
-     * Set min/max value accepted by input field. 
+     * Set min/max value accepted by input field.
      * @param int $iMin - set to null, if no limitation wanted
      * @param int $iMax - set to null, if no limitation wanted
      */
-    public function setMinMax(?int $iMin, ?int $iMax) : void 
+    public function setMinMax(?int $iMin, ?int $iMax) : void
     {
         if ($iMin !== null) {
             $this->addAttribute('min', (string)$iMin);
@@ -82,7 +86,7 @@ class FormInt extends FormInput
             $this->addAttribute('max', (string)$iMax);
         }
     }
-    
+
     /**
      * {@inheritDoc}
      * @see \SKien\Formgenerator\FormElement::buildValue()
@@ -94,7 +98,7 @@ class FormInt extends FormInput
             return '';
         }
         $strHTML = ' value="' . $iValue . '"';
-        
+
         return $strHTML;
     }
 }

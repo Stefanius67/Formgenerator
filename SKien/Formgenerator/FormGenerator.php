@@ -7,7 +7,10 @@ use SKien\Config\ConfigInterface;
 use SKien\Config\NullConfig;
 
 /**
- * Container for all form elements.
+ * An instance of this class is the starting point of each form.
+ * Before doing the formdefinition, some minimum prerequisites have to be fulfilled:
+ * - specify the configuration with FormGenerator::setConfig()
+ * - specify the formaction with FormGenerator::setAction()
  *
  * @package Formgenerator
  * @author Stefanius <s.kientzler@online.de>
@@ -69,8 +72,8 @@ class FormGenerator extends FormCollection
     /**
      * <big><b>!!!  The FormGenerator itself can't be created direct through the fromXML() - method !!!</b></big>
      * However, this method must be implemented because it is declared as abstract in the higher-level class
-     * {@inheritDoc}
      * @see \SKien\Formgenerator\FormElement::fromXML()
+     * @ignore
      * @codeCoverageIgnore
      */
     static public function fromXML(\DOMElement $oXMLElement, FormCollection $oFormParent) : ?FormElement
@@ -79,6 +82,7 @@ class FormGenerator extends FormCollection
     }
 
     /**
+     * Get the form data.
      * @return \SKien\Formgenerator\FormDataInterface
      */
     public function getData() : FormDataInterface
@@ -87,6 +91,7 @@ class FormGenerator extends FormCollection
     }
 
     /**
+     * Get the configuration.
      * @return \SKien\Config\ConfigInterface
      */
     public function getConfig() : ConfigInterface
@@ -95,6 +100,7 @@ class FormGenerator extends FormCollection
     }
 
     /**
+     * Set the form data.
      * @param \SKien\Formgenerator\FormDataInterface $oData
      */
     public function setData(FormDataInterface $oData) : void
@@ -103,6 +109,7 @@ class FormGenerator extends FormCollection
     }
 
     /**
+     * Set the configuration.
      * @param \SKien\Config\ConfigInterface $oConfig
      */
     public function setConfig(ConfigInterface $oConfig) : void
@@ -130,9 +137,10 @@ class FormGenerator extends FormCollection
     }
 
     /**
-     * Get the path to the StdImages  (<b>WITHOUT trailing DIRECTORY_SEPARATOR!</b>).
+     * Get the path to the StdImages.
      * If no directory set, the subdirectory 'StdImages' of this sourcefile is used.
-     * @return string current image path
+     * @return string current image path (withoutT trailing DIRECTORY_SEPARATOR!).
+     * @internal
      */
     public function getImagePath() : string
     {
@@ -148,6 +156,7 @@ class FormGenerator extends FormCollection
      * Get filename for predefined standard images
      * @param int $iImage
      * @return array
+     * @internal
      */
     public function getStdImage(int $iImage) : array
     {
@@ -175,6 +184,7 @@ class FormGenerator extends FormCollection
     /**
      * Get the global flags.
      * @return int
+     * @internal
      */
     public function getGlobalFlags() : int
     {
@@ -258,6 +268,8 @@ class FormGenerator extends FormCollection
      * Dialog means, the form runs inside of an dynamic iframe created in the
      * dialog - DIV of the parent. <br/>
      * The cancel can easy be done by clear the content of that dialog-DIV.
+     * @param bool $bDialog
+     * @internal
      */
     public function setDialog(bool $bDialog) : void
     {
@@ -267,6 +279,7 @@ class FormGenerator extends FormCollection
     /**
      * Check, if form runs in dialog (dynamic created iframe).
      * @return bool
+     * @internal
      */
     public function isDialog() : bool
     {
@@ -276,6 +289,7 @@ class FormGenerator extends FormCollection
     /**
      * Add any element to the form.
      * @param FormElementInterface $oElement
+     * @internal
      */
     public function addElement(FormElementInterface $oElement) : void
     {
@@ -286,6 +300,7 @@ class FormGenerator extends FormCollection
      * Add a key to the config passed to JS.
      * @param string $strKey
      * @param mixed $value
+     * @internal
      */
     public function addConfigForJS(string $strKey, $value) : void
     {

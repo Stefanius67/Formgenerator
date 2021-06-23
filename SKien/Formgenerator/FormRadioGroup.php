@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace SKien\Formgenerator;
 
 /**
- * Radiogroup input.
+ * Group of radio buttons.
  *
  * @package Formgenerator
  * @author Stefanius <s.kientzler@online.de>
@@ -32,6 +32,7 @@ class FormRadioGroup extends FormInput
     /**
      * {@inheritDoc}
      * @see \SKien\Formgenerator\FormElement::fromXML()
+     * @internal
      */
     static public function fromXML(\DOMElement $oXMLElement, FormCollection $oFormParent) : ?FormElement
     {
@@ -46,6 +47,7 @@ class FormRadioGroup extends FormInput
     /**
      * {@inheritDoc}
      * @see \SKien\Formgenerator\FormElement::readAdditionalXML()
+     * @internal
      */
     public function readAdditionalXML(\DOMElement $oXMLElement) : void
     {
@@ -62,6 +64,7 @@ class FormRadioGroup extends FormInput
     /**
      * Build the HTML-markup for the radio group.
      * @return string
+     * @internal l
      */
     public function getHTML() : string
     {
@@ -71,8 +74,6 @@ class FormRadioGroup extends FormInput
         $aOptions = $this->aOptions ?: $this->oFG->getData()->getSelectOptions($this->strName);
 
         $strHTML = $this->buildContainerDiv();
-
-        // TODO: create surrogates for unchecked/readonly (see FormCheck)
 
         $iBtn = 0;
         $this->addStyle('float', 'left');
@@ -109,8 +110,7 @@ class FormRadioGroup extends FormInput
     /**
      * Set the select options for the element.
      * If no selection options are passed to the element via this method, an
-     * attempt is made in the getHTML () method to determine an assigned list
-     * via the data provider.
+     * attempt is made to determine an assigned list via the data provider.
      * @param array $aOptions
      */
     public function setSelectOptions(array $aOptions) : void

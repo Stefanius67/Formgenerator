@@ -67,10 +67,20 @@ function initFormGenerator()
         g_oCKEdit.load();
     }
     
-	var oRanges = document.querySelector("input[type=range]");
-	
-	oRanges.addEventListener('change', rangeChanged);
-	oRanges.addEventListener('input', rangeChanged);
+	var oRanges = document.getElementsByTagName('input');
+    var iLength = oRanges.length;
+    for (var i = 0; i < iLength; i++) {
+        if (oRanges[i].type == 'range') {
+            oRanges[i].addEventListener('change', rangeChanged);
+            oRanges[i].addEventListener('input', rangeChanged);
+        }
+    }    
+    
+    var oImages = document.getElementsByTagName('img');
+    iLength = oImages.length;
+    for (var i = 0; i < iLength; i++) {          
+        oImages[i].addEventListener('click', pickerClicked);
+    }    
 }
 
 /**
@@ -88,6 +98,22 @@ function rangeChanged()
 	    }
 	}	
 }
+
+/**
+ * Event - handler for the 'click' event on img elements.
+ * if the element has the attribute 'data-for' set, we just try to set the focus to
+ * that element -usually there should popup the assigend picker. 
+ */
+function pickerClicked()
+{
+    var oImg = this;
+    if (oImg.getAttribute('data-for') !== null) {
+        var oInput = document.getElementById(oImg.getAttribute('data-for'));
+        if (oInput !== null) {
+            oInput.focus();      
+        }
+    }
+} 
 
 /**
  * Helper function to create Error/Warning-Message in the document.

@@ -29,8 +29,8 @@ class FormFieldSet extends FormCollection
      * If legend should display an image with height other than 12px, this height
      * must be set with setImageHeight().
      * @param string $strLegend text or image for the legend
-     * @param string $strID
-     * @param int $iType
+     * @param string $strID     ID of the fieldset
+     * @param int $iType        (FormFieldSet::TXET or FormFieldSet::IMAGE)
      */
     public function __construct(string $strLegend, string $strID = '', int $iType = self::TEXT)
     {
@@ -44,6 +44,7 @@ class FormFieldSet extends FormCollection
     /**
      * {@inheritDoc}
      * @see \SKien\Formgenerator\FormElement::fromXML()
+     * @internal
      */
     static public function fromXML(\DOMElement $oXMLElement, FormCollection $oFormParent) : ?FormElement
     {
@@ -66,6 +67,7 @@ class FormFieldSet extends FormCollection
     /**
      * {@inheritDoc}
      * @see \SKien\Formgenerator\FormElement::readAdditionalXML()
+     * @internal
      */
     public function readAdditionalXML(\DOMElement $oXMLElement) : void
     {
@@ -88,6 +90,7 @@ class FormFieldSet extends FormCollection
     /**
      * Build the HTML-notation for the fieldset.
      * @return string
+     * @internall
      */
     public function getHTML() : string
     {

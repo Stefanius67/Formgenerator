@@ -11,8 +11,9 @@ namespace SKien\Formgenerator;
 class ArrayFormData extends AbstractFormData
 {
     /**
-     * @param array $aData
-     * @param array $aSelectOptions
+     * Creating an ArrayFormData instance.
+     * @param array $aData  associative array 'name' => value
+     * @param array $aSelectOptions associative array 'name' => selectoptions-array
      */
     public function __construct(array $aData, array $aSelectOptions = [])
     {

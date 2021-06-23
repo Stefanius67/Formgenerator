@@ -10,7 +10,7 @@
 	},
 	"Time": {
         "Separator": ":",
-        "Seconds": false,
+        "Seconds": true,
         "AllowMinutesOnly": true,
         "Placeholder": "SS:MM"
 	},

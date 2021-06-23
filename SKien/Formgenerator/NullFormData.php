@@ -2,7 +2,12 @@
 namespace SKien\Formgenerator;
 
 /**
- * Empty FormData used to initialize FormGenerator Data member.
+ * Empty FormData class.
+ *
+ * If no formdata is passed to the formgenerator, instance of this class is
+ * created internaly. This ensures that a valid instance is always set
+ * internally and this not have to be checked at every point in the code
+ * where the data provider is accessed.
  *
  * @package Formgenerator
  * @author Stefanius <s.kientzler@online.de>
@@ -19,4 +24,3 @@ class NullFormData extends AbstractFormData
         $this->aSelectOptions = [];
     }
 }
-

@@ -8,6 +8,7 @@ namespace SKien\Formgenerator;
  * @package Formgenerator
  * @author Stefanius <s.kien@online.de>
  * @copyright MIT License - see the LICENSE file for details
+ * @internal
  */
 trait XMLHelper
 {
@@ -107,7 +108,7 @@ trait XMLHelper
      * Read all known attributes that don't need any further processing.
      * @param \DOMElement $oXMLElement
      */
-    public function readElementAttributes(\DOMElement $oXMLElement, ?array $aAttributes) : array
+    protected function readElementAttributes(\DOMElement $oXMLElement, ?array $aAttributes) : array
     {
         $aAttributesToRead = [
             'onclick',
@@ -140,7 +141,7 @@ trait XMLHelper
      * @param string $strName
      * @return \DOMElement|null
      */
-    public function getXMLChild(\DOMElement $oXMLElement, string $strName) : ?\DOMElement
+    protected function getXMLChild(\DOMElement $oXMLElement, string $strName) : ?\DOMElement
     {
         $oList = $oXMLElement->getElementsByTagName($strName);
         if ($oList->count() === 1) {

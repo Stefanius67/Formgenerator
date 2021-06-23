@@ -5,6 +5,7 @@ namespace SKien\Formgenerator;
 
 /**
  * Base-class for all elements intended to get user input.
+ * If direrctly used, a simple `&lt;input&gt;` element is created.
  *
  * @package Formgenerator
  * @author Stefanius <s.kientzler@online.de>
@@ -26,9 +27,12 @@ class FormInput extends FormElement
     protected string $strSuffix = '';
 
     /**
-     * @param string $strName Name (also used as ID, if not set separate)
-     * @param int|string $size number set the size-attribute, a string is used for the width attribute
-     * @param int $wFlags
+     * Create a simple input element.
+     * @see FormFlags
+     * @param string $strName   Name (if no ID specified, name is used also as ID)
+     * @param int|string $size  integer value set the size-attribute, a string is used for the width attribute
+     * @param int $wFlags       any combination of FormFlag constants
+     * @param int $iMaxLength   max. input character count
      */
     public function __construct(string $strName, $size, int $wFlags = 0, int $iMaxLength = 0)
     {
@@ -49,6 +53,7 @@ class FormInput extends FormElement
     /**
      * {@inheritDoc}
      * @see \SKien\Formgenerator\FormElement::fromXML()
+     * @internal
      */
     static public function fromXML(\DOMElement $oXMLElement, FormCollection $oFormParent) : ?FormElement
     {
@@ -69,6 +74,7 @@ class FormInput extends FormElement
     /**
      * {@inheritDoc}
      * @see \SKien\Formgenerator\FormElement::readAdditionalXML()
+     * @internal
      */
     public function readAdditionalXML(\DOMElement $oXMLElement) : void
     {
@@ -105,8 +111,13 @@ class FormInput extends FormElement
     }
 
     /**
-     * set image and title for select-button (leave strImg blank for default 'search')
-     * @param string $strImg
+     * Set image and title for select-button.
+     * The `FormFlag::ADD_SELBTN` flag have to be set with the constructor or with the
+     * `addFlags()` method.
+     * To handle the select button click, define  JS function `OnSelect(strField)`. The
+     * handler is called with the name of the element the select-button belongs to.
+     * @see FormFlags::ADD_SELBTN
+     * @param string $strImg image to display (leave blank for default 'search' - button)
      * @param string $strTitle (default = '')
      */
     public function setSelectImg(string $strImg, string $strTitle = '') : void
@@ -117,6 +128,10 @@ class FormInput extends FormElement
 
     /**
      * Set the folder to expand when call the filemanager.
+     * The `FormFlag::BROWSE_SERVER` flag have to be set with the constructor or with the
+     * `addFlags()` method.
+     * Only available, if the richfilemanager is configured.
+     * @see FormFlags::BROWSE_SERVER
      * @param string $strExpandFolder
      */
     public function setExpandFolder(string $strExpandFolder) : void
@@ -125,6 +140,7 @@ class FormInput extends FormElement
     }
 
     /**
+     * Set a suffix that is outputed after the element.
      * @param string $strSuffix
      */
     public function setSuffix(string $strSuffix) : void
@@ -147,6 +163,7 @@ class FormInput extends FormElement
      * Build the HTML-notation for the input element.
      * {@inheritDoc}
      * @see \SKien\Formgenerator\FormElement::getHTML()
+     * @internal
      */
     public function getHTML() : string
     {
@@ -182,6 +199,7 @@ class FormInput extends FormElement
      * Method is called from the PageGenerator after an element is added to the form.
      * @param int $iTabindex
      * @return int the number of indexes, the element needs
+     * @internal
      */
     public function setTabindex(int $iTabindex) : int
     {
@@ -232,7 +250,6 @@ class FormInput extends FormElement
      * Set the size of the element.
      * If property $size contains numeric value, the HTML attrib 'size' is set, in case of a
      * string a width information including dimension (px, em, ...) is assumed.
-     *
      */
     protected function setSize() : void
     {
@@ -335,6 +352,7 @@ class FormInput extends FormElement
         $strTitle = '';
         $strOnClick = '';
         $strID = '';
+        $strFor = '';
 
         // only one of the button flags is allowed - so we can use switch-case!
         switch ($wButtonFlags) {
@@ -346,9 +364,11 @@ class FormInput extends FormElement
             break;
         case FormFlags::ADD_DATE_PICKER:
             [$strImg, $strTitle] = $this->oFG->getStdImage(FormImage::IMG_DATE_PICKER);
+            $strFor = $this->strName;
             break;
         case FormFlags::ADD_TIME_PICKER:
             [$strImg, $strTitle] = $this->oFG->getStdImage(FormImage::IMG_TIME_PICKER);
+            $strFor = $this->strName;
             break;
         case FormFlags::BROWSE_SERVER:
             [$strImg, $strTitle] = $this->oFG->getStdImage(FormImage::IMG_BROWSE);
@@ -365,7 +385,7 @@ class FormInput extends FormElement
         default:
             trigger_error('Only one of the button-flags can be set!', E_USER_ERROR);
         }
-        $strHTML = $this->buildSelectImage($strImg, $strTitle, $strOnClick, $strID, $strCssClass);
+        $strHTML = $this->buildSelectImage($strImg, $strTitle, $strOnClick, $strID, $strCssClass, $strFor);
         if (!empty($strHTML) && $this->oFlags->isSet(FormFlags::READ_ONLY)) {
             [$strImg, $strTitle] = $this->oFG->getStdImage(FormImage::IMG_DELETE);
             $strOnClick = "resetElement('" . $this->strName . "')";
@@ -382,9 +402,10 @@ class FormInput extends FormElement
      * @param string $strOnClick
      * @param string $strID
      * @param string $strCssClass
+     * @param string $strFor
      * @return string
      */
-    protected function buildSelectImage(string $strImg, string $strTitle, string $strOnClick, string $strID, string $strCssClass) : string
+    protected function buildSelectImage(string $strImg, string $strTitle, string $strOnClick, string $strID, string $strCssClass, string $strFor = '') : string
     {
         $strHTML = '';
         if (!empty($strImg)) {
@@ -397,6 +418,12 @@ class FormInput extends FormElement
             }
             if (!empty($strOnClick)) {
                 $strHTML .= ' onclick="' . $strOnClick . '"';
+            }
+            if (!empty($strFor)) {
+                // since the <img> element don't support the 'for' attribute, we set an user defined
+                // attribute. In the initialization of the form we add an eventlistener to the click
+                // event of all images with this attribute set and move the focus to the input element
+                $strHTML .= ' data-for="' . $strFor . '"';
             }
             $strHTML .= '>';
         }

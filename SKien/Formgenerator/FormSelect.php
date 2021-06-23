@@ -24,9 +24,9 @@ class FormSelect extends FormInput
      * (default text: 'Auswählen')
      * @see FormSelect::setSelectBtnText()
      *
-     * @param string $strName    name and id
+     * @param string $strName    Name (if no ID specified, name is used also as ID)
      * @param int $iSize         size of list. 1 => dropdown list (default: 1)
-     * @param int $wFlags        flags (default: 0)
+     * @param int $wFlags        any combination of FormFlag constants
      */
     public function __construct(string $strName, int $iSize = 1, int $wFlags = 0)
     {
@@ -43,6 +43,7 @@ class FormSelect extends FormInput
     /**
      * {@inheritDoc}
      * @see \SKien\Formgenerator\FormElement::fromXML()
+     * @internal
      */
     static public function fromXML(\DOMElement $oXMLElement, FormCollection $oFormParent) : ?FormElement
     {
@@ -58,6 +59,7 @@ class FormSelect extends FormInput
     /**
      * {@inheritDoc}
      * @see \SKien\Formgenerator\FormElement::readAdditionalXML()
+     * @internal
      */
     public function readAdditionalXML(\DOMElement $oXMLElement) : void
     {
@@ -75,8 +77,9 @@ class FormSelect extends FormInput
     }
 
     /**
-     * Build the HTML code for the element
+     * Build the HTML code for the element.
      * @return string
+     * @internal
      */
     public function getHTML() : string
     {
@@ -132,7 +135,7 @@ class FormSelect extends FormInput
     }
 
     /**
-     * set text for selectbutton.
+     * Set text for selectbutton.
      * @param string $strSelectBtnText
      */
     public function setSelectBtnText(string $strSelectBtnText) : void
@@ -148,6 +151,7 @@ class FormSelect extends FormInput
      * If no selection options are passed to the element via this method, an
      * attempt is made in the getHTML () method to determine an assigned list
      * via the data provider.
+     * @see AbstractFormData::getSelectOptions()
      * @param array $aOptions
      */
     public function setSelectOptions(array $aOptions) : void

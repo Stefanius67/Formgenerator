@@ -3,8 +3,22 @@ declare(strict_types=1);
 
 namespace SKien\Formgenerator;
 
+
 /**
  * Static Text element.
+ *
+ * The FormStatic element can be used for different purposes:
+ * - just for the normal output of a text
+ * - as a label that is assigned to a specific input element
+ *   - set the `$strLabelFor` param in the constructor or use the `setLabelFor()` method
+ * - As a hint
+ *   - set the `FormFlags::HINT` flag
+ * - To display an error message
+ *   - set the `FormFlags::ERROR` flag
+ * - As an information field
+ *   - set the `FormFlags::INFO` flag
+ *
+ * @SKienImage FormStatic.png
  *
  * @package Formgenerator
  * @author Stefanius <s.kientzler@online.de>
@@ -14,27 +28,33 @@ class FormStatic extends FormElement
 {
     /** @var string the text to display     */
     protected string $strText;
+    /** @var string the if set, label with for attribute is created     */
+    protected string $strLabelFor = '';
 
     /**
      * Create a static text element.
-     * @param string $strText
-     * @param int $wFlags
+     * @param string $strText       text to display
+     * @param int $wFlags           any combination of FormFlag constants
+     * @param string $strLabelFor   crate label for this element
      */
-    public function __construct($strText, $wFlags = 0)
+    public function __construct(string $strText, int $wFlags = 0, string $strLabelFor = '')
     {
         $this->strText = $strText;
+        $this->strLabelFor = $strLabelFor;
         parent::__construct($wFlags);
     }
 
     /**
      * {@inheritDoc}
      * @see \SKien\Formgenerator\FormElement::fromXML()
+     * @internal
      */
     static public function fromXML(\DOMElement $oXMLElement, FormCollection $oFormParent) : ?FormElement
     {
         $strText = self::getAttribString($oXMLElement, 'text', '');
         $wFlags = self::getAttribFlags($oXMLElement);
-        $oFormElement = new self($strText, $wFlags);
+        $strLabelFor = self::getAttribString($oXMLElement, 'for', '');
+        $oFormElement = new self($strText, $wFlags, $strLabelFor);
         $oFormParent->add($oFormElement);
         $oFormElement->readAdditionalXML($oXMLElement);
 
@@ -42,8 +62,18 @@ class FormStatic extends FormElement
     }
 
     /**
+     * Set the control for which a label should be created.
+     * @param string $strLabelFor
+     */
+    public function setLabelFor(string $strLabelFor) : void
+    {
+        $this->strLabelFor = $strLabelFor;
+    }
+
+    /**
      * Build the HTML-notation for the static text
      * @return string
+     * @internal
      */
     public function getHTML() : string
     {
@@ -79,7 +109,13 @@ class FormStatic extends FormElement
         $strHTML .= $this->buildClass();
         $strHTML .= $this->buildStyle();
         $strHTML .= $this->buildAttributes();
-        $strHTML .= '>' . $this->strText . '</div>' . PHP_EOL;
+        $strHTML .= '>';
+        if (strlen($this->strLabelFor) > 0 ) {
+            $strHTML .= '<label for="' . $this->strLabelFor . '">' . $this->strText . '</label>';
+        } else {
+            $strHTML .= $this->strText;
+        }
+        $strHTML .= '</div>' . PHP_EOL;
 
         return $strHTML;
     }

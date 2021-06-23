@@ -20,6 +20,7 @@ abstract class FormCollection extends FormElement
     protected string $strWidthDim = '%';
 
     /**
+     * Create any kind of collection
      * @param int $wFlags
      */
     public function __construct(int $wFlags)
@@ -30,6 +31,7 @@ abstract class FormCollection extends FormElement
     /**
      * {@inheritDoc}
      * @see \SKien\Formgenerator\FormElement::readAdditionalXML()
+     * @internal
      */
     public function readAdditionalXML(\DOMElement $oXMLElement) : void
     {
@@ -42,8 +44,10 @@ abstract class FormCollection extends FormElement
 
     /**
      * Add a child to this element.
-     * @param FormElementInterface $oElement
-     * @return FormElementInterface
+     * Some properties of the element to add (parent, tabindex, ...) are changed/set
+     * with the call of this method.
+     * @param FormElementInterface $oElement element to add
+     * @return FormElementInterface added element
      */
     public function add(FormElementInterface $oElement) : FormElementInterface
     {
@@ -56,8 +60,13 @@ abstract class FormCollection extends FormElement
 
     /**
      * Set width for the cols included in this element.
-     * @param array $aColWidth
-     * @param string $strDim
+     * > <b>Note:</b><br/>
+     *   If the colwidth is not set for a collection, the element tries to get
+     *   these settings from its parent element. If no colwidth is set there,
+     *   the system continues with the next parent element until the property
+     *   is set or the form generator element is reached.
+     * @param array $aColWidth  numeric array of width for each col
+     * @param string $strDim    dimension of the width values ('%', 'px', 'em')
      */
     public function setColWidth(array $aColWidth, string $strDim = '%') : void
     {
@@ -70,6 +79,7 @@ abstract class FormCollection extends FormElement
      * If no width set, we try to get the width throught the parent.
      * @param int $iCol  requested col, if -1 current col is used
      * @return string       colwidth including dimension
+     * @internal
      */
     public function getColWidth(int $iCol = -1) : string
     {
@@ -87,8 +97,9 @@ abstract class FormCollection extends FormElement
 
     /**
      * Add a new div as child.
+     * @see FormDiv
      * @param int $iWidth   width of the div in percent
-     * @param int $iAlign   align (FormDiv::NONE, FormDiv::LEFT, FormDiv::RIGHT, FormDiv::CLEAR)
+     * @param int $iAlign   align (`FormDiv::NONE`, `FormDiv::LEFT`, `FormDiv::RIGHT`, `FormDiv::CLEAR`)
      * @param string $strID ID of the div
      * @return \SKien\Formgenerator\FormDiv created div element
      */
@@ -103,8 +114,9 @@ abstract class FormCollection extends FormElement
 
     /**
      * Add a new fieldset to the element.
+     * @see FormFieldSet
      * @param string $strLegend text or image of the legend
-     * @param string $strID
+     * @param string $strID  ID of the fieldset
      * @param int $iType type of the legend (FormFieldSet::TEXT or FormFieldSet::IMAGE)
      * @return \SKien\Formgenerator\FormFieldSet
      */
@@ -118,6 +130,7 @@ abstract class FormCollection extends FormElement
 
     /**
      * Add new line to this fieldset
+     * @see FormLine
      * @param string $strLabel (default: '&nbsp;')
      * @return \SKien\Formgenerator\FormLine
      */
@@ -132,6 +145,7 @@ abstract class FormCollection extends FormElement
     /**
      * Build the HTML-notation for the element and/or all child elements.
      * @return string
+     * @internal
      */
     public function getHTML() : string
     {
@@ -148,6 +162,7 @@ abstract class FormCollection extends FormElement
      * This method gives each element the chance to add special styles to the
      * current page.
      * @return string
+     * @internal
      */
     public function getStyle() : string
     {

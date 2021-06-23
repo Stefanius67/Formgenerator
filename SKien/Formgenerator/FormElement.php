@@ -5,9 +5,6 @@ namespace SKien\Formgenerator;
 
 /**
  * Base-class for all elements of a form.
- * Starting with a FormGenerator-element, the form can contain any count
- * of elements.
- * The elements usuallay be arranged within FormFieldSet- and FormLine-elements
  *
  * @package Formgenerator
  * @author Stefanius <s.kientzler@online.de>
@@ -39,7 +36,9 @@ abstract class FormElement implements FormElementInterface
     protected ?array $aStyle = null;
 
     /**
-     * @param int $wFlags
+     * Create any kind of form element.
+     * @see FormFlags
+     * @param int $wFlags   any combination of FormFlag constants
      */
     public function __construct(int $wFlags)
     {
@@ -56,6 +55,7 @@ abstract class FormElement implements FormElementInterface
      * @param \DOMElement $oXMLElement  the XML-element containing the information
      * @param FormCollection $oFormParent   the form parent of the element to create
      * @return FormElement|NULL the created element
+     * @internal
      */
     abstract static public function fromXML(\DOMElement $oXMLElement, FormCollection $oFormParent) : ?FormElement;
 
@@ -67,6 +67,7 @@ abstract class FormElement implements FormElementInterface
      * In the derived classes this method should called it's parent down through all
      * parent-classes!
      * @param \DOMElement $oXMLElement
+     * @internal
      */
     public function readAdditionalXML(\DOMElement $oXMLElement) : void
     {
@@ -85,6 +86,7 @@ abstract class FormElement implements FormElementInterface
     /**
      * Return the FormGenerator this element belongs to.
      * @return FormGenerator
+     * @internal
      */
     public function getFG() : ?FormGenerator
     {
@@ -96,6 +98,7 @@ abstract class FormElement implements FormElementInterface
      * The Formgenerator of the parent is adopted for this element.
      * If there are global flags set for the FormGenerator, this flags are added.
      * @param FormCollection $oParent
+     * @internal
      */
     public function setParent(FormCollection $oParent) : void
     {
@@ -110,6 +113,7 @@ abstract class FormElement implements FormElementInterface
      * If this element is added as a child of a FormLine, the column is set in
      * order to be able to calculate the correct width of the element.
      * @param int $iCol
+     * @internal
      */
     public function setCol(int $iCol) : void
     {
@@ -141,6 +145,7 @@ abstract class FormElement implements FormElementInterface
      * Method is called from the PageGenerator after an element is added to the form.
      * @param int $iTabindex
      * @return int the number of indexes, the element needs
+     * @internal
      */
     public function setTabindex(/** @scrutinizer ignore-unused */ int $iTabindex) : int
     {
@@ -159,8 +164,8 @@ abstract class FormElement implements FormElementInterface
     /**
      * Add any attribute.
      * If the attribute allready exist, the value will be overwritten.
-     * @param string $strName
-     * @param string $strValue
+     * @param string $strName attribute name
+     * @param string $strValue attribute value
      */
     public function addAttribute(string $strName, string $strValue = '') : void
     {
@@ -177,9 +182,9 @@ abstract class FormElement implements FormElementInterface
 
     /**
      * Add any style.
-     * If the attribute allready exist, the value will be overwritten.
-     * @param string $strName
-     * @param string $strValue
+     * If the style allready exist, the value will be overwritten.
+     * @param string $strName   style
+     * @param string $strValue  value
      */
     public function addStyle(string $strName, string $strValue) : void
     {
@@ -202,8 +207,7 @@ abstract class FormElement implements FormElementInterface
 
     /**
      * Add additional class to element.
-     * Class is added to the existing classname separated with a blank <br/>
-     * Generates a notice, if no class set so far!
+     * Class is added to the existing classname separated with a blank
      * @param string $strClass
      */
     public function addClass(string $strClass) : void
@@ -215,11 +219,12 @@ abstract class FormElement implements FormElementInterface
     }
 
     /**
-     * Get styles related to this element.
+     * Get CSS styles related to this element.
      * This method gives each element the chance to add special styles to the
      * current page. <br/>
      * <b>This method is only called for elements having member bCreateStyle set to true!</b>
      * @return string
+     * @internal
      */
     public function getStyle() : string
     {
@@ -228,6 +233,7 @@ abstract class FormElement implements FormElementInterface
 
     /**
      * @return string
+     * @internal
      */
     abstract public function getHTML() : string;
 

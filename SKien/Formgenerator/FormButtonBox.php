@@ -7,9 +7,17 @@ namespace SKien\Formgenerator;
  * Button-Box with standard buttons to control the form.
  *
  * Supports the most used 'control' buttons for a form like
- * [OK] [Save] [Cancel] ...
- * Custom defined buttons can also be added.
+ * `[OK]` `[Save]` `[Cancel]` ... <br/>
+ * Custom defined buttons can also be added.<br/>
  * Language can be configured through the config file.
+ * <br/>
+ * > Note: <br/>
+ *   Alignment `FormFlags::ALIGN_CENTER` / `FormFlags::ALIGN_RIGHT` dont affect the
+ *   alignment of the text within the buttons but the alignment of the buttons within the line!
+ *
+ *
+ * All buttons marked as 'submit' causes the submit action for the form. All other buttons
+ * call the JS function `[Btn-Id]Clicked()`  that must be implemented.
  *
  * @package Formgenerator
  * @author Stefanius <s.kientzler@online.de>
@@ -17,24 +25,39 @@ namespace SKien\Formgenerator;
  */
 class FormButtonBox extends FormElement
 {
-    public const NONE       = 0;
+    /**  insert custom button at first position   */
     public const FIRST      = 0;
+    /**  insert custom button at last position   */
     public const LAST       = -1;
-    public const OK         = 0x0001; // An "OK" button for submit.
-    public const OPEN       = 0x0002; // An "Open" button for submit.
-    public const SAVE       = 0x0004; // A "Save" button for submit.
-    public const YES        = 0x0008; // A "Yes" button for submit.
-    public const NO         = 0x0010; // A "No" button
-    public const CANCEL     = 0x0020; // A "Cancel" button
-    public const CLOSE      = 0x0040; // A "Close" button
-    public const DISCARD    = 0x0080; // A "Discard" button
-    public const APPLY      = 0x0100; // An "Apply" button for submit.
-    public const RESET      = 0x0200; // A "Reset" button
-    public const RETRY      = 0x0400; // A "Retry" button for submit.
-    public const IGNORE     = 0x0800; // An "Ignore" button
-    public const BACK       = 0x1000; // A "Back" button
-
+    /** An `[OK]` button for submit.     */
+    public const OK         = 0x0001;
+    /** An `[Open]` button for submit.     */
+    public const OPEN       = 0x0002;
+    /** A `[Save]` button for submit.     */
+    public const SAVE       = 0x0004;
+    /** A `[Yes]` button for submit.     */
+    public const YES        = 0x0008;
+    /** A `[No]` button.     */
+    public const NO         = 0x0010;
+    /** A `[Cancel]` button.     */
+    public const CANCEL     = 0x0020;
+    /** A `[Close]` button.     */
+    public const CLOSE      = 0x0040;
+    /** A `[Discard]` button.     */
+    public const DISCARD    = 0x0080;
+    /** An `[Apply]` button for submit.     */
+    public const APPLY      = 0x0100;
+    /** A `[Reset]` button.     */
+    public const RESET      = 0x0200;
+    /** A `[Retry]` button for submit.     */
+    public const RETRY      = 0x0400;
+    /** An `[Ignore]` button. */
+    public const IGNORE     = 0x0800;
+    /** A `[Back]` button.     */
+    public const BACK       = 0x1000;
+    /** `[Yes]` `[No]` `[Cancel]` buttons.     */
     public const YES_NO_CANCEL = self::YES | self::NO | self::CANCEL;
+    /** `[Save]` `[Cancel]` buttons.     */
     public const SAVE_CANCEL = self::SAVE | self::CANCEL;
 
     /** @var integer Buttons, the box containing     */
@@ -43,7 +66,8 @@ class FormButtonBox extends FormElement
     protected array $aCustomButtons = [];
 
     /**
-     * @param int $iBtns
+     * Create a FormButtonBox.
+     * @param int $iBtns    any combination of the FormButtonBox::XXX constants
      */
     public function __construct(int $iBtns, int $wFlags = 0)
     {
@@ -54,6 +78,7 @@ class FormButtonBox extends FormElement
     /**
      * {@inheritDoc}
      * @see \SKien\Formgenerator\FormElement::fromXML()
+     * @internal
      */
     static public function fromXML(\DOMElement $oXMLElement, FormCollection $oFormParent) : ?FormElement
     {
@@ -81,11 +106,11 @@ class FormButtonBox extends FormElement
      * Position of the button inside the box can be specified with the param $iAfterBtn: <ul>
      * <li> self::FIRST </li>
      * <li> self::LAST </li>
-     * <li> other valid Button: the custom Button appears after this button </li></ul>
-     * @param string $strText
-     * @param string $strID
-     * @param int $iAfterBtn
-     * @param bool $bSubmit
+     * <li> other valid Button const: the custom Button appears after this button </li></ul>
+     * @param string $strText   Test to display
+     * @param string $strID     ID of the button
+     * @param int $iAfterBtn    Position where to insert in the range of buttons
+     * @param bool $bSubmit     if true, the button submits the form.
      */
     public function addButton(string $strText, string $strID, int $iAfterBtn = self::LAST, bool $bSubmit = false) : void
     {
@@ -93,9 +118,9 @@ class FormButtonBox extends FormElement
     }
 
     /**
-     * (non-PHPdoc)
-     *
+     * {@inheritDoc}
      * @see \SKien\Formgenerator\FormElement::getHTML()
+     * @internal
      */
     public function getHTML() : string
     {
@@ -131,6 +156,7 @@ class FormButtonBox extends FormElement
      * Method is called from the PageGenerator after an element is added to the form.
      * @param int $iTabindex
      * @return int the count of buttons (-> number tabindexes 'needed')
+     * @internal
      */
     public function setTabindex(int $iTabindex) : int
     {

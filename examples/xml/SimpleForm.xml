@@ -28,11 +28,14 @@
         </FieldSet>
         <FieldSet legend="some personal Data" colwidth="20, 30, 20, 30">
             <Line colwidth="0, 100">
-                <Static text="And here are some informations..." flags="INFO    BOLD"/>
+                <Static text="This is an error message..." flags="ERROR BOLD"/>
+            </Line>
+            <Line colwidth="0, 100">
+                <Static text="... and here are some informations" flags="INFO    BOLD"/>
             </Line>
             <Line label="Gender:">
                 <Select name="strGender" size="1" flags="MANDATORY"/>
-                <Static text="Date of Birth:"/>
+                <Static text="Date of Birth:" for="dateDoB"/>
                 <Date name="dateDoB" flags="NO_ZERO ADD_DATE_PICKER"/>
             </Line>
             <Line label="Available from:">
@@ -58,8 +61,9 @@
             </Line>
         </FieldSet>
         <FieldSet legend="internal processing">
-            <Line label="Validated:">
+            <Line label="Validated:" colwidth="20, 50, 30">
                 <Input name="strValidated" size="30" flags="ADD_DTU READ_ONLY"/>
+                <Static text="with additional Hint" flags="HINT"/>
             </Line>
         </FieldSet>
         <ButtonBox buttons="SAVE DISCARD" flags="ALIGN_RIGHT"/>

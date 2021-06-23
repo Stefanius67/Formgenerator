@@ -40,7 +40,7 @@ class FormBaseTestCase extends TestCase
         ]);
         $strResponse = curl_exec($curl);
         if (!$strResponse) {
-            $this->markTestIncomplete('Issues checking HTML validity.');
+            $this->markTestIncomplete('Issues checking HTML validity. (cURL-Error: ' . curl_error($curl) . ')');
         }
         curl_close($curl);
 

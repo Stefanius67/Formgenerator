@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace SKien\Formgenerator;
 
 /**
- * Class to insert a script tag inside of the form.  
+ * Class to insert a script tag inside of the form.
  *
  * @package Formgenerator
  * @author Stefanius <s.kientzler@online.de>
@@ -14,16 +14,21 @@ class FormScript extends FormElement
 {
     /** @var string text for the line label     */
     protected string $strScript;
-    
+
+    /**
+     * Cretae a script tag inside of the form.
+     * @param string $strScript     Script to insert
+     */
     public function __construct(string $strScript)
     {
         parent::__construct(0);
         $this->strScript = $strScript;
     }
-    
+
     /**
      * {@inheritDoc}
      * @see \SKien\Formgenerator\FormElement::fromXML()
+     * @internal
      */
     static public function fromXML(\DOMElement $oXMLElement, FormCollection $oFormParent) : ?FormElement
     {
@@ -32,10 +37,11 @@ class FormScript extends FormElement
         $oFormParent->add($oFormElement);
         return $oFormElement;
     }
-    
+
     /**
      * Insert the script at current position of the form.
      * @return string
+     * @internal l
      */
     public function getHTML() : string
     {

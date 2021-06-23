@@ -3,24 +3,32 @@ declare(strict_types=1);
 
 namespace SKien\Formgenerator;
 
-
 /**
+ * An instance of this class is the starting point of each form based on XML definition.
  *
- *
+ * @see FormGenerator
  * @package Formgenerator
  * @author Stefanius <s.kientzler@online.de>
  * @copyright MIT License - see the LICENSE file for details
  */
 class XMLForm extends FormGenerator
 {
+    /** no xml/xsd error occurred    */
     const E_OK = 0;
+    /** the specified file does not exist   */
     const E_FILE_NOT_EXIST = 1;
+    /** any xml syntax error    */
     const E_XML_ERROR = 2;
+    /** error while xsd schema validation   */
     const E_XSD_ERROR = 3;
+    /** the root element &lt;FormGenerator&gt; is missing   */
     const E_MISSING_ROOT = 4;
+    /** no &lt;Form&gt; element found   */
     const E_MISSING_FORM = 5;
+    /** an unknown form element found   */
     const E_UNKNOWN_FORM_ELEMENT = 6;
 
+    /** @internal the XSD schema to validate against     */
     const XML_SCHEMA = 'FormGenerator.xsd';
 
     /** @var string error message     */

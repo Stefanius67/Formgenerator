@@ -4,9 +4,13 @@ declare(strict_types=1);
 namespace SKien\Formgenerator;
 
 /**
- *  Represents a <div> inside of the form.
- *  It can be used to arrange some fieldset horizontally or to group some
- *  elements for JS hide/show operations
+ *  Represents a &lt;div&gt; inside of the form.
+ *  Div's can be used to arrange some fieldset horizontally or to group some
+ *  elements for JS hide/show operations.
+ *
+ *  An example of arranging two div / fieldsets horizontally and adjusting the
+ *  height of the two can be found in ColumnForm.php and ColumnFormXML.php in
+ *  the example directory.
  *
  * @package Formgenerator
  * @author Stefanius <s.kientzler@online.de>
@@ -14,10 +18,13 @@ namespace SKien\Formgenerator;
  */
 class FormDiv extends FormCollection
 {
-    /** float styles for the div */
+    /** 'normal' div with no float style */
     const   NONE    = -1;
+    /** Use `CLEAR` div after one or more floating divs */
     const   CLEAR   = 0;
+    /** Left floating div */
     const   LEFT    = 1;
+    /** Right floating div */
     const   RIGHT   = 2;
 
     /** @var int width of the div in percent     */
@@ -26,9 +33,9 @@ class FormDiv extends FormCollection
     protected int  $iAlign;
 
     /**
-     * Create a Div element
-     * @param int $iWidth
-     * @param int $iAlign
+     * Create a Div element.
+     * @param int $iWidth   width of the div in %
+     * @param int $iAlign   align of the div (FormDiv::NONE, FormDiv::LEFT, FormDiv::RIGHT, FormDiv::CLEAR)
      */
     public function __construct(int $iWidth = 0, int $iAlign = self::CLEAR)
     {
@@ -57,6 +64,7 @@ class FormDiv extends FormCollection
     /**
      * {@inheritDoc}
      * @see \SKien\Formgenerator\FormElement::fromXML()
+     * @internal
      */
     static public function fromXML(\DOMElement $oXMLElement, FormCollection $oFormParent) : ?FormElement
     {
@@ -78,6 +86,7 @@ class FormDiv extends FormCollection
 
     /**
      * Build the HTML-notation for the div element.
+     * @internal
      */
     public function getHTML() : string
     {

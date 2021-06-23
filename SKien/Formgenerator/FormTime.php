@@ -5,8 +5,17 @@ namespace SKien\Formgenerator;
 
 /**
  * Input field for time value.
- * - size always 10
- * - field will be added to JS form validation
+ *
+ * Size is fixed to 10 characters.
+ * Default the format is tried to get from the local environment, but can be
+ * specified in the configuration.
+ *
+ * It can be configured to display the time value with or without seconds.
+ * The timepicker also uses this settings.
+ *
+ * The value that is posted is always in the specified date format!
+ *
+ * @SKienImage FormTime.png
  *
  * @package Formgenerator
  * @author Stefanius <s.kientzler@online.de>
@@ -16,20 +25,21 @@ class FormTime extends FormInput
 {
     /** @var string strftime-compatible format for the time     */
     protected string $strTimeFormat = '';
-    
+
     /**
      * Creates input field for time values.
-     * @param string $strName
-     * @param int $wFlags
+     * @param string $strName   Name (if no ID specified, name is used also as ID)
+     * @param int $wFlags       any combination of FormFlag constants
      */
-    public function __construct(string $strName, int $wFlags = 0) 
+    public function __construct(string $strName, int $wFlags = 0)
     {
         parent::__construct($strName, 10, $wFlags);
     }
-    
+
     /**
      * {@inheritDoc}
      * @see \SKien\Formgenerator\FormElement::fromXML()
+     * @internal
      */
     static public function fromXML(\DOMElement $oXMLElement, FormCollection $oFormParent) : ?FormElement
     {
@@ -40,7 +50,7 @@ class FormTime extends FormInput
         $oFormElement->readAdditionalXML($oXMLElement);
         return $oFormElement;
     }
-    
+
     /**
      * get time format from configuration (default: '%H:%M').
      */
@@ -56,16 +66,15 @@ class FormTime extends FormInput
         $this->addAttribute('data-validation', 'time:' . $strSep . ($bSeconds ? '1' : '0') . 'm');
         $this->addPicker($strSep, $bSeconds);
     }
-    
+
     /**
-     * Accept date value from Formgenerator-data as <ul>
+     * Accept date/time value from Formgenerator-data as <ul>
      * <li> DateTime - object </li>
      * <li> unix timestamp (int) </li>
      * <li> English textual datetime description readable by <b>strtotime</b> <br/>
      *      can be a DATE, DATETIME or TIMESTAMP value from a DB query
      * </li></ul>
-     * The displayed format can be configured with the <i>'FormTime.Format'</i> parameter
-     * as strftime-compatible format string (default settings: '%H:%M) 
+     * The displayed format can be set in the configuration
      * {@inheritDoc}
      * @see \SKien\Formgenerator\FormElement::buildValue()
      * @link https://www.php.net/manual/en/function.strftime.php
@@ -73,7 +82,7 @@ class FormTime extends FormInput
     protected function buildValue() : string
     {
         $date = $this->oFG->getData()->getValue($this->strName);
-        
+
         $strValue = '';
         if (is_object($date) && get_class($date) == 'DateTime') {
             // DateTime-object
@@ -86,14 +95,14 @@ class FormTime extends FormInput
                 $strValue = strftime($this->strTimeFormat, $unixtime);
             }
         }
-        
+
         $strHTML = '';
         if (!$this->oFlags->isSet(FormFlags::NO_ZERO) || ($strValue != 0 && $strValue != '0')) {
             $strHTML = ' value="' . str_replace('"', '&quot;', $strValue) . '"';
         }
         return $strHTML;
     }
-    
+
     /**
      * Add attributes for the time picker.
      * @param string $strSep

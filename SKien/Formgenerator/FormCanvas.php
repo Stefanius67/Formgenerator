@@ -5,6 +5,10 @@ namespace SKien\Formgenerator;
 
 /**
  * Canvas element.
+ * All attributes and styles except height and width (set with the constructor)
+ * can be set through the methods <ul>
+ * <li> addAttribute() </li>
+ * <li> addStyle() </li></ul>
  *
  * @package Formgenerator
  * @author Stefanius <s.kientzler@online.de>
@@ -14,10 +18,6 @@ class FormCanvas extends FormInput
 {
     /**
      * Create o canvas element.
-     * All attributes and styles can except height and width can be set through
-     * the methods <ul>
-     * <li> addAttribute() </li>
-     * <li> addStyle() </li></ul>
      * @param string $strID
      * @param int $iWidth
      * @param int $iHeight
@@ -35,6 +35,7 @@ class FormCanvas extends FormInput
     /**
      * {@inheritDoc}
      * @see \SKien\Formgenerator\FormElement::fromXML()
+     * @internall
      */
     static public function fromXML(\DOMElement $oXMLElement, FormCollection $oFormParent) : ?FormElement
     {
@@ -48,9 +49,9 @@ class FormCanvas extends FormInput
     }
 
     /**
-     * build the HTML-notation for the cancas element
-     *
+     * Build the HTML-notation for the cancas element.
      * @return string
+     * @internal
      */
     public function getHTML() : string
     {

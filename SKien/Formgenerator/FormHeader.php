@@ -18,9 +18,9 @@ class FormHeader extends FormElement
     protected int $iLevel;
 
     /**
-     * Create header element (<h2> header)
-     * @param string $strText
-     * @param number $iLevel
+     * Create header element.
+     * @param string $strText   Text to display
+     * @param number $iLevel    level of the header (&lt;h1&gt; ... &lt;h5&gt;)
      */
     public function __construct(string $strText, $iLevel = 2)
     {
@@ -32,6 +32,7 @@ class FormHeader extends FormElement
     /**
      * {@inheritDoc}
      * @see \SKien\Formgenerator\FormElement::fromXML()
+     * @internal
      */
     static public function fromXML(\DOMElement $oXMLElement, FormCollection $oFormParent) : ?FormElement
     {
@@ -47,6 +48,7 @@ class FormHeader extends FormElement
     /**
      * Build the HTML-notation for the header text
      * @return string
+     * @internal
      */
     public function getHTML() : string
     {

@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace SKien\Formgenerator;
 
 /**
- * HTML form button element (inpt type="button")
+ * HTML form button element (input type="button")
  *
  * @package Formgenerator
  * @author Stefanius <s.kientzler@online.de>
@@ -17,13 +17,13 @@ class FormButton extends FormInput
 
     /**
      * Create button element.
-     * Note: <br/>
-     * Alignment self::ALIGN_CENTER / self::ALIGN_RIGHT set through the $wFlags dont affect the
-     * alignment of the text within the button but the alignment of the button within the col!
+     * > Note: <br/>
+     * > Alignment `FormFlags::ALIGN_CENTER` / `FormFlags::ALIGN_RIGHT´ dont affect the
+     *   alignment of the text within the button but the alignment of the button within the col!
      * @param string $strId        button id
      * @param string $strBtnText   button text (value)
      * @param string $strOnClick   onClick() handler
-     * @param int $wFlags
+     * @param int $wFlags          any combination of FormFlag constants
      * @param string $strStyle     CSS style(s) (default: '')
      */
     public function __construct(string $strId, string $strBtnText, string $strOnClick, int $wFlags = 0, string $strStyle = '')
@@ -41,6 +41,7 @@ class FormButton extends FormInput
     /**
      * {@inheritDoc}
      * @see \SKien\Formgenerator\FormElement::fromXML()
+     * @internal
      */
     static public function fromXML(\DOMElement $oXMLElement, FormCollection $oFormParent) : ?FormElement
     {
@@ -56,6 +57,7 @@ class FormButton extends FormInput
     /**
      * Build the HTML-notation for the button.
      * @return string
+     * @internal
      */
     public function getHTML() : string
     {

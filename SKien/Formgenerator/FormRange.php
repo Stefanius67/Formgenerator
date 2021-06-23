@@ -4,7 +4,9 @@ declare(strict_types=1);
 namespace SKien\Formgenerator;
 
 /**
- * Range slider element
+ * Range slider element.
+ *
+ * @SKienImage FormRange.png
  *
  * @package Formgenerator
  * @author Stefanius <s.kientzler@online.de>
@@ -20,25 +22,27 @@ class FormRange extends FormInput
     protected int $iMin = 0;
     /** @var int max value */
     protected int $iMax = 100;
-    
+
     /**
-     * @param string $strName   name of input
+     * Create a range slider.
+     * @param string $strName   name of the Element
      * @param string $strWidth  width
-     * @param int $iMin
-     * @param int $iMax
-     * @param int $wFlags       flags (default = 0)
+     * @param int $iMin         min value of the slider
+     * @param int $iMax         max value of the slider
+     * @param int $wFlags       any combination of FormFlag constants
      */
-    public function __construct(string $strName, string $strWidth, int $iMin = 0, int $iMax = 100, int $wFlags = 0) 
+    public function __construct(string $strName, string $strWidth, int $iMin = 0, int $iMax = 100, int $wFlags = 0)
     {
         parent::__construct($strName, $strWidth, $wFlags);
         $this->strType = 'range';
         $this->iMin = $iMin;
         $this->iMax = $iMax;
     }
-    
+
     /**
      * {@inheritDoc}
      * @see \SKien\Formgenerator\FormElement::fromXML()
+     * @internal l
      */
     static public function fromXML(\DOMElement $oXMLElement, FormCollection $oFormParent) : ?FormElement
     {
@@ -52,10 +56,11 @@ class FormRange extends FormInput
         $oFormElement->readAdditionalXML($oXMLElement);
         return $oFormElement;
     }
-    
+
     /**
      * {@inheritDoc}
      * @see \SKien\Formgenerator\FormElement::readAdditionalXML()
+     * @internal
      */
     public function readAdditionalXML(\DOMElement $oXMLElement) : void
     {
@@ -64,18 +69,18 @@ class FormRange extends FormInput
             $this->setStep($iStep);
         }
     }
-    
+
     /**
-     * Set min/max value accepted by input field. 
-     * @param int $iMin - set to null, if no limitation wanted
-     * @param int $iMax - set to null, if no limitation wanted
+     * Set min/max value for the slider.
+     * @param int $iMin
+     * @param int $iMax
      */
-    public function setMinMax(?int $iMin, ?int $iMax) : void 
+    public function setMinMax(?int $iMin, ?int $iMax) : void
     {
         $this->iMin = $iMin ?? $this->iMin;
         $this->iMax = $iMax ?? $this->iMax;
     }
-    
+
     /**
      * Set step width to be performed by slider.
      * @param int $iStep
@@ -84,17 +89,17 @@ class FormRange extends FormInput
     {
         $this->iStep = $iStep;
     }
-    
+
     /**
      * get value from dataprovider.
      * Value have to be retrieved earlier because it may be needed for the value-label
-     * before the value of the range element is set. 
+     * before the value of the range element is set.
      */
     protected function onParentSet() : void
     {
         $this->iValue = intval($this->oFG->getData()->getValue($this->strName)) ?? $this->iMin;
     }
-    
+
     /**
      * {@inheritDoc}
      * @see \SKien\Formgenerator\FormElement::buildValue()
@@ -104,12 +109,13 @@ class FormRange extends FormInput
         $strHTML = ' value="' . $this->iValue . '"';
         return $strHTML;
     }
-    
-    
+
+
     /**
      * Build the HTML-notation for the input element.
      * {@inheritDoc}
      * @see \SKien\Formgenerator\FormElement::getHTML()
+     * @internal
      */
     public function getHTML() : string
     {
@@ -117,12 +123,12 @@ class FormRange extends FormInput
         $this->addAttribute('min', (string)$this->iMin);
         $this->addAttribute('max', (string)$this->iMax);
         $this->addAttribute('autocomplete', 'off');
-        
+
         $this->processFlags();
         $strHTML = $this->buildContainerDiv('display: flex;');
-        
+
         $this->strID = $this->strID ?: $this->strName;
-        
+
         if ($this->oFlags->isSet(FormFlags::SHOW_VALUE) && !$this->oFlags->isSet(FormFlags::ALIGN_RIGHT)) {
             $strHTML .= $this->buildValueLabel();
         }
@@ -142,10 +148,10 @@ class FormRange extends FormInput
             $strHTML .= $this->buildValueLabel();
         }
         $strHTML .= '</div>' . PHP_EOL;
-        
+
         return $strHTML;
     }
-    
+
     /**
      * Build the label to display the actual value selected by the range element.
      * @return string
@@ -154,7 +160,7 @@ class FormRange extends FormInput
     {
         // if min is negative it can be longer than the max value...
         $iLen = (strlen((string)$this->iMin) > strlen((string)$this->iMax)) ? strlen((string)$this->iMin) : strlen((string)$this->iMax);
-        
+
         $strHTML = '<label class="slider_label"';
         $strHTML .= ' for="' . $this->strID . '"';
         $strHTML .= ' style="width: ' . $iLen . 'em;';
@@ -164,7 +170,7 @@ class FormRange extends FormInput
         $strHTML .= '">';
         $strHTML .= $this->iValue;
         $strHTML .= '</label>' . PHP_EOL;
-        
+
         return $strHTML;
     }
 }

@@ -6,7 +6,7 @@ namespace SKien\Formgenerator;
 /**
  * Class to create a line starting with label.
  * - create as child of a FormField using FormFieldSet::addLine().
- * - create standalone as direct child of the form  
+ * - create standalone as direct child of the form
  *
  * @package Formgenerator
  * @author Stefanius <s.kientzler@online.de>
@@ -16,17 +16,17 @@ class FormLine extends FormCollection
 {
     /** line contains only HR - no further childs! */
     const HR = '<hr>';
-    
+
     /** @var string text for the line label     */
     protected string $strLabel;
     /** @var int col count     */
     protected int $iCols = 0;
-    
+
     /**
      * Create new line.
      * Label is allways the first child / col of the line.
-     * With $strLabel = self::HR a horizontal line is created.
-     * @param string $strLabel
+     * With `$strLabel = self::HR` a horizontal line is created.
+     * @param string $strLabel  text for label
      */
     public function __construct(string $strLabel)
     {
@@ -35,10 +35,11 @@ class FormLine extends FormCollection
         $this->iCol = 0;
         $this->strID = '';
     }
-    
+
     /**
      * {@inheritDoc}
      * @see \SKien\Formgenerator\FormElement::fromXML()
+     * @internal
      */
     static public function fromXML(\DOMElement $oXMLElement, FormCollection $oFormParent) : ?FormElement
     {
@@ -50,22 +51,24 @@ class FormLine extends FormCollection
         $oFormElement = new self($strLabel);
         $oFormParent->add($oFormElement);
         $oFormElement->readAdditionalXML($oXMLElement);
-        
+
         return $oFormElement;
     }
-    
+
     /**
      * Add a child to the line.
-     * next col index is passed to the element and the col count is inkremented with 
+     * Some properties of the element to add (parent, tabindex, ...) are changed/set
+     * with the call of this method.
+     * next col index is passed to the element and the col count is inkremented with
      * each element added to this line.
-     * @param FormElementInterface $oElement
-     * @return FormElementInterface
+     * @param FormElementInterface $oElement element to add
+     * @return FormElementInterface added element
      */
     public function add(FormElementInterface $oElement) : FormElementInterface
     {
         parent::add($oElement);
         $oElement->setCol(++$this->iCols);
-        
+
         return $oElement;
     }
 
@@ -74,6 +77,7 @@ class FormLine extends FormCollection
      * The line is 'abstract' and representet by a div. <br/>
      * All direct child elements are generated inside this div.
      * @return string
+     * @internal
      */
     public function getHTML() : string
     {
@@ -84,7 +88,7 @@ class FormLine extends FormCollection
         if (!isset($this->aStyle['float'])) {
             $this->addStyle('float', 'left');
         }
-        
+
         $strHTML  = '';
         $strHTML .= '   <div';
         $strHTML .= $this->buildID();
