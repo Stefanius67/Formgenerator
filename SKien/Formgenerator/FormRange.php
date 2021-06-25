@@ -97,7 +97,8 @@ class FormRange extends FormInput
      */
     protected function onParentSet() : void
     {
-        $this->iValue = intval($this->oFG->getData()->getValue($this->strName)) ?? $this->iMin;
+        $value = $this->oFG->getData()->getValue($this->strName);
+        $this->iValue = $value ? intval($value) : $this->iMin;
     }
 
     /**

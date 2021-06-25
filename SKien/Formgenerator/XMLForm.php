@@ -100,7 +100,7 @@ class XMLForm extends FormGenerator
             return $iResult;
         }
         foreach ($oXMLParent->childNodes as $oXMLChild) {
-            if (strtolower($oXMLChild->nodeName) == '#text' || strtolower($oXMLChild->nodeName) == '#comment') {
+            if (strtolower($oXMLChild->nodeName) == '#text' || strtolower($oXMLChild->nodeName) == '#comment' || !($oXMLChild instanceof \DOMElement)) {
                 continue;
             }
             $strClassname = __NAMESPACE__ . '\Form' . $oXMLChild->nodeName;
