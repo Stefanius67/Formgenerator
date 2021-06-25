@@ -31,9 +31,9 @@ class FormFloat extends FormInput
      * @param int|string $size  number set the size-attribute, a string is used for the width attribute
      * @param int $wFlags       any combination of FormFlag constants
      */
-    public function __construct(string $strName, $iSize, int $iDecimalPoints, int $wFlags = 0)
+    public function __construct(string $strName, $size, int $iDecimalPoints, int $wFlags = 0)
     {
-        parent::__construct($strName, $iSize, $wFlags);
+        parent::__construct($strName, $size, $wFlags);
         $this->iDec = $iDecimalPoints;
     }
 

@@ -22,9 +22,9 @@ class FormCur extends FormFloat
      * @param int|string $size  number set the size-attribute, a string is used for the width attribute
      * @param int $wFlags       any combination of FormFlag constants
      */
-    public function __construct(string $strName, $iSize, int $wFlags = 0)
+    public function __construct(string $strName, $size, int $wFlags = 0)
     {
-        parent::__construct($strName, $iSize, 2, $wFlags);
+        parent::__construct($strName, $size, 2, $wFlags);
     }
 
     /**
