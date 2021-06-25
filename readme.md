@@ -1,6 +1,6 @@
 # Create complex HTML forms
 
- ![State](https://img.shields.io/badge/State-in%20progress-red)
+ ![Latest Stable Version](https://img.shields.io/badge/release-v1.0.0-brightgreen.svg)
  ![License](https://img.shields.io/packagist/l/gomoob/php-pushwoosh.svg) 
  [![Donate](https://img.shields.io/static/v1?label=donate&message=PayPal&color=orange)](https://www.paypal.me/SKientzler/5.00EUR)
  ![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%207.4-8892BF.svg)
@@ -38,12 +38,8 @@ connector to the open source file manager 'RichFilemanager' is included for sele
 graphics or to create links to other files on the server. 
 
 ## Documentation
-As this package supplies a wide range of functionality that can be configured individual,
-the documentation is splitted into multiple parts:
-
-1. [The configuration of the package](./doc/FG-config.md)
-2. [Quickstart with a simple example form](./doc/FG-quickstart.md)
-3. ... to be continued
+As this package supports a lot of functionality and can be configured in a wide range,
+a detailed documentation can be found in the [wiki of thos repository](https://github.com/Stefanius67/Formgenerator/wiki).
 
 In the *example* directory you will find sample forms that show the use of all supported 
 elements and currently provides two different themes.
