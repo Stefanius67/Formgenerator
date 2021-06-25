@@ -78,7 +78,7 @@ function initFormGenerator()
     
     var oImages = document.getElementsByTagName('img');
     iLength = oImages.length;
-    for (var i = 0; i < iLength; i++) {          
+    for (i = 0; i < iLength; i++) {          
         oImages[i].addEventListener('click', pickerClicked);
     }    
 }
