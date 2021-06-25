@@ -110,7 +110,7 @@ class FormStatic extends FormElement
         $strHTML .= $this->buildStyle();
         $strHTML .= $this->buildAttributes();
         $strHTML .= '>';
-        if (strlen($this->strLabelFor) > 0 ) {
+        if (strlen($this->strLabelFor) > 0) {
             $strHTML .= '<label for="' . $this->strLabelFor . '">' . $this->strText . '</label>';
         } else {
             $strHTML .= $this->strText;
