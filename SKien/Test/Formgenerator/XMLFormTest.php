@@ -6,12 +6,13 @@ namespace SKien\Test\Formgenerator;
 use SKien\Config\ConfigInterface;
 use SKien\Formgenerator\FormDataInterface;
 use SKien\Formgenerator\XMLForm;
+use SKien\Test\HtmlTestCase;
 
 /**
  * @author Stefanius <s.kientzler@online.de>
  * @copyright MIT License - see the LICENSE file for details
  */
-class XMLFormTest extends FormBaseTestCase
+class XMLFormTest extends HtmlTestCase
 {
     use FormgeneratorHelper;
 

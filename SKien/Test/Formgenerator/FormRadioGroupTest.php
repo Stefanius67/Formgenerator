@@ -6,12 +6,13 @@ namespace SKien\Test\Formgenerator;
 use SKien\Formgenerator\FormFlags;
 use SKien\Formgenerator\FormLine;
 use SKien\Formgenerator\FormRadioGroup;
+use SKien\Test\HtmlTestCase;
 
 /**
  * @author Stefanius <s.kientzler@online.de>
  * @copyright MIT License - see the LICENSE file for details
  */
-class FormRadioGroupTest extends FormBaseTestCase
+class FormRadioGroupTest extends HtmlTestCase
 {
     use FormgeneratorHelper;
 

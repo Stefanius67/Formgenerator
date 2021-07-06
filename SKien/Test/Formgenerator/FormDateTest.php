@@ -3,17 +3,17 @@ declare(strict_types=1);
 
 namespace SKien\Test\Formgenerator;
 
-use PHPUnit\Framework\TestCase;
-use SKien\Formgenerator\FormLine;
-use SKien\Formgenerator\FormDate;
 use SKien\Config\JSONConfig;
+use SKien\Formgenerator\FormDate;
 use SKien\Formgenerator\FormFlags;
+use SKien\Formgenerator\FormLine;
+use SKien\Test\HtmlTestCase;
 
 /**
  * @author Stefanius <s.kientzler@online.de>
  * @copyright MIT License - see the LICENSE file for details
  */
-class FormDateTest extends TestCase
+class FormDateTest extends HtmlTestCase
 {
     use FormgeneratorHelper;
 
@@ -23,10 +23,10 @@ class FormDateTest extends TestCase
         $oFL = $oFG->add(new FormLine('testline'));
         $oEdit = $oFL->add(new FormDate('dateDoB1'));
         $strHTML = $oEdit->getHTML();
-        $this->assertNotFalse(strpos($strHTML, 'value="23.07.1974"'));
-        $this->assertNotFalse(strpos($strHTML, 'data-validation="date'));
+        $this->assertHtmlTagAttribEquals($strHTML, 'input', 'value', '23.07.1974');
+        $this->assertHtmlTagAttribContains($strHTML, 'input', 'data-validation', 'date');
     }
-    
+
     public function test_ValueSet2() : void
     {
         $oFG = $this->createFG(false);
@@ -36,7 +36,7 @@ class FormDateTest extends TestCase
         $this->assertNotFalse(strpos($strHTML, 'value="23.07.1974"'));
         $this->assertNotFalse(strpos($strHTML, 'data-validation="date'));
     }
-    
+
     public function test_ValueSet3() : void
     {
         $oFG = $this->createFG(false);
@@ -46,7 +46,7 @@ class FormDateTest extends TestCase
         $this->assertNotFalse(strpos($strHTML, 'value="23.07.1974"'));
         $this->assertNotFalse(strpos($strHTML, 'data-validation="date'));
     }
-    
+
     public function test_ValueNotSet() : void
     {
         $oFG = $this->createFG(true);
@@ -56,7 +56,7 @@ class FormDateTest extends TestCase
         $this->assertNotFalse(strpos($strHTML, 'value=""'));
         $this->assertNotFalse(strpos($strHTML, 'data-validation="date'));
     }
-    
+
     public function test_ValueNoZero() : void
     {
         $oFG = $this->createFG(true);
@@ -66,7 +66,7 @@ class FormDateTest extends TestCase
         $this->assertFalse(strpos($strHTML, 'value='));
         $this->assertNotFalse(strpos($strHTML, 'data-validation="date'));
     }
-    
+
     public function test_HTML5_Type() : void
     {
         $oFG = $this->createFG(true);
@@ -77,7 +77,7 @@ class FormDateTest extends TestCase
         $this->assertNotFalse(strpos($strHTML, 'value="1974-07-23"'));
         $this->assertFalse(strpos($strHTML, 'data-validation="date'));
     }
-    
+
     public function test_Picker() : void
     {
         $oFG = $this->createFG(false);

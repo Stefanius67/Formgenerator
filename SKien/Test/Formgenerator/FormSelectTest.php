@@ -6,12 +6,13 @@ namespace SKien\Test\Formgenerator;
 use SKien\Formgenerator\FormFlags;
 use SKien\Formgenerator\FormLine;
 use SKien\Formgenerator\FormSelect;
+use SKien\Test\HtmlTestCase;
 
 /**
  * @author Stefanius <s.kientzler@online.de>
  * @copyright MIT License - see the LICENSE file for details
  */
-class FormSelectTest extends FormBaseTestCase
+class FormSelectTest extends HtmlTestCase
 {
     use FormgeneratorHelper;
 

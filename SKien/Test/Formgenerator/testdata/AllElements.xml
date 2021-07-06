@@ -2,19 +2,19 @@
 <FormGenerator>
     <Form colwidth="25, 75">
         <Header text="Header" level="1"/>
-        <Static text="Static" class="overview"/>
+        <Static text="Static" class="overview" for="strInput"/>
         <Div width="100">
             <FieldSet type="IMAGE" imageheight="20">
-                <Line label="Test Line">
+                <Line label="Test Line" for="strInput">
                     <Input name="strInput" size="100%" flags="MANDATORY" length="100"/>
                 </Line>
-                <Line label="Test Line">
+                <Line label="Test Line" for="btnTest">
                     <Button id="btnTest" text="Test" style="width: 50px;"/>
                 </Line>
                 <Line label="Test Line">
                     <Canvas id="canvasTest" width="200px" height="200px"/>
                 </Line>
-                <Line label="Test Line">
+                <Line label="Test Line" for="bTest">
                     <Check name="bTest" btnvalue="set"/>
                 </Line>
                 <!--
