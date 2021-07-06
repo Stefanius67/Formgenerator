@@ -21,17 +21,24 @@ class FormLine extends FormCollection
     protected string $strLabel;
     /** @var int col count     */
     protected int $iCols = 0;
+    /** @var string the if set, label with for attribute is created     */
+    protected string $strLabelFor = '';
 
     /**
      * Create new line.
-     * Label is allways the first child / col of the line.
+     * The label is allways the first child / col of the line.
+     * If you want a line that contains any other element in the first col, you must
+     * leave the label empty AND set the width of the first col of the line to 0
+     * (`setColWidth([0, xx, xx, ...])`).
      * With `$strLabel = self::HR` a horizontal line is created.
-     * @param string $strLabel  text for label
+     * @param string $strLabel      text for label
+     * @param string $strLabelFor   crate label for this element
      */
-    public function __construct(string $strLabel)
+    public function __construct(string $strLabel, string $strLabelFor = '')
     {
         parent::__construct(0);
         $this->strLabel = $strLabel;
+        $this->strLabelFor = $strLabelFor;
         $this->iCol = 0;
         $this->strID = '';
     }
@@ -48,11 +55,21 @@ class FormLine extends FormCollection
         } else {
             $strLabel = self::getAttribString($oXMLElement, 'label', '&nbsp;');
         }
-        $oFormElement = new self($strLabel);
+        $strLabelFor = self::getAttribString($oXMLElement, 'for', '');
+        $oFormElement = new self($strLabel, $strLabelFor);
         $oFormParent->add($oFormElement);
         $oFormElement->readAdditionalXML($oXMLElement);
 
         return $oFormElement;
+    }
+
+    /**
+     * Set the control for which a label should be created.
+     * @param string $strLabelFor
+     */
+    public function setLabelFor(string $strLabelFor) : void
+    {
+        $this->strLabelFor = $strLabelFor;
     }
 
     /**
@@ -99,6 +116,9 @@ class FormLine extends FormCollection
             if (strlen($this->strLabel) > 0 && $strWidth != '0%') {
                 $strHTML .= '       <label';
                 $strHTML .= $this->buildStyle();
+                if (strlen($this->strLabelFor) > 0) {
+                    $strHTML .= ' for="' . $this->strLabelFor . '"';
+                }
                 $strHTML .= '>' . $this->strLabel . '</label>' . PHP_EOL;
             }
             $iCnt = count($this->aChild);

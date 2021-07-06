@@ -153,6 +153,7 @@ class XMLForm extends FormGenerator
      * Get formated list of detailed XML error.
      * this method only works, if <i><b>libxml_use_internal_errors(true);</b></i> is called
      * before parsing the xml and/or validating the xml against XSD file.
+     * @param string $strError
      * @param bool $bPlainText
      * @return string
      */
