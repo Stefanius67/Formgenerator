@@ -49,7 +49,7 @@ trait XMLHelper
      * @param float $fltDefault
      * @return float|null
      */
-    static protected function getAttribFloat(\DOMElement $oXMLElement, string $strName, ?float $fltDefault = null) : ?int
+    static protected function getAttribFloat(\DOMElement $oXMLElement, string $strName, ?float $fltDefault = null) : ?float
     {
         if (!$oXMLElement->hasAttribute($strName)) {
             return $fltDefault;

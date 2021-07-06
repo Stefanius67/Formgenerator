@@ -37,15 +37,15 @@ $oFG->add(new FormHeader('Meter Example', 1));
 $oFS = $oFG->addFieldSet('Temperature');
 $oFL = $oFS->addLine('CPU:');
 $oMeter = new FormMeter('fltTempCPU', '100%', 60.0, 120.0);
-$oMeter->setMessureRange( 80.0, 100.0, 60.0);
+$oMeter->setMessureRange(80.0, 100.0, 60.0);
 $oFL->add($oMeter);
 $oFL = $oFS->addLine('Grafic chip:');
 $oMeter = new FormMeter('fltTempGPU', '100%', 60.0, 120.0);
-$oMeter->setMessureRange( 80.0, 100.0, 60.0);
+$oMeter->setMessureRange(80.0, 100.0, 60.0);
 $oFL->add($oMeter);
 $oFL = $oFS->addLine('Power adapter:');
 $oMeter = new FormMeter('fltTempPOW', '100%', 60.0, 120.0);
-$oMeter->setMessureRange( 80.0, 100.0, 60.0);
+$oMeter->setMessureRange(80.0, 100.0, 60.0);
 $oFL->add($oMeter);
 
 $oFG->add(new FormButtonBox(FormButtonBox::OK));

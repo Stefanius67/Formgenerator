@@ -86,8 +86,8 @@ class FormMeter extends FormInput
     {
         $strName = self::getAttribString($oXMLElement, 'name', '');
         $strWidth = self::getAttribString($oXMLElement, 'width', '');
-        $fltMin = self::getAttribFloat($oXMLElement, 'min', self::MIN_DEFAULT);
-        $fltMax = self::getAttribFloat($oXMLElement, 'max', self::MAX_DEFAULT);
+        $fltMin = self::getAttribFloat($oXMLElement, 'min') ?? self::MIN_DEFAULT;
+        $fltMax = self::getAttribFloat($oXMLElement, 'max') ?? self::MAX_DEFAULT;
         $wFlags = self::getAttribFlags($oXMLElement);
         $oFormElement = new self($strName, $strWidth, $fltMin, $fltMax, $wFlags);
         $oFormParent->add($oFormElement);
@@ -105,7 +105,7 @@ class FormMeter extends FormInput
         parent::readAdditionalXML($oXMLElement);
         $this->fltLow = self::getAttribFloat($oXMLElement, 'low');
         $this->fltHigh = self::getAttribFloat($oXMLElement, 'high');
-        $this->fltopt = self::getAttribFloat($oXMLElement, 'optimum');
+        $this->fltOpt = self::getAttribFloat($oXMLElement, 'optimum');
     }
 
     /**
@@ -185,7 +185,7 @@ class FormMeter extends FormInput
         $strHTML = $this->buildContainerDiv();
         $strHTML .= '<meter ';
         $strHTML .= ' name="' . $this->strName . '"';
-        $strHTML .= FormElement::buildClass();      // direct call of FormElement - we don't want 'Input_OK' ...
+        $strHTML .= FormElement::buildClass(); // direct call of FormElement - we don't want 'Input_OK' ...
         $strHTML .= $this->buildID();
         $strHTML .= $this->buildStyle();
         $strHTML .= $this->buildAttributes();

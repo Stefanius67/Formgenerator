@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace SKien\Formgenerator;
 
-
 /**
  * Static Text element.
  *
@@ -91,17 +90,6 @@ class FormStatic extends FormElement
         if ($this->oFlags->isSet(FormFlags::BOLD)) {
             $this->addStyle('font-weight', 'bold');
         }
-        $strSep = '';
-        if (strlen($this->strClass) !== 0) {
-            $strSep = ' ';
-        }
-        if ($this->oFlags->isSet(FormFlags::ERROR)) {
-            $this->strClass .= $strSep . 'error';
-        } else if ($this->oFlags->isSet(FormFlags::HINT)) {
-            $this->strClass = $strSep . 'hint';
-        } else if ($this->oFlags->isSet(FormFlags::INFO)) {
-            $this->strClass = $strSep . 'forminfo';
-        }
 
         $strHTML  = '';
         $strHTML .= '<div';
@@ -118,5 +106,25 @@ class FormStatic extends FormElement
         $strHTML .= '</div>' . PHP_EOL;
 
         return $strHTML;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see \SKien\Formgenerator\FormElement::buildClass()
+     */
+    protected function buildClass() : string
+    {
+        $strSep = '';
+        if (strlen($this->strClass) !== 0) {
+            $strSep = ' ';
+        }
+        if ($this->oFlags->isSet(FormFlags::ERROR)) {
+            $this->strClass .= $strSep . 'error';
+        } else if ($this->oFlags->isSet(FormFlags::HINT)) {
+            $this->strClass = $strSep . 'hint';
+        } else if ($this->oFlags->isSet(FormFlags::INFO)) {
+            $this->strClass = $strSep . 'forminfo';
+        }
+        return parent::buildClass();
     }
 }
