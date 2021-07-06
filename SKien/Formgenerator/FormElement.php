@@ -163,12 +163,16 @@ abstract class FormElement implements FormElementInterface
 
     /**
      * Add any attribute.
+     * Attributes with null value are ignored!
      * If the attribute allready exist, the value will be overwritten.
      * @param string $strName attribute name
      * @param string $strValue attribute value
      */
-    public function addAttribute(string $strName, string $strValue = '') : void
+    public function addAttribute(string $strName, ?string $strValue = '') : void
     {
+        if ($strValue === null) {
+            return;
+        }
         $strName = strtolower($strName);
         if ($this->aAttrib == null) {
             $this->aAttrib = array();
@@ -380,5 +384,14 @@ abstract class FormElement implements FormElementInterface
         }
     }
 
+    /**
+     * Get the requested attribute.
+     * @param string $strName
+     * @return string|NULL      return null, if attribute not set
+     */
+    protected function getAttribute(string $strName) : ?string
+    {
+        return ($this->aAttrib && isset($this->aAttrib[$strName])) ? $this->aAttrib[$strName] : null;
+    }
 }
 

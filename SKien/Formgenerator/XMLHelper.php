@@ -43,6 +43,21 @@ trait XMLHelper
     }
 
     /**
+     * Get the float value of named attrib or return default value, if attrib not exist
+     * @param \DOMElement $oXMLElement
+     * @param string $strName
+     * @param float $fltDefault
+     * @return float|null
+     */
+    static protected function getAttribFloat(\DOMElement $oXMLElement, string $strName, ?float $fltDefault = null) : ?int
+    {
+        if (!$oXMLElement->hasAttribute($strName)) {
+            return $fltDefault;
+        }
+        return floatval($oXMLElement->getAttribute($strName));
+    }
+
+    /**
      * Get an array of string values of the named attrib.
      * The attrib must contain a list spearated by whitespace(s).
      * @param \DOMElement $oXMLElement

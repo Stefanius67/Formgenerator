@@ -351,7 +351,6 @@ form .slider
 form .slider_label
 {
     display: block;
-    vertical-align: text-bottom;
     font-weight: bold;
 }
 
@@ -409,12 +408,80 @@ form input[type=range]::-ms-thumb
     box-shadow: 1px 1px 1px var(--theme-border-dark), 0px 0px 1px var(--theme-border-medium);
     border: 1px solid var(--theme-border-dark);
     height: var(--theme-size-legend);
-    width: var(--theme-size-legend);
     border-radius: 7px;
     background: var(--theme-bkg-medium);
     cursor: pointer;
 }
 
+/**
+ * meter element.
+ * For more infos see https://css-tricks.com/html5-meter-element
+ */
+form meter,
+form meter[value]
+{
+    --color-good: green;
+    --color-optimal: yellow;
+    --color-bad: red;
+
+    -moz-appearance: none;	
+    border: 1px solid var(--theme-border-medium);
+	border-radius: var(--radius-medium);
+    background: none;
+    background-color: var(--theme-bkg-light);
+    height: 0.7em;
+    margin-top: 5px;
+}
+
+form meter::-webkit-meter-bar 
+{
+    background-color: var(--theme-bkg-light);
+    height: 0.7em;
+    border-radius: var(--radius-medium);
+}
+
+form meter::-webkit-meter-optimum-value 
+{
+	background-color: var(--color-good);
+}
+
+form meter::-webkit-meter-suboptimum-value 
+{
+    background-color: var(--color-optimal);
+}
+
+form meter::-webkit-meter-even-less-good-value 
+{
+    background-color: var(--color-bad);
+}
+
+form meter[value]::-moz-meter-bar 
+{
+    height: 0.7em;
+    border-radius: var(--radius-medium);
+}
+
+form meter:-moz-meter-optimum::-moz-meter-bar
+{
+    background: none;
+    background-color: var(--color-good);
+}
+
+form meter:-moz-meter-sub-optimum::-moz-meter-bar
+{
+    background: none;
+    background-color: var(--color-optimal);
+}
+
+form meter:-moz-meter-sub-sub-optimum::-moz-meter-bar
+{
+    background: none;
+    background-color: var(--color-bad);
+}
+
+/**
+ * auxiliary stuff
+ */
 #errorPopup
 {
     display: none;
