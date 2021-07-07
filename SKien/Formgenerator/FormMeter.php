@@ -72,7 +72,6 @@ class FormMeter extends FormInput
     public function __construct(string $strName, string $strWidth, float $fltMin = self::MIN_DEFAULT, float $fltMax = self::MAX_DEFAULT, int $wFlags = 0)
     {
         parent::__construct($strName, $strWidth, $wFlags);
-        $this->addFlags(FormFlags::READ_ONLY);
         $this->fltMin = $fltMin;
         $this->fltMax = $fltMax;
     }
@@ -164,10 +163,9 @@ class FormMeter extends FormInput
     {
         $this->addAttribute('min', (string)$this->fltMin);
         $this->addAttribute('max', (string)$this->fltMax);
-        $this->addAttribute('low', (string)$this->fltLow);
-        $this->addAttribute('high', (string)$this->fltHigh);
-        $this->addAttribute('optimum', (string)$this->fltOpt);
-        $this->addAttribute('autocomplete', 'off');
+        $this->addAttribute('low', $this->fltLow ? (string)$this->fltLow : null); // null casted to string results to empty string!
+        $this->addAttribute('high', $this->fltHigh ? (string)$this->fltHigh : null);
+        $this->addAttribute('optimum', $this->fltOpt ? (string)$this->fltOpt : null);
 
         if (!empty($this->size)) {
             $this->addStyle('width', $this->size);
@@ -184,7 +182,6 @@ class FormMeter extends FormInput
 
         $strHTML = $this->buildContainerDiv();
         $strHTML .= '<meter ';
-        $strHTML .= ' name="' . $this->strName . '"';
         $strHTML .= FormElement::buildClass(); // direct call of FormElement - we don't want 'Input_OK' ...
         $strHTML .= $this->buildID();
         $strHTML .= $this->buildStyle();
