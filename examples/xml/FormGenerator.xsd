@@ -46,9 +46,11 @@
             <xs:element type="fg:FloatType" name="Float"/>
             <xs:element type="fg:ImageType" name="Image"/>
             <xs:element type="fg:IntType" name="Int"/>
+            <xs:element type="fg:MeterType" name="Meter"/>
             <xs:element type="fg:RadioGroupType" name="RadioGroup"/>
             <xs:element type="fg:RangeType" name="Range"/>
             <xs:element type="fg:SelectType" name="Select"/>
+            <xs:element type="fg:StarRateType" name="StarRate"/>
             <xs:element type="fg:TextAreaType" name="TextArea"/>
             <xs:element type="fg:TimeType" name="Time"/>
             <xs:element type="xs:string" name="Script"/>
@@ -215,6 +217,19 @@
         </xs:complexContent>
     </xs:complexType>
 
+    <xs:complexType name="MeterType">
+        <xs:complexContent>
+            <xs:extension base="fg:InputType">
+                <xs:attribute type="xs:string" name="width"/>
+                <xs:attribute type="xs:float" name="min"/>
+                <xs:attribute type="xs:float" name="max"/>
+                <xs:attribute type="xs:float" name="low"/>
+                <xs:attribute type="xs:float" name="high"/>
+                <xs:attribute type="xs:float" name="optimum"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
     <xs:complexType name="RadioGroupType">
         <xs:complexContent>
             <xs:extension base="fg:InputType">
@@ -243,6 +258,16 @@
                     <xs:element type="fg:OptionType" name="option" maxOccurs="unbounded" minOccurs="0"/>
                 </xs:sequence>            
                 <xs:attribute type="xs:string" name="selectbtntext"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="StarRateType">
+        <xs:complexContent>
+            <xs:extension base="fg:InputType">
+                <xs:sequence>
+                    <xs:element type="xs:string" name="title" maxOccurs="unbounded" minOccurs="0"/>
+                </xs:sequence>            
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
