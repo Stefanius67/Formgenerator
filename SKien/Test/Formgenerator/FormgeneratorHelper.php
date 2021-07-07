@@ -78,6 +78,8 @@ trait FormgeneratorHelper
             'btnCheck4' => 1,
             'btnCheck5' => 'false',
             'btnCheck6' => 0,
+            'fltMeter' => 34.5,
+            'iRating' => 4,
         ];
         $aGenderSelect = ['' => '', 'männlich' => 'm', 'weiblich' => 'f', 'divers' => 'd'];
         $aLinkList = ['Freiburg', 'Karlsruhe', 'Stuttgart'];

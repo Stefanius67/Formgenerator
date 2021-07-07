@@ -37,6 +37,12 @@
                 <Line label="Test Line">
                     <Image name="imgTest" image="IMG_SEARCH" bindto="strTest" default="test.img"/>
                 </Line>
+                <Line label="CPU:">
+                    <Meter name="fltTempCPU" width="100%" min="60" max="120.0" low="80.0" high="100.0" optimum="60.0"/>
+                </Line>
+                <Line label="GPU:">
+                    <Meter name="fltTempGPU" width="100%" max="120.0" low="80.0" high="100.0"/>
+                </Line>
                 <Line label="Test Line">
                     <RadioGroup name="iTest">
                         <option value="0">zero</option>
@@ -54,6 +60,16 @@
                         <option value="0">zero</option>
                         <option value="1">one</option>
                     </Select>
+                </Line>
+                <Line label="Your rating:">
+                    <StarRate name="iRating" size="1">
+                        <title>ungenügend</title>
+                        <title>mangelhaft</title>
+                        <title>ausreichend</title>
+                        <title>befriedigend</title>
+                        <title>gut</title>
+                        <title>sehr gut</title>
+                    </StarRate>
                 </Line>
                 <Line label="Test Line">
                     <TextArea name="strTest" rows="5" cols="50"/>
