@@ -6,18 +6,21 @@ require_once '../autoloader.php';
 use SKien\Config\JSONConfig;
 use SKien\Formgenerator\ArrayFormData;
 use SKien\Formgenerator\FormButtonBox;
-use SKien\Formgenerator\FormFlags;
 use SKien\Formgenerator\FormGenerator;
 use SKien\Formgenerator\FormHeader;
-use SKien\Formgenerator\FormInput;
 use SKien\Formgenerator\FormMeter;
+use SKien\Formgenerator\FormStarRate;
+use SKien\Formgenerator\FormTextArea;
+
+$strTheme = './MSO-Theme/';
+// $strTheme = './';
 
 // defining data array for test purposes
 $aData = [
-    'ID' => 24,
     'fltTempCPU' => 103.0,
     'fltTempGPU' => 96.4,
     'fltTempPOW' => 78.7,
+    'iRating' => 3,
 ];
 
 $oData = new ArrayFormData($aData);
@@ -25,14 +28,12 @@ $oData = new ArrayFormData($aData);
 $oFG = new FormGenerator($oData);
 
 // load the configuration to use
-$oConfig = new JSONConfig('./FormGenerator.json');
+$oConfig = new JSONConfig($strTheme . 'FormGenerator.json');
 $oFG->setConfig($oConfig);
 
 $oFG->setColWidth([40, 60], '%');
 
-$oFG->add(new FormInput('ID', 0, FormFlags::HIDDEN));
-
-$oFG->add(new FormHeader('Meter Example', 1));
+$oFG->add(new FormHeader('Meter/StarRate Example', 1));
 
 $oFS = $oFG->addFieldSet('Temperature');
 $oFL = $oFS->addLine('CPU:');
@@ -48,6 +49,14 @@ $oMeter = new FormMeter('fltTempPOW', '100%', 60.0, 120.0);
 $oMeter->setMessureRange(80.0, 100.0, 60.0);
 $oFL->add($oMeter);
 
+$oFS = $oFG->addFieldSet('Rate the package');
+$oFL = $oFS->addLine('Your rating:');
+$oStars = new FormStarRate('iRating');
+// $oStars->setTitles(['ungenügend', 'mangelhaft', 'ausreichend', 'befriedigend', 'gut', 'sehr gut']);
+$oFL->add($oStars);
+$oFL = $oFS->addLine('Tell me why:');
+$oFL->add(new FormTextArea('strReason', 50, 3, '100%'));
+
 $oFG->add(new FormButtonBox(FormButtonBox::OK));
 
 // generate HTML-markup and JS configuration data
@@ -57,8 +66,8 @@ $strConfigFromPHP = $oFG->getScript();
 ?>
 <html>
     <head>
-    	<title>Meter Example</title>
-        <link type="text/css" rel="stylesheet" href="./FormGenerator.css">
+    	<title>Meter/StarRate Example</title>
+        <link type="text/css" rel="stylesheet" href="<?= $strTheme; ?>FormGenerator.css">
         <style>
             <?php echo $strStyleFromPHP; ?>
         </style>

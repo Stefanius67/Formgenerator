@@ -34,6 +34,9 @@
 			"#ffffff", "#c3c3c3", "#b87957", "#feaec9", "#ffc80d", "#eee3af", "#b5e61d", "#99d9ea",	"#7092be", "#c8bfe7"
 		]
 	},
+    "StarRate": {
+        "Titles": ["ungenügend", "mangelhaft", "ausreichend", "befriedigend", "gut", "sehr gut"]
+    },
     "Images": {
         "Path": "./MSO-Theme",
         "StdImages": {

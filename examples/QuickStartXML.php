@@ -22,9 +22,6 @@ $aData = [
     'fltWeight' => 116.0,
 ];
 
-// $aGenderSelect = ['' => '', 'male' => 'm', 'female' => 'f', 'diverse' => 'd'];
-// $oData = new ArrayFormData($aData, ['strGender' => $aGenderSelect]);
-
 $oData = new ArrayFormData($aData);
 
 $oFG = new XMLForm($oData);

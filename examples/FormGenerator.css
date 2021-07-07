@@ -273,7 +273,7 @@ form .forminfo
     border-radius: var(--radius-medium);
     padding-left: 5px;
     margin: 4px 0px;
-    background: var(--theme-bkg-info) url(../images/info.png) no-repeat right  4px top 3px;
+    background: var(--theme-bkg-info) url(./images/info.png) no-repeat right  4px top 3px;
 }
 
 form .sbSelect
@@ -349,7 +349,6 @@ form .slider
 form .slider_label
 {
     display: block;
-    vertical-align: text-bottom;
     font-weight: bold;
 }
 
@@ -478,6 +477,62 @@ form meter:-moz-meter-sub-sub-optimum::-moz-meter-bar
 }
 
 /**
+ * star rating element
+ */
+form .starrate 
+{
+    display: inline-block;
+}
+
+form .starrate input[type=radio] 
+{ 
+    display: none; 
+}
+
+form .starrate label 
+{
+    float: right;
+    padding: 0px 1px;
+    font-size: 24px;
+}
+
+form .starrate label:before 
+{
+    color: var(--theme-bkg-medium);
+    content: '\2605';
+}
+
+form .starrate label:hover 
+{ 
+    transform: scale(1.25); 
+}
+
+form .starrate input:disabled+label:hover 
+{
+	transform: unset;
+}
+
+form .starrate input:checked~label:before 
+{
+    content: '\2605';
+    color: #ffde40;
+    background: radial-gradient(circle farthest-corner at center 16px, #ffde40 0%, #cf1512 70%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+form .starrate input:checked:disabled~label:before 
+{
+    content: '\2605';
+	color: #ffffff;
+    background: radial-gradient(circle farthest-corner at center 16px, #ffffff 0%, #000000 60%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/**
  * auxiliary stuff
  */
 #errorPopup
@@ -487,7 +542,7 @@ form meter:-moz-meter-sub-sub-optimum::-moz-meter-bar
     width: calc(100% - 14px);
     border: 1px solid var(--theme-border-dark);
     color: var(--theme-txt-error);
-    background: var(--theme-bkg-error) url(../images/window_close.png) no-repeat right 5px top 5px;
+    background: var(--theme-bkg-error) url(./images/window_close.png) no-repeat right 5px top 5px;
     margin: 10px 7px;
     padding: 5px 25px 5px 5px;
     box-sizing: border-box;
@@ -548,7 +603,7 @@ form meter:-moz-meter-sub-sub-optimum::-moz-meter-bar
     font-size: var(--theme-size-h1);
     font-weight: bold;
     box-sizing: border-box;
-    background-image: url(../images/window_close.png);
+    background-image: url(./images/window_close.png);
     background-repeat: no-repeat;
     background-position: top 4px right 4px;
 }

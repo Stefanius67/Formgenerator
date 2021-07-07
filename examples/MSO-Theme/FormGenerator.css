@@ -420,9 +420,9 @@ form input[type=range]::-ms-thumb
 form meter,
 form meter[value]
 {
-    --color-good: green;
-    --color-optimal: yellow;
-    --color-bad: red;
+    --color-good: #077806;
+    --color-optimal: #feb500;
+    --color-bad: #d6471e;
 
     -moz-appearance: none;	
     border: 1px solid var(--theme-border-medium);
@@ -477,6 +477,54 @@ form meter:-moz-meter-sub-sub-optimum::-moz-meter-bar
 {
     background: none;
     background-color: var(--color-bad);
+}
+
+/**
+ * star rating element
+ */
+form .starrate 
+{
+    display: inline-block;
+}
+
+form .starrate input[type=radio] 
+{ 
+    display: none; 
+}
+
+form .starrate label 
+{
+    float: right;
+    padding: 0px 1px;
+    font-size: 20px;
+}
+
+form .starrate label:before 
+{
+    color: var(--gradient-start-btn-disabled);
+    content: '\2606';
+}
+
+form .starrate label:hover:before
+{ 
+    color: #af1512;
+}
+
+form .starrate input:disabled+label:hover:before
+{
+    color: var(--gradient-start-btn-disabled);
+}
+
+form .starrate input:checked~label:before 
+{
+    content: '\2605';
+    color: #af1512;
+}
+
+form .starrate input:checked:disabled~label:before 
+{
+    content: '\2605';
+    color: var(--gradient-start-btn-disabled);
 }
 
 /**
