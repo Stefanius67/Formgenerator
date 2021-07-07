@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FormGenerator
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns="http://www.skien.de/FormGenerator"
+    xsi:schemaLocation="http://www.skien.de/FormGenerator FormGenerator.xsd">
+    
+    <Form colwidth="40, 60">
+        <Header text="Meter/StarRate Example" level="1"/>
+        <FieldSet legend="Temperature">
+            <Line label="CPU:">
+                <Meter name="fltTempCPU" width="100%" min="60.0" max="120.0" low="80.0" high="100.0" optimum="60.0"/>
+            </Line>
+            <Line label="Grafic chip:">
+                <Meter name="fltTempGPU" width="100%" min="60.0" max="120.0" low="80.0" high="100.0" optimum="60.0"/>
+            </Line>
+            <Line label="Power adapter:">
+                <Meter name="fltTempPOW" width="100%" min="60.0" max="120.0" low="80.0" high="100.0" optimum="60.0"/>
+            </Line>
+        </FieldSet>
+        <FieldSet legend="Rate the package">
+            <Line label="Your rating:">
+                <StarRate name="iRating" size="1">
+                    <title>ungenügend</title>
+                    <title>mangelhaft</title>
+                    <title>ausreichend</title>
+                    <title>befriedigend</title>
+                    <title>gut</title>
+                    <title>sehr gut</title>
+                </StarRate>
+            </Line>
+            <Line label="Tell me why:">
+                <TextArea name="strReason" cols="50" rows="3" width="100%"/>
+            </Line>
+        </FieldSet>
+        <ButtonBox buttons="OK" flags="ALIGN_RIGHT"/>
+    </Form>
+</FormGenerator>
