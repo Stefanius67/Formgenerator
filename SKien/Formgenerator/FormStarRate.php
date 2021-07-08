@@ -10,14 +10,15 @@ namespace SKien\Formgenerator;
  * on radio-input, CSS and uses UTF-8 Symbols for the stars - no Javascript
  * and images are needed!
  *
- * The count and titles of the stars can be set
+ * The titles of the stars can be set
  * - in the configuration
  * - by calling the `setTitles()` method
  * - within the XML definition
+ * which also results in their number
  *
  * default is 5 Stars (*'terrible', 'not good', 'average', 'good', 'great'*)
  *
- * The submmited value is an integer between 1 ... n (representing the count of stars)
+ * The submitted value is an integer between 1 ... n (representing the count of stars)
  *
  * @SKienImage FormStarRate.png
  *
