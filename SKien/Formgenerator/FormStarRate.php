@@ -116,7 +116,7 @@ class FormStarRate extends FormInput
             for ($iStar = $iStarCount; $iStar > 0; $iStar--) {
                 $strInputClassCSS = ($iStar == $iStarCount) ? ' class="best"' : '';
                 $strId = $this->strName . 'Star' . $iStar;
-                $strTitle = ($this->aTitles && isset($this->aTitles[$iStar-1])) ? $this->aTitles[$iStar-1] : $iStar . ' Star';
+                $strTitle = ($this->aTitles !== null && isset($this->aTitles[$iStar-1])) ? $this->aTitles[$iStar-1] : $iStar . ' Star';
 
                 $strHTML .= '        <input' . $strInputClassCSS;
                 $strHTML .= ' type="radio" id="' . $strId . '"';

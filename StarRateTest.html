@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+form .starrate 
+{
+    display: inline-block;
+    line-height: 0.9em;
+}
+
+form .starrate input[type=radio]
+{ 
+    display: none; 
+}
+
+form .starrate label 
+{
+    float: right;
+    padding: 0px 1px;
+    font-size: 24px;
+}
+
+form .starrate label:before 
+{
+    color: #bbbbbb;
+    content: '\2605'; /* use '\2606' for framed star */
+}
+
+form .starrate label:hover 
+{ 
+    transform: scale(1.25); 
+}
+
+form .starrate input:disabled+label:hover 
+{
+    transform: unset;
+}
+
+form .starrate input:checked~label:before 
+{
+    content: '\2605';
+    color: #ffde40;
+    background: radial-gradient(circle farthest-corner at center 16px, #ffde40 0%, #CF1512 70%);
+    -webkit-background-clip: text;   /* more info at https://css-tricks.com/almanac/properties/b/background-clip/ */
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+form .starrate input:checked:disabled~label:before 
+{
+    content: '\2605';
+    color: #ffffff;
+    background: radial-gradient(circle farthest-corner at center 16px, #ffffff 0%, #000000 60%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+form .starrate input.best:checked~label:before 
+{
+    background: none;
+    -webkit-background-clip: unset;
+    background-clip: unset;
+    -webkit-text-fill-color: unset;
+    color: #ffdd44;
+    text-shadow: 0 0 5px #999999;
+}
+</style>
+</head>
+<body>
+
+<form action="/action_page.php">
+    <fieldset style="line-height: 190%;">
+        <div>
+            <label style=" width: 70px; float: left;">Rating: </label>
+            <div style="float: left; width: 50%; text-align: center;">  <!-- to align the whole element text-align the parent div! -->
+                <div class="starrate">
+                    <input class="best" id="star5" type="radio" name="iRating" value="5"/>
+                    <label for="star5" title="great"></label>
+                    <input id="star4" type="radio" name="iRating" value="4"/>
+                    <label for="star4" title="good"></label>
+                    <input id="star3" type="radio" name="iRating" value="3"/>
+                    <label for="star3" title="average"></label>
+                    <input id="star2" type="radio" name="iRating" value="2"/>
+                    <label for="star2" title="not good"></label>
+                    <input id="star1" type="radio" name="iRating" value="1"/>
+                    <label for="star1" title="terrible"></label>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+    <br/>
+    <br/>
+    <input type="submit" value="Submit">  
+</form>
+</body>
+</html>
+
+
+
+
+
