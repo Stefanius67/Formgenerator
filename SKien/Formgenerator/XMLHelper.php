@@ -13,7 +13,7 @@ namespace SKien\Formgenerator;
 trait XMLHelper
 {
     /**
-     * Get the string value of named attrib or return default value, if attrib not exist
+     * Get the string value of named attrib or return default value, if attrib not exist.
      * @param \DOMElement $oXMLElement
      * @param string $strName
      * @param string $strDefault
@@ -28,7 +28,7 @@ trait XMLHelper
     }
 
     /**
-     * Get the integer value of named attrib or return default value, if attrib not exist
+     * Get the integer value of named attrib or return default value, if attrib not exist.
      * @param \DOMElement $oXMLElement
      * @param string $strName
      * @param int $iDefault
@@ -43,7 +43,7 @@ trait XMLHelper
     }
 
     /**
-     * Get the float value of named attrib or return default value, if attrib not exist
+     * Get the float value of named attrib or return default value, if attrib not exist.
      * @param \DOMElement $oXMLElement
      * @param string $strName
      * @param float $fltDefault
@@ -55,6 +55,24 @@ trait XMLHelper
             return $fltDefault;
         }
         return floatval($oXMLElement->getAttribute($strName));
+    }
+
+    /**
+     * Get the boolean value of named attrib or return default value, if attrib not exist.
+     * Legal values for boolean are true, false, 1 (which indicates true), and 0 (which indicates false).
+     * @link https://www.w3schools.com/xml/schema_dtypes_misc.asp
+     * @param \DOMElement $oXMLElement
+     * @param string $strName
+     * @param bool $iDefault
+     * @return bool|null
+     */
+    static protected function getAttribBool(\DOMElement $oXMLElement, string $strName, ?bool $bDefault = null) : ?bool
+    {
+        if (!$oXMLElement->hasAttribute($strName)) {
+            return $bDefault;
+        }
+        $strValue = $oXMLElement->getAttribute($strName);
+        return ($strValue == 'true' || $strValue == '1');
     }
 
     /**
