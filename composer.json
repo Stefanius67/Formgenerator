@@ -1,0 +1,19 @@
+{
+    "name": "SKien/Formgenerator",
+    "version": "1.0.0",
+    "description": "Create complex HTML forms",
+    "keywords": ["form","forms","generate","generator"],
+    "license": "MIT",
+    "type": "project",
+    "homepage": "https://github.com/Stefanius67/Formgenerator",
+    "readme": "readme.md",
+    "authors": [
+        {
+            "name": "Stefan Kientzler",
+            "email": "S.Kientzler@online.de"
+        }
+    ],
+    "require": {
+        "php": ">=7.4"
+    }
+}
