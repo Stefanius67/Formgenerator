@@ -39,6 +39,7 @@
             <xs:element type="fg:ButtonBoxType" name="ButtonBox"/>
             <xs:element type="fg:InputType" name="Input"/>
             <xs:element type="fg:ButtonType" name="Button"/>
+            <xs:element type="fg:CanvasType" name="Canvas"/>
             <xs:element type="fg:CheckType" name="Check"/>
             <xs:element type="fg:ColorType" name="Color"/>
             <xs:element type="fg:CurType" name="Cur"/>
@@ -46,9 +47,11 @@
             <xs:element type="fg:FloatType" name="Float"/>
             <xs:element type="fg:ImageType" name="Image"/>
             <xs:element type="fg:IntType" name="Int"/>
+            <xs:element type="fg:MeterType" name="Meter"/>
             <xs:element type="fg:RadioGroupType" name="RadioGroup"/>
             <xs:element type="fg:RangeType" name="Range"/>
             <xs:element type="fg:SelectType" name="Select"/>
+            <xs:element type="fg:StarRateType" name="StarRate"/>
             <xs:element type="fg:TextAreaType" name="TextArea"/>
             <xs:element type="fg:TimeType" name="Time"/>
             <xs:element type="xs:string" name="Script"/>
@@ -74,6 +77,7 @@
             <xs:extension base="fg:FormType">
                 <xs:attribute type="xs:string" name="legend"/>
                 <xs:attribute type="fg:FieldSetTypeAttrib" name="type"/>
+                <xs:attribute type="xs:integer" name="imageheight"/>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
@@ -83,6 +87,7 @@
             <xs:extension base="fg:FormType">
                 <xs:attribute type="xs:string" name="label"/>
                 <xs:attribute type="xs:string" name="horzline"/>
+                <xs:attribute type="xs:string" name="for"/>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
@@ -97,6 +102,7 @@
             <xs:extension base="fg:ElementType">
                 <xs:attribute type="xs:string" name="text"/>
                 <xs:attribute type="fg:FlagsAttrib" name="flags"/>
+                <xs:attribute type="xs:string" name="for"/>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
@@ -198,6 +204,7 @@
 	<xs:complexType name="ImageType">
 		<xs:complexContent>
             <xs:extension base="fg:InputType">
+                <xs:attribute type="xs:string" name="image"/>
 				<xs:attribute type="xs:string" name="default"/>
 				<xs:attribute type="xs:string" name="bindto"/>
 				<xs:attribute type="xs:string" name="title"/>
@@ -210,6 +217,19 @@
             <xs:extension base="fg:InputType">
 		        <xs:attribute type="xs:integer" name="min"/>
 		        <xs:attribute type="xs:integer" name="max"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="MeterType">
+        <xs:complexContent>
+            <xs:extension base="fg:InputType">
+                <xs:attribute type="xs:string" name="width"/>
+                <xs:attribute type="xs:float" name="min"/>
+                <xs:attribute type="xs:float" name="max"/>
+                <xs:attribute type="xs:float" name="low"/>
+                <xs:attribute type="xs:float" name="high"/>
+                <xs:attribute type="xs:float" name="optimum"/>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
@@ -242,6 +262,17 @@
                     <xs:element type="fg:OptionType" name="option" maxOccurs="unbounded" minOccurs="0"/>
                 </xs:sequence>            
                 <xs:attribute type="xs:string" name="selectbtntext"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="StarRateType">
+        <xs:complexContent>
+            <xs:extension base="fg:InputType">
+                <xs:sequence>
+                    <xs:element type="xs:string" name="title" maxOccurs="unbounded" minOccurs="0"/>
+                </xs:sequence>           
+                <xs:attribute type="xs:boolean" name="submittitle"/>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>

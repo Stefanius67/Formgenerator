@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<FormGenerator>
+<FormGenerator
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns="http://www.skien.de/FormGenerator"
+    xsi:schemaLocation="http://www.skien.de/FormGenerator FormGenerator.xsd">
     <Form colwidth="25, 75">
         <Header text="Header" level="1"/>
         <Static text="Static" class="overview" for="strInput"/>
         <Div width="100">
             <FieldSet type="IMAGE" imageheight="20">
                 <Line label="Test Line" for="strInput">
-                    <Input name="strInput" size="100%" flags="MANDATORY" length="100"/>
+                    <Input name="strInput" size="100%" flags="MANDATORY" maxlength="100"/>
                 </Line>
                 <Line label="Test Line" for="btnTest">
                     <Button id="btnTest" text="Test" style="width: 50px;"/>
                 </Line>
                 <Line label="Test Line">
-                    <Canvas id="canvasTest" width="200px" height="200px"/>
+                    <Canvas id="canvasTest" width="200" height="200"/>
                 </Line>
                 <Line label="Test Line" for="bTest">
                     <Check name="bTest" btnvalue="set"/>
@@ -62,7 +65,7 @@
                     </Select>
                 </Line>
                 <Line label="Your rating:">
-                    <StarRate name="iRating" size="1">
+                    <StarRate name="iRating">
                         <title>ungenügend</title>
                         <title>mangelhaft</title>
                         <title>ausreichend</title>
@@ -70,6 +73,7 @@
                         <title>gut</title>
                         <title>sehr gut</title>
                     </StarRate>
+                    <StarRate name="iRating1" submittitle="true"/>
                 </Line>
                 <Line label="Test Line">
                     <TextArea name="strTest" rows="5" cols="50"/>

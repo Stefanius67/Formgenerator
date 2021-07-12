@@ -19,7 +19,7 @@
         </FieldSet>
         <FieldSet legend="Rate the package">
             <Line label="Your rating:">
-                <StarRate name="iRating" size="1">
+                <StarRate name="iRating" submittitle="true">
                     <title>ungenügend</title>
                     <title>mangelhaft</title>
                     <title>ausreichend</title>

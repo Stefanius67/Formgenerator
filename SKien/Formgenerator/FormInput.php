@@ -5,7 +5,7 @@ namespace SKien\Formgenerator;
 
 /**
  * Base-class for all elements intended to get user input.
- * If direrctly used, a simple `&lt;input&gt;` element is created.
+ * If direrctly used, a simple `input` element is created.
  *
  * @package Formgenerator
  * @author Stefanius <s.kientzler@online.de>

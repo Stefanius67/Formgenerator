@@ -30,12 +30,14 @@ class XMLFormTest extends HtmlTestCase
     public function test_load() : void
     {
         $oFG = $this->createXMLFG(true);
+        $oFG->setSchemaValidation(true);
+        $oFG->setPlainError(true);
         $result = $oFG->loadXML(__DIR__ . DIRECTORY_SEPARATOR . 'testdata/AllElements.xml');
-        $this->assertEquals(XMLForm::E_OK, $result);
+        $this->assertEquals(XMLForm::E_OK, $result, $oFG->getErrorMsg());
         $this->assertValidHtmlBlock($oFG->getForm());
     }
 
-    public function test_loadSchemaValidate() : void
+    public function test_loadSchemaValidateFail() : void
     {
         $oFG = $this->createXMLFG(true);
         $oFG->setSchemaValidation(true);
