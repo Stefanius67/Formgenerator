@@ -19,7 +19,7 @@
     "autoload": {
         "psr-4": { 
             "SKien\\Formgenerator\\": "SKien/Formgenerator/", 
-            "SKien\\Config\\": "SKien/Config/", 
+            "SKien\\Config\\": "SKien/Config/"
         }
     }
 }
