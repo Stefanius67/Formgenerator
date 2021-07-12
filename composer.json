@@ -12,7 +12,14 @@
             "email": "S.Kientzler@online.de"
         }
     ],
+    "minimum-stability": "stable",
     "require": {
         "php": ">=7.4"
+    }
+    "autoload": {
+        "psr-4": { 
+            "SKien\\Formgenerator\\": "SKien/Formgenerator/", 
+            "SKien\\Config\\": "SKien/Config/", 
+        }
     }
 }
