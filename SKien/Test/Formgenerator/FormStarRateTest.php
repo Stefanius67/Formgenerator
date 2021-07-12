@@ -47,6 +47,17 @@ class FormStarRateTest extends HtmlTestCase
         $this->assertHtmlElementAttribEquals($strHTML, 'iRatingStar4Label', 'title', 'befriedigend');
     }
 
+    public function test_SetSubmitTitles() : void
+    {
+        $oFG = $this->createFG(false);
+        $oFL = $oFG->add(new FormLine('testline'));
+        $oStar = new FormStarRate('iRating');
+        $oStar->setSubmitTitle(true);
+        $oFL->add($oStar);
+        $strHTML = $oStar->getHTML();
+        $this->assertHtmlElementAttribEquals($strHTML, 'iRatingStar1', 'value', 'terrible');
+    }
+
     /**
      * @dataProvider provideAlignFlag
      */

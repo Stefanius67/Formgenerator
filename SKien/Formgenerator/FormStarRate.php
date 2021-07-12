@@ -7,18 +7,22 @@ namespace SKien\Formgenerator;
  * Element for rating input with stars.
  *
  * This element can be used to select rating between 1 ... n stars. It is based
- * on radio-input, CSS and uses UTF-8 Symbols for the stars - no Javascript
+ * on radio-input + CSS and uses UTF-8 Symbols for the stars - no Javascript
  * and images are needed!
  *
- * The titles of the stars can be set
- * - in the configuration
+ * The titles of the stars are displayed as tooltip and can be set
  * - by calling the `setTitles()` method
  * - within the XML definition
- * which also results in their number
+ * - in the configuration
  *
- * default is 5 Stars (*'terrible', 'not good', 'average', 'good', 'great'*)
+ * (Method/XML overwrites config overwrites default)
  *
- * The submitted value is an integer between 1 ... n (representing the count of stars)
+ * The count of titles also results in the number of stars.
+ *
+ * Default setting is 5 Stars (*'terrible', 'not good', 'average', 'good', 'verry good'*)
+ *
+ * By default the submitted value is an integer between 1 ... n (representing the count of stars)
+ * wich can be changed to title of the selected star using `setSubmitTitle()` method.
  *
  * @SKienImage FormStarRate.png
  *
@@ -31,10 +35,12 @@ class FormStarRate extends FormInput
     /** default count of stars */
     protected const STAR_COUNT = 5;
     /** default titles for the stars */
-    protected const STAR_TITELS = ['terrible', 'not good', 'average', 'good', 'great'];
+    protected const STAR_TITELS = ['terrible', 'not good', 'average', 'good', 'verry good'];
 
     /** @var array titles for the stars (from 0 ... n-1) */
     protected ?array $aTitles = null;
+    /** @var bool $bSubmitTitle submit the title of the selected star instead of index */
+    protected bool $bSubmitTitle = false;
 
     /**
      * Create a star rating element.
@@ -78,6 +84,7 @@ class FormStarRate extends FormInput
                 $this->aTitles[$i++] = $oTitle->nodeValue;
             }
         }
+        $this->bSubmitTitle = self::getAttribBool($oXMLElement, 'submittitle', false);
     }
 
     /**
@@ -118,13 +125,14 @@ class FormStarRate extends FormInput
                 $strInputClassCSS = ($iStar == $iStarCount) ? ' class="best"' : '';
                 $strId = $this->strName . 'Star' . $iStar;
                 $strTitle = ($this->aTitles !== null && isset($this->aTitles[$iStar - 1])) ? $this->aTitles[$iStar - 1] : $iStar . ' Star';
+                $strValue = ($this->bSubmitTitle) ? $strTitle : $iStar;
 
                 $strHTML .= '        <input' . $strInputClassCSS;
                 $strHTML .= ' type="radio" id="' . $strId . '"';
                 $strHTML .= ($iSelect == $iStar) ? ' checked' : '';
                 $strHTML .= ' name="' . $this->strName . '"';
                 $strHTML .= $this->buildAttributes();
-                $strHTML .= ' value="' . $iStar . '"/>' . PHP_EOL;
+                $strHTML .= ' value="' . $strValue . '"/>' . PHP_EOL;
 
                 $strHTML .= '        <label for="' . $strId . '"';
                 $strHTML .= ' id="' . $strId . 'Label"';
@@ -140,10 +148,20 @@ class FormStarRate extends FormInput
 
     /**
      * Set the titles for the stars.
-     * @param array $aTitles
+     * The count of titles also results in the number of stars!
+     * @param array $aTitles    [0]: lowest [n-1]: highest
      */
     public function setTitles(array $aTitles) : void
     {
         $this->aTitles = $aTitles;
+    }
+
+    /**
+     * Submit the title of the selected star instead of index.
+     * @param bool $bSet
+     */
+    public function setSubmitTitle(bool $bSet = true) : void
+    {
+        $this->bSubmitTitle = $bSet;
     }
 }
