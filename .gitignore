@@ -3,7 +3,7 @@
 /.project
 /ckeditor/
 /richfilemanager/
-/SKien/test/Formgenerator/coverage/*
+/SKien/test/Formgenerator/coverage/
 /wiki/
 /doc/githubWiki/cache/
 /SKien/XLogger/
@@ -15,5 +15,4 @@
 /migration.md
 /migration2.md
 /RichFilemanager.md
-!/SKien/test/Formgenerator/coverage/clover.xml
 
