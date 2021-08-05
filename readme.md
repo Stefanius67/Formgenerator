@@ -5,6 +5,7 @@
  [![Donate](https://img.shields.io/static/v1?label=donate&message=PayPal&color=orange)](https://www.paypal.me/SKientzler/5.00EUR)
  ![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%207.4-8892BF.svg)
  [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Stefanius67/Formgenerator/badges/quality-score.png?b=main)](https://scrutinizer-ci.com/g/Stefanius67/Formgenerator/?branch=main)
+ [![codecov](https://codecov.io/gh/Stefanius67/Formgenerator/branch/main/graph/badge.svg?token=FPC3ND3MF5)](https://codecov.io/gh/Stefanius67/Formgenerator)
  
 ----------
 ## Overview
