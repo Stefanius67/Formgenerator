@@ -85,7 +85,7 @@ class HtmlTestCase extends TestCase
      */
     public function assertValidHtmlBlock(string $strHTML, string $strMessage = null) : void
     {
-        $this->assertValidHtml('<!DOCTYPE html><html><head><title>Test</title></head><body>' . $strHTML . '</body>', $strMessage);
+        $this->assertValidHtml('<!DOCTYPE html><html><head><title>Test</title></head><body>' . $strHTML . '</body></html>', $strMessage);
     }
     
     /**

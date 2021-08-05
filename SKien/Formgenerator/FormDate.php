@@ -10,7 +10,7 @@ namespace SKien\Formgenerator;
  * Default the format is tried to get from the local environment, but can be
  * specified in the configuration.
  *
- * The value that is posted is always in the specified date format!
+ * The value that is submitted is always a string in the specified date format!
  *
  * @SKienImage FormDate.png
  *

@@ -18,7 +18,7 @@
     <logging>
         <log type="coverage-text" target="php://stdout" showUncoveredFiles="true" showOnlySummary="true"/>
         <log type="coverage-html" target="SKien/Test/Formgenerator/coverage"/>
-        <log type="coverage-clover" target="SKien/Test/Formgenerator/coverage/clover.xml"/>
+        <log type="coverage-clover" target="./clover.xml"/>
     </logging>
 	
     <php>
