@@ -12,6 +12,6 @@ jobs:
       - uses: actions/checkout@master
       - uses: codecov/codecov-action@v2
         with:
-          files: ./clover.xml
+          files: ../../clover.xml
           verbose: true
    
