@@ -37,7 +37,8 @@ abstract class FormCollection extends FormElement
     {
         parent::readAdditionalXML($oXMLElement);
         $strWidthDim = self::getAttribString($oXMLElement, 'widthdim', '%');
-        if (($aColWidth = self::getAttribIntArray($oXMLElement, 'colwidth')) !== null) {
+        if (self::hasAttrib($oXMLElement, 'colwidth')) {
+            $aColWidth = self::getAttribIntArray($oXMLElement, 'colwidth');
             $this->setColWidth($aColWidth, $strWidthDim);
         }
     }

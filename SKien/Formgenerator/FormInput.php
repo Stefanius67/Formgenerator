@@ -62,8 +62,8 @@ class FormInput extends FormElement
             trigger_error('Try to create Form' . $oXMLElement->nodeName . ' - Element from XML without defined method!', E_USER_ERROR);
         }
         */
-        $strName = self::getAttribString($oXMLElement, 'name', '');
-        $strSize = self::getAttribString($oXMLElement, 'size', '');
+        $strName = self::getAttribString($oXMLElement, 'name');
+        $strSize = self::getAttribString($oXMLElement, 'size');
         $wFlags = self::getAttribFlags($oXMLElement);
         $oFormElement = new self($strName, $strSize, $wFlags);
         $oFormParent->add($oFormElement);
@@ -79,14 +79,14 @@ class FormInput extends FormElement
     public function readAdditionalXML(\DOMElement $oXMLElement) : void
     {
         parent::readAdditionalXML($oXMLElement);
-        if (($strSuffix = self::getAttribString($oXMLElement, 'suffix')) !== null) {
-            $this->setSuffix($strSuffix);
+        if (self::hasAttrib($oXMLElement, 'suffix')) {
+            $this->setSuffix(self::getAttribString($oXMLElement, 'suffix'));
         }
-        if (($strSelectImg = self::getAttribString($oXMLElement, 'selectimg')) !== null) {
-            $this->setSelectImg($strSelectImg, self::getAttribString($oXMLElement, 'selectimgtitle', ''));
+        if (self::hasAttrib($oXMLElement, 'selectimg')) {
+            $this->setSelectImg(self::getAttribString($oXMLElement, 'selectimg'), self::getAttribString($oXMLElement, 'selectimgtitle'));
         }
-        if (($strExpandFolder = self::getAttribString($oXMLElement, 'expandfolder')) !== null) {
-            $this->setExpandFolder($strExpandFolder);
+        if (self::hasAttrib($oXMLElement, 'expandfolder')) {
+            $this->setExpandFolder(self::getAttribString($oXMLElement, 'expandfolder'));
         }
     }
 
@@ -260,7 +260,7 @@ class FormInput extends FormElement
             $this->addAttribute('size', (string)$this->size);
         } else if (!empty($this->size)) {
             // size given as string including dimension
-            $this->addStyle('width', $this->size);
+            $this->addStyle('width', (string)$this->size);
         }
     }
 

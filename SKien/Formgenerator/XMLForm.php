@@ -62,20 +62,23 @@ class XMLForm extends FormGenerator
             // the XML schema is allways expected in the same directory as the XML file itself
             $strXSDFile = (string)pathinfo($strXMLFile, PATHINFO_DIRNAME) . DIRECTORY_SEPARATOR . self::XML_SCHEMA;
             $oRoot = $oXMLForm->documentElement;
-            if ($this->bSchemaValidate && !$oXMLForm->schemaValidate($strXSDFile)) {
-                $iResult = self::E_XSD_ERROR;
-            } elseif ($oRoot->nodeName != 'FormGenerator') {
-                $this->strErrorMsg = 'Missing document root &lt;FormGenerator&gt; in form file: ' . $strXMLFile;
-                $iResult = self::E_MISSING_ROOT;
-            } elseif (($oForm = $this->getXMLChild($oRoot, 'Form')) === null) {
-                $this->strErrorMsg = 'Missing form elemnt &lt;Form&gt; as first child of the root: ' . $strXMLFile;
-                $iResult = self::E_MISSING_FORM;
-            } else {
-                // First we read some general infos for the form
-                $this->readAdditionalXML($oForm);
+            if ($oRoot !== null)
+            {
+                if ($this->bSchemaValidate && !$oXMLForm->schemaValidate($strXSDFile)) {
+                    $iResult = self::E_XSD_ERROR;
+                } elseif ($oRoot->nodeName != 'FormGenerator') {
+                    $this->strErrorMsg = 'Missing document root &lt;FormGenerator&gt; in form file: ' . $strXMLFile;
+                    $iResult = self::E_MISSING_ROOT;
+                } elseif (($oForm = $this->getXMLChild($oRoot, 'Form')) === null) {
+                    $this->strErrorMsg = 'Missing form elemnt &lt;Form&gt; as first child of the root: ' . $strXMLFile;
+                    $iResult = self::E_MISSING_FORM;
+                } else {
+                    // First we read some general infos for the form
+                    $this->readAdditionalXML($oForm);
 
-                // and iterate recursive through the child elements
-                $iResult = $this->createChildElements($oForm, $this);
+                    // and iterate recursive through the child elements
+                    $iResult = $this->createChildElements($oForm, $this);
+                }
             }
         }
         if ($iResult != self::E_OK && strlen($this->strErrorMsg) == 0) {

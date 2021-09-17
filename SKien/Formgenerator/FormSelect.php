@@ -47,7 +47,7 @@ class FormSelect extends FormInput
      */
     static public function fromXML(\DOMElement $oXMLElement, FormCollection $oFormParent) : ?FormElement
     {
-        $strName = self::getAttribString($oXMLElement, 'name', '');
+        $strName = self::getAttribString($oXMLElement, 'name');
         $iSize = self::getAttribInt($oXMLElement, 'size', 1);
         $wFlags = self::getAttribFlags($oXMLElement);
         $oFormElement = new self($strName, $iSize, $wFlags);
@@ -64,8 +64,8 @@ class FormSelect extends FormInput
     public function readAdditionalXML(\DOMElement $oXMLElement) : void
     {
         parent::readAdditionalXML($oXMLElement);
-        if (($strSelectBtnText = self::getAttribString($oXMLElement, 'selectbtntext')) !== null) {
-            $this->setSelectBtnText($strSelectBtnText);
+        if (self::hasAttrib($oXMLElement, 'selectbtntext')) {
+            $this->setSelectBtnText(self::getAttribString($oXMLElement, 'selectbtntext'));
         }
         $oOptions = $oXMLElement->getElementsByTagName('option');
         if ($oOptions->length > 0) {

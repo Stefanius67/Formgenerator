@@ -48,7 +48,7 @@ class FormFieldSet extends FormCollection
      */
     static public function fromXML(\DOMElement $oXMLElement, FormCollection $oFormParent) : ?FormElement
     {
-        $strLegend = self::getAttribString($oXMLElement, 'legend', '');
+        $strLegend = self::getAttribString($oXMLElement, 'legend');
         $iType = self::TEXT;
         $strType = self::getAttribString($oXMLElement, 'type', 'TEXT');
         $strConstName = 'self::' . strtoupper($strType);
@@ -72,8 +72,8 @@ class FormFieldSet extends FormCollection
     public function readAdditionalXML(\DOMElement $oXMLElement) : void
     {
         parent::readAdditionalXML($oXMLElement);
-        if (($iImageHeight = self::getAttribInt($oXMLElement, 'imageheight')) !== null) {
-            $this->setImageHeight($iImageHeight);
+        if (self::hasAttrib($oXMLElement, 'imageheight')) {
+            $this->setImageHeight(self::getAttribInt($oXMLElement, 'imageheight'));
         }
     }
 

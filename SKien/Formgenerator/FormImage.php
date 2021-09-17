@@ -76,8 +76,8 @@ class FormImage extends FormElement
      */
     static public function fromXML(\DOMElement $oXMLElement, FormCollection $oFormParent) : ?FormElement
     {
-        $strName = self::getAttribString($oXMLElement, 'name', '');
-        $image = self::getAttribString($oXMLElement, 'image', '');
+        $strName = self::getAttribString($oXMLElement, 'name');
+        $image = self::getAttribString($oXMLElement, 'image');
         $strConstName = 'self::' . strtoupper($image);
         if (defined($strConstName)) {
             $image = constant($strConstName);
@@ -97,11 +97,11 @@ class FormImage extends FormElement
     public function readAdditionalXML(\DOMElement $oXMLElement) : void
     {
         parent::readAdditionalXML($oXMLElement);
-        if (($strBindTo = self::getAttribString($oXMLElement, 'bindto')) !== null) {
-            $this->bindTo($strBindTo);
+        if (self::hasAttrib($oXMLElement, 'bindto')) {
+            $this->bindTo(self::getAttribString($oXMLElement, 'bindto'));
         }
-        if (($strDefault = self::getAttribString($oXMLElement, 'default')) !== null) {
-            $this->setDefault($strDefault);
+        if (self::hasAttrib($oXMLElement, 'default')) {
+            $this->setDefault(self::getAttribString($oXMLElement, 'default'));
         }
     }
 

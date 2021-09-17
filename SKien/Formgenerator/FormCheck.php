@@ -64,7 +64,7 @@ class FormCheck extends FormInput
      */
     static public function fromXML(\DOMElement $oXMLElement, FormCollection $oFormParent) : ?FormElement
     {
-        $strName = self::getAttribString($oXMLElement, 'name', '');
+        $strName = self::getAttribString($oXMLElement, 'name');
         $wFlags = self::getAttribFlags($oXMLElement);
         $oFormElement = new self($strName, $wFlags);
         $oFormParent->add($oFormElement);
@@ -80,7 +80,8 @@ class FormCheck extends FormInput
     public function readAdditionalXML(\DOMElement $oXMLElement) : void
     {
         parent::readAdditionalXML($oXMLElement);
-        if (($strBtnValue = self::getAttribString($oXMLElement, 'btnvalue')) !== null) {
+        if (self::hasAttrib($oXMLElement, 'btnvalue')) {
+            $strBtnValue = self::getAttribString($oXMLElement, 'btnvalue');
             $this->setBtnValue($strBtnValue);
         }
     }

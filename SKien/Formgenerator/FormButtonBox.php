@@ -83,7 +83,8 @@ class FormButtonBox extends FormElement
     static public function fromXML(\DOMElement $oXMLElement, FormCollection $oFormParent) : ?FormElement
     {
         $iBtns = 0;
-        if (($aBtns = self::getAttribStringArray($oXMLElement, 'buttons')) !== null) {
+        if (self::hasAttrib($oXMLElement, 'buttons')) {
+            $aBtns = self::getAttribStringArray($oXMLElement, 'buttons');
             foreach ($aBtns as $strBtn) {
                 $strConstName = 'self::' . strtoupper($strBtn);
                 if (defined($strConstName)) {

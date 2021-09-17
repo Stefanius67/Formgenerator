@@ -46,7 +46,7 @@ class FormButton extends FormInput
     static public function fromXML(\DOMElement $oXMLElement, FormCollection $oFormParent) : ?FormElement
     {
         // id comes from FormElement::readAdditionalXML() !!
-        $strText = self::getAttribString($oXMLElement, 'text', '');
+        $strText = self::getAttribString($oXMLElement, 'text');
         $wFlags = self::getAttribFlags($oXMLElement);
         $oFormElement = new self('', $strText, '', $wFlags);
         $oFormParent->add($oFormElement);

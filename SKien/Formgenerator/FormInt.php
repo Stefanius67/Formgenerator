@@ -34,8 +34,8 @@ class FormInt extends FormInput
      */
     static public function fromXML(\DOMElement $oXMLElement, FormCollection $oFormParent) : ?FormElement
     {
-        $strName = self::getAttribString($oXMLElement, 'name', '');
-        $strSize = self::getAttribString($oXMLElement, 'size', '');
+        $strName = self::getAttribString($oXMLElement, 'name');
+        $strSize = self::getAttribString($oXMLElement, 'size');
         $wFlags = self::getAttribFlags($oXMLElement);
         $oFormElement = new self($strName, $strSize, $wFlags);
         $oFormParent->add($oFormElement);

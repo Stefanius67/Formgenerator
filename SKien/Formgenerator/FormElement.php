@@ -71,14 +71,14 @@ abstract class FormElement implements FormElementInterface
      */
     public function readAdditionalXML(\DOMElement $oXMLElement) : void
     {
-        if (($strID = self::getAttribString($oXMLElement, 'id')) !== null) {
-            $this->setID($strID);
+        if (self::hasAttrib($oXMLElement, 'id')) {
+            $this->setID(self::getAttribString($oXMLElement, 'id'));
         }
-        if (($strStyle = self::getAttribString($oXMLElement, 'style')) !== null) {
-            $this->parseStyle($strStyle);
+        if (self::hasAttrib($oXMLElement, 'style')) {
+            $this->parseStyle(self::getAttribString($oXMLElement, 'style'));
         }
-        if (($strCSSClass = self::getAttribString($oXMLElement, 'class')) !== null) {
-            $this->addClass($strCSSClass);
+        if (self::hasAttrib($oXMLElement, 'class')) {
+            $this->addClass(self::getAttribString($oXMLElement, 'class'));
         }
         $this->aAttrib = $this->readElementAttributes($oXMLElement, $this->aAttrib);
     }

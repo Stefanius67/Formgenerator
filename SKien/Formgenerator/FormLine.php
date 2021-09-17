@@ -50,12 +50,12 @@ class FormLine extends FormCollection
      */
     static public function fromXML(\DOMElement $oXMLElement, FormCollection $oFormParent) : ?FormElement
     {
-        if (self::getAttribString($oXMLElement, 'horzline') !== null) {
+        if (self::hasAttrib($oXMLElement, 'horzline')) {
             $strLabel = self::HR;
         } else {
             $strLabel = self::getAttribString($oXMLElement, 'label', '&nbsp;');
         }
-        $strLabelFor = self::getAttribString($oXMLElement, 'for', '');
+        $strLabelFor = self::getAttribString($oXMLElement, 'for');
         $oFormElement = new self($strLabel, $strLabelFor);
         $oFormParent->add($oFormElement);
         $oFormElement->readAdditionalXML($oXMLElement);

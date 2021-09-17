@@ -40,7 +40,7 @@ class FormTextArea extends FormInput
      */
     static public function fromXML(\DOMElement $oXMLElement, FormCollection $oFormParent) : ?FormElement
     {
-        $strName = self::getAttribString($oXMLElement, 'name', '');
+        $strName = self::getAttribString($oXMLElement, 'name');
         $iCols = self::getAttribInt($oXMLElement, 'cols', 80);
         $iRows = self::getAttribInt($oXMLElement, 'rows', 10);
         $strWidth = self::getAttribString($oXMLElement, 'width', '95%');

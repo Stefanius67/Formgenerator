@@ -43,7 +43,7 @@ class FormTime extends FormInput
      */
     static public function fromXML(\DOMElement $oXMLElement, FormCollection $oFormParent) : ?FormElement
     {
-        $strName = self::getAttribString($oXMLElement, 'name', '');
+        $strName = self::getAttribString($oXMLElement, 'name');
         $wFlags = self::getAttribFlags($oXMLElement);
         $oFormElement = new self($strName, $wFlags);
         $oFormParent->add($oFormElement);
@@ -88,7 +88,7 @@ class FormTime extends FormInput
             // DateTime-object
             $strValue = strftime($this->strTimeFormat, $date->getTimestamp());
         } else if (is_numeric($date)) {
-            $strValue = strftime($this->strTimeFormat, $date);
+            $strValue = strftime($this->strTimeFormat, intval($date));
         } else {
             $unixtime = strtotime($date);
             if ($unixtime !== false) {

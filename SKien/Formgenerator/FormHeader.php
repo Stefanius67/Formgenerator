@@ -20,7 +20,7 @@ class FormHeader extends FormElement
     /**
      * Create header element.
      * @param string $strText   Text to display
-     * @param number $iLevel    level of the header (&lt;h1&gt; ... &lt;h5&gt;)
+     * @param int $iLevel    level of the header (&lt;h1&gt; ... &lt;h5&gt;)
      */
     public function __construct(string $strText, $iLevel = 2)
     {
@@ -36,7 +36,7 @@ class FormHeader extends FormElement
      */
     static public function fromXML(\DOMElement $oXMLElement, FormCollection $oFormParent) : ?FormElement
     {
-        $strText = self::getAttribString($oXMLElement, 'text', '');
+        $strText = self::getAttribString($oXMLElement, 'text');
         $iLevel = self::getAttribInt($oXMLElement, 'level', 2);
         $oFormElement = new self($strText, $iLevel);
         $oFormParent->add($oFormElement);

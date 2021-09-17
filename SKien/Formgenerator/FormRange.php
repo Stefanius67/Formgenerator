@@ -46,8 +46,8 @@ class FormRange extends FormInput
      */
     static public function fromXML(\DOMElement $oXMLElement, FormCollection $oFormParent) : ?FormElement
     {
-        $strName = self::getAttribString($oXMLElement, 'name', '');
-        $strWidth = self::getAttribString($oXMLElement, 'width', '');
+        $strName = self::getAttribString($oXMLElement, 'name');
+        $strWidth = self::getAttribString($oXMLElement, 'width');
         $iMin = self::getAttribInt($oXMLElement, 'min', 0);
         $iMax = self::getAttribInt($oXMLElement, 'max', 100);
         $wFlags = self::getAttribFlags($oXMLElement);
@@ -65,8 +65,8 @@ class FormRange extends FormInput
     public function readAdditionalXML(\DOMElement $oXMLElement) : void
     {
         parent::readAdditionalXML($oXMLElement);
-        if (($iStep = self::getAttribInt($oXMLElement, 'step')) !== null) {
-            $this->setStep($iStep);
+        if (self::hasAttrib($oXMLElement, 'step')) {
+            $this->setStep(self::getAttribInt($oXMLElement, 'step', 1));
         }
     }
 

@@ -101,7 +101,7 @@ class FormCKEdit extends FormTextArea
      */
     static public function fromXML(\DOMElement $oXMLElement, FormCollection $oFormParent) : ?FormElement
     {
-        $strName = self::getAttribString($oXMLElement, 'name', '');
+        $strName = self::getAttribString($oXMLElement, 'name');
         $iRows = self::getAttribInt($oXMLElement, 'rows', 10);
         $strWidth = self::getAttribString($oXMLElement, 'width', '100%');
         $wFlags = self::getAttribFlags($oXMLElement);
@@ -118,8 +118,8 @@ class FormCKEdit extends FormTextArea
     public function readAdditionalXML(\DOMElement $oXMLElement) : void
     {
         parent::readAdditionalXML($oXMLElement);
-        $this->setContentsCss(self::getAttribString($oXMLElement, 'content-css', ''));
-        $this->setBodyID(self::getAttribString($oXMLElement, 'body-id', ''));
+        $this->setContentsCss(self::getAttribString($oXMLElement, 'content-css'));
+        $this->setBodyID(self::getAttribString($oXMLElement, 'body-id'));
     }
 
     /**

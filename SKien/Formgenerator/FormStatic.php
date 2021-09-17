@@ -50,13 +50,12 @@ class FormStatic extends FormElement
      */
     static public function fromXML(\DOMElement $oXMLElement, FormCollection $oFormParent) : ?FormElement
     {
-        $strText = self::getAttribString($oXMLElement, 'text', '');
+        $strText = self::getAttribString($oXMLElement, 'text');
         $wFlags = self::getAttribFlags($oXMLElement);
-        $strLabelFor = self::getAttribString($oXMLElement, 'for', '');
+        $strLabelFor = self::getAttribString($oXMLElement, 'for');
         $oFormElement = new self($strText, $wFlags, $strLabelFor);
         $oFormParent->add($oFormElement);
         $oFormElement->readAdditionalXML($oXMLElement);
-
         return $oFormElement;
     }
 

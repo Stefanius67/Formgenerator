@@ -44,8 +44,8 @@ class FormFloat extends FormInput
      */
     static public function fromXML(\DOMElement $oXMLElement, FormCollection $oFormParent) : ?FormElement
     {
-        $strName = self::getAttribString($oXMLElement, 'name', '');
-        $strSize = self::getAttribString($oXMLElement, 'size', '');
+        $strName = self::getAttribString($oXMLElement, 'name');
+        $strSize = self::getAttribString($oXMLElement, 'size');
         $iDecimalPoints = self::getAttribInt($oXMLElement, 'digits', 1);
         $wFlags = self::getAttribFlags($oXMLElement);
         $oFormElement = new self($strName, $strSize, $iDecimalPoints, $wFlags);

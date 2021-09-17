@@ -5,12 +5,8 @@ namespace SKien\Config;
 
 /**
  * Interface for config components.
- * 
- * #### History
- * - *2021-01-01*   initial version
- * 
- * @package SKien/Config
- * @version 1.0.0
+ *
+ * @package Config
  * @author Stefanius <s.kientzler@online.de>
  * @copyright MIT License - see the LICENSE file for details
 */
@@ -23,7 +19,7 @@ interface ConfigInterface
      * @return mixed
      */
     public function getValue(string $strPath, $default = null);
-    
+
     /**
      * Get the string value specified by path.
      * @param string $strPath
@@ -31,7 +27,7 @@ interface ConfigInterface
      * @return string
      */
     public function getString(string $strPath, string $strDefault = '') : string;
-    
+
     /**
      * Get the integer value specified by path.
      * @param string $strPath
@@ -39,7 +35,7 @@ interface ConfigInterface
      * @return int
      */
     public function getInt(string $strPath, int $iDefault = 0) : int;
-    
+
     /**
      * Get the integer value specified by path.
      * @param string $strPath
@@ -47,7 +43,7 @@ interface ConfigInterface
      * @return float
      */
     public function getFloat(string $strPath, float $fltDefault = 0.0) : float;
-    
+
     /**
      * Get the boolean value specified by path.
      * @param string $strPath
@@ -55,23 +51,23 @@ interface ConfigInterface
      * @return bool
      */
     public function getBool(string $strPath, bool $bDefault = false) : bool;
-    
+
     /**
      * Get the date value specified by path as unix timestamp.
      * @param string $strPath
-     * @param int $default default value (unix timestamp) 
+     * @param int $default default value (unix timestamp)
      * @return int unix timestamp
      */
-    public function getDate(string $strPath, $default = 0) : int;
-    
+    public function getDate(string $strPath, int $default = 0) : int;
+
     /**
      * Get the date and time value specified by path as unix timestamp.
      * @param string $strPath
      * @param int $default default value (unix timestamp)
      * @return int unix timestamp
      */
-    public function getDateTime(string $strPath, $default = 0) : int;
-    
+    public function getDateTime(string $strPath, int $default = 0) : int;
+
     /**
      * Get the array specified by path.
      * @param string $strPath

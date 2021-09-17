@@ -13,13 +13,24 @@ namespace SKien\Formgenerator;
 trait XMLHelper
 {
     /**
+     * Test if requested attribute is set.
+     * @param \DOMElement $oXMLElement
+     * @param string $strName
+     * @return bool
+     */
+    static protected function hasAttrib(\DOMElement $oXMLElement, string $strName) : bool
+    {
+        return $oXMLElement->hasAttribute($strName);
+    }
+
+    /**
      * Get the string value of named attrib or return default value, if attrib not exist.
      * @param \DOMElement $oXMLElement
      * @param string $strName
      * @param string $strDefault
-     * @return string|null
+     * @return string
      */
-    static protected function getAttribString(\DOMElement $oXMLElement, string $strName, ?string $strDefault = null) : ?string
+    static protected function getAttribString(\DOMElement $oXMLElement, string $strName, string $strDefault = '') : string
     {
         if (!$oXMLElement->hasAttribute($strName)) {
             return $strDefault;
@@ -32,9 +43,9 @@ trait XMLHelper
      * @param \DOMElement $oXMLElement
      * @param string $strName
      * @param int $iDefault
-     * @return int|null
+     * @return int
      */
-    static protected function getAttribInt(\DOMElement $oXMLElement, string $strName, ?int $iDefault = null) : ?int
+    static protected function getAttribInt(\DOMElement $oXMLElement, string $strName, int $iDefault = 0) : int
     {
         if (!$oXMLElement->hasAttribute($strName)) {
             return $iDefault;
@@ -47,9 +58,9 @@ trait XMLHelper
      * @param \DOMElement $oXMLElement
      * @param string $strName
      * @param float $fltDefault
-     * @return float|null
+     * @return float
      */
-    static protected function getAttribFloat(\DOMElement $oXMLElement, string $strName, ?float $fltDefault = null) : ?float
+    static protected function getAttribFloat(\DOMElement $oXMLElement, string $strName, float $fltDefault = 0.0) : float
     {
         if (!$oXMLElement->hasAttribute($strName)) {
             return $fltDefault;
@@ -63,10 +74,10 @@ trait XMLHelper
      * @link https://www.w3schools.com/xml/schema_dtypes_misc.asp
      * @param \DOMElement $oXMLElement
      * @param string $strName
-     * @param bool $iDefault
-     * @return bool|null
+     * @param bool $bDefault
+     * @return bool
      */
-    static protected function getAttribBool(\DOMElement $oXMLElement, string $strName, ?bool $bDefault = null) : ?bool
+    static protected function getAttribBool(\DOMElement $oXMLElement, string $strName, bool $bDefault = false) : bool
     {
         if (!$oXMLElement->hasAttribute($strName)) {
             return $bDefault;
@@ -80,16 +91,16 @@ trait XMLHelper
      * The attrib must contain a list spearated by whitespace(s).
      * @param \DOMElement $oXMLElement
      * @param string $strName
-     * @return array|null
+     * @return array
      */
-    static protected function getAttribStringArray(\DOMElement $oXMLElement, string $strName) : ?array
+    static protected function getAttribStringArray(\DOMElement $oXMLElement, string $strName) : array
     {
-        $aValues = null;
+        $aValues = [];
         $strArray = $oXMLElement->getAttribute($strName);
         if (strlen($strArray) > 0) {
             // to make it validateable by XSD-schema, we use a whitespace-separated list since
             // there is no way to define the delimiter for xs:list in XSD...
-            $aValues = array_map('trim', preg_split('/\s+/', trim($strArray)));
+            $aValues = self::splitWhitespaces($strArray);
         }
         return $aValues;
     }
@@ -99,11 +110,11 @@ trait XMLHelper
      * The attrib must contain a list spearated by comma.
      * @param \DOMElement $oXMLElement
      * @param string $strName
-     * @return array|null
+     * @return array
      */
-    static protected function getAttribIntArray(\DOMElement $oXMLElement, string $strName) : ?array
+    static protected function getAttribIntArray(\DOMElement $oXMLElement, string $strName) : array
     {
-        $aValues = null;
+        $aValues = [];
         $strArray = $oXMLElement->getAttribute($strName);
         if (strlen($strArray) > 0) {
             $aValues = array_map('intval', explode(',', $strArray));
@@ -124,7 +135,7 @@ trait XMLHelper
         if (strlen($strFlags) > 0) {
             // to make it validateable by XSD-schema, we use a whitespace-separated list since
             // there is no way to define the delimiter for xs:list in XSD...
-            $aFlags = array_map('trim', preg_split('/\s+/', trim($strFlags)));
+            $aFlags = self::splitWhitespaces($strFlags);
             foreach ($aFlags as $strFlag) {
                 $strConstName = __NAMESPACE__ . '\FormFlags::' . strtoupper($strFlag);
                 if (defined($strConstName)) {
@@ -161,8 +172,8 @@ trait XMLHelper
             $aAttributes = array();
         }
         foreach ($aAttributesToRead as $strAttribute) {
-            if (($strValue = self::getAttribString($oXMLElement, $strAttribute)) !== null) {
-                $aAttributes[$strAttribute] = $strValue;
+            if (self::hasAttrib($oXMLElement, $strAttribute)) {
+                $aAttributes[$strAttribute] = self::getAttribString($oXMLElement, $strAttribute);
             }
         }
         return $aAttributes;
@@ -184,5 +195,21 @@ trait XMLHelper
             }
         }
         return null;
+    }
+
+    /**
+     * Split the given string by whitespaces.
+     * @param string $strToSplit
+     * @return array<string>
+     */
+    static protected function splitWhitespaces(string $strToSplit) : array
+    {
+        $aSplit = preg_split('/\s+/', trim($strToSplit));
+        if ($aSplit !== false) {
+            $aSplit = array_map('trim', $aSplit);
+        } else {
+            $aSplit = [];
+        }
+        return $aSplit;
     }
 }

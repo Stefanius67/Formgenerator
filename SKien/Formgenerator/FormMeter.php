@@ -83,10 +83,10 @@ class FormMeter extends FormInput
      */
     static public function fromXML(\DOMElement $oXMLElement, FormCollection $oFormParent) : ?FormElement
     {
-        $strName = self::getAttribString($oXMLElement, 'name', '');
-        $strWidth = self::getAttribString($oXMLElement, 'width', '');
-        $fltMin = self::getAttribFloat($oXMLElement, 'min') ?? self::MIN_DEFAULT;
-        $fltMax = self::getAttribFloat($oXMLElement, 'max') ?? self::MAX_DEFAULT;
+        $strName = self::getAttribString($oXMLElement, 'name');
+        $strWidth = self::getAttribString($oXMLElement, 'width');
+        $fltMin = self::getAttribFloat($oXMLElement, 'min', self::MIN_DEFAULT);
+        $fltMax = self::getAttribFloat($oXMLElement, 'max', self::MAX_DEFAULT);
         $wFlags = self::getAttribFlags($oXMLElement);
         $oFormElement = new self($strName, $strWidth, $fltMin, $fltMax, $wFlags);
         $oFormParent->add($oFormElement);
@@ -102,9 +102,15 @@ class FormMeter extends FormInput
     public function readAdditionalXML(\DOMElement $oXMLElement) : void
     {
         parent::readAdditionalXML($oXMLElement);
-        $this->fltLow = self::getAttribFloat($oXMLElement, 'low');
-        $this->fltHigh = self::getAttribFloat($oXMLElement, 'high');
-        $this->fltOpt = self::getAttribFloat($oXMLElement, 'optimum');
+        if (self::hasAttrib($oXMLElement, 'low')) {
+            $this->fltLow = self::getAttribFloat($oXMLElement, 'low');
+        }
+        if (self::hasAttrib($oXMLElement, 'high')) {
+            $this->fltHigh = self::getAttribFloat($oXMLElement, 'high');
+        }
+        if (self::hasAttrib($oXMLElement, 'optimum')) {
+            $this->fltOpt = self::getAttribFloat($oXMLElement, 'optimum');
+        }
     }
 
     /**
@@ -168,7 +174,7 @@ class FormMeter extends FormInput
         $this->addAttribute('optimum', $this->fltOpt ? (string)$this->fltOpt : null);
 
         if (!empty($this->size)) {
-            $this->addStyle('width', $this->size);
+            $this->addStyle('width', (string)$this->size);
         }
         $this->processFlags();
 

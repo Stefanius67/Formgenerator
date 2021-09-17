@@ -60,7 +60,7 @@ class FormStarRate extends FormInput
      */
     static public function fromXML(\DOMElement $oXMLElement, FormCollection $oFormParent) : ?FormElement
     {
-        $strName = self::getAttribString($oXMLElement, 'name', '');
+        $strName = self::getAttribString($oXMLElement, 'name');
         $wFlags = self::getAttribFlags($oXMLElement);
         $oFormElement = new self($strName, $wFlags);
         $oFormParent->add($oFormElement);
