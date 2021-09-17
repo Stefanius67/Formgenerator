@@ -30,9 +30,9 @@ abstract class FormElement implements FormElementInterface
     protected string $strClass = '';
     /** @var FormFlags flags that specify the appearance and behaviour     */
     protected FormFlags $oFlags;
-    /** @var array attributes of the element     */
+    /** @var array<string,string> attributes of the element     */
     protected ?array $aAttrib = null;
-    /** @var array (CSS) styles of the element     */
+    /** @var array<string,string> (CSS) styles of the element     */
     protected ?array $aStyle = null;
 
     /**

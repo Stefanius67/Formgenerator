@@ -8,7 +8,6 @@
 #
 parameters:
 	level: max
-	checkMissingIterableValueType: false
 	paths:
 		- examples
 		- SKien/Config

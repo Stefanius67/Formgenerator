@@ -10,9 +10,9 @@ namespace SKien\Formgenerator;
  */
 abstract class AbstractFormData implements FormDataInterface
 {
-    /** @var array containing all data that can be edited by the form     */
+    /** @var array<string,mixed> containing all data that can be edited by the form     */
     protected array $aValues;
-    /** @var array containing select list to be displayed by the form     */
+    /** @var array<string,array<int|string,string>> containing select list to be displayed by the form     */
     protected array $aSelectOptions;
 
     /**
@@ -28,7 +28,7 @@ abstract class AbstractFormData implements FormDataInterface
     /**
      * Get the select options for specified element.
      * @param string $strName   name of the element
-     * @return array empty array, if no options for requested element available
+     * @return array<int|string,string> empty array, if no options for requested element available
      */
     public function getSelectOptions(string $strName) : array
     {
@@ -48,7 +48,7 @@ abstract class AbstractFormData implements FormDataInterface
     /**
      * Set select options for specified element.
      * @param string $strName  name of the element
-     * @param array $aOptions  associative array with 'option' => value elements
+     * @param array<int|string,string> $aOptions  associative array with 'option' => value elements
      */
     public function setSelectOptions(string $strName, array $aOptions) : void
     {

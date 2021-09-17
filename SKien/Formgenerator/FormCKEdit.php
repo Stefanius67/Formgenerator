@@ -67,7 +67,7 @@ class FormCKEdit extends FormTextArea
     protected string $strContentsCss = '';
     /** @var string the id of the editarea   */
     protected string $strBodyID;
-    /** @var array custom button definition ["func" => <buttonhandler>, "name" => <buttonname>]    */
+    /** @var array<mixed> custom button definition ["func" => <buttonhandler>, "name" => <buttonname>]    */
     protected array $aCustomBtn = [];
     /** @var string allowed content    */
     protected string $strAllowedContent = '';
@@ -308,7 +308,7 @@ class FormCKEdit extends FormTextArea
 
     /**
      * Build the options to create the CKEditor instance.
-     * @return array
+     * @return array<mixed>
      */
     protected function buildEditorOptions() : array
     {
@@ -336,7 +336,7 @@ class FormCKEdit extends FormTextArea
 
     /**
      * Build config settings for the selectable colors.
-     * @param array $aCKEditor
+     * @param array<mixed> $aCKEditor
      */
     protected function buildSelectableColors(array &$aCKEditor) : void
     {
@@ -359,7 +359,7 @@ class FormCKEdit extends FormTextArea
 
     /**
      * Build config for available placeholders in the placeholder-combobox.
-     * @param array $aCKEditor
+     * @param array<mixed> $aCKEditor
      */
     protected function buildPlaceholderSelect(array &$aCKEditor) : void
     {
@@ -372,7 +372,7 @@ class FormCKEdit extends FormTextArea
     /**
      * Returns currently defined toolbar as array for JSON-encoding.
      * @link https://ckeditor.com/latest/samples/toolbarconfigurator/index.html
-     * @return array
+     * @return array<mixed>
      */
     protected function buildToolbarDef() : array
     {
@@ -393,7 +393,7 @@ class FormCKEdit extends FormTextArea
 
     /**
      * Add all custom buttons at start of the toolbar.
-     * @param array $aToolbar reference to the toolbar array
+     * @param array<mixed> $aToolbar reference to the toolbar array
      */
     protected function addCustomBtns(array &$aToolbar) : void
     {
@@ -404,7 +404,7 @@ class FormCKEdit extends FormTextArea
 
     /**
      * Add button group for basic styles.
-     * @param array $aToolbar reference to the toolbar array
+     * @param array<mixed> $aToolbar reference to the toolbar array
      */
     protected function addBasicStyleBtns(array &$aToolbar) : void
     {
@@ -426,7 +426,7 @@ class FormCKEdit extends FormTextArea
 
     /**
      * Add button group for paragraph formating.
-     * @param array $aToolbar reference to the toolbar array
+     * @param array<mixed> $aToolbar reference to the toolbar array
      */
     protected function addParagraphBtns(array &$aToolbar) : void
     {
@@ -450,7 +450,7 @@ class FormCKEdit extends FormTextArea
 
     /**
      * Add button group for links.
-     * @param array $aToolbar reference to the toolbar array
+     * @param array<mixed> $aToolbar reference to the toolbar array
      */
     protected function addLinkBtns(array &$aToolbar) : void
     {
@@ -469,7 +469,7 @@ class FormCKEdit extends FormTextArea
      * - Tables
      * - Special Chars
      * - IFrames
-     * @param array $aToolbar reference to the toolbar array
+     * @param array<mixed> $aToolbar reference to the toolbar array
      */
     protected function addInsertBtns(array &$aToolbar) : void
     {
@@ -496,7 +496,7 @@ class FormCKEdit extends FormTextArea
 
     /**
      * Add button group for colors
-     * @param array $aToolbar reference to the toolbar array
+     * @param array<mixed> $aToolbar reference to the toolbar array
      */
     protected function addColorBtns(array &$aToolbar) : void
     {
@@ -507,7 +507,7 @@ class FormCKEdit extends FormTextArea
 
     /**
      * Add select list for styles
-     * @param array $aToolbar reference to the toolbar array
+     * @param array<mixed> $aToolbar reference to the toolbar array
      */
     protected function addStyleSelect(array &$aToolbar) : void
     {
@@ -518,7 +518,7 @@ class FormCKEdit extends FormTextArea
 
     /**
      * Add select list for templates
-     * @param array $aToolbar reference to the toolbar array
+     * @param array<mixed> $aToolbar reference to the toolbar array
      */
     protected function addTemplateSelect(array &$aToolbar) : void
     {
@@ -529,7 +529,7 @@ class FormCKEdit extends FormTextArea
 
     /**
      * Add select list for placeholders
-     * @param array $aToolbar reference to the toolbar array
+     * @param array<mixed> $aToolbar reference to the toolbar array
      */
     protected function addPlaceholderSelect(array &$aToolbar) : void
     {
@@ -540,7 +540,7 @@ class FormCKEdit extends FormTextArea
 
     /**
      * Add button to switch in the source mode
-     * @param array $aToolbar reference to the toolbar array
+     * @param array<mixed> $aToolbar reference to the toolbar array
      */
     protected function addSourceBtn(array &$aToolbar) : void
     {

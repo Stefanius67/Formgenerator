@@ -34,7 +34,7 @@ class FormGenerator extends FormCollection
     protected string $strOnSubmit = '';
     /** @var string JS function for oncancel  */
     protected string $strOnCancel = '';
-    /** @var array config values to pass as object to JS */
+    /** @var array<mixed> config values to pass as object to JS */
     protected array $aConfigForJS = [];
     /** @var string path to the images  */
     protected string $strImgPath = '';
@@ -155,7 +155,7 @@ class FormGenerator extends FormCollection
     /**
      * Get filename for predefined standard images
      * @param int $iImage
-     * @return array
+     * @return array<string>
      * @internal
      */
     public function getStdImage(int $iImage) : array

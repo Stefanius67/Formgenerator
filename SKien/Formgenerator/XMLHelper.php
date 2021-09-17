@@ -91,7 +91,7 @@ trait XMLHelper
      * The attrib must contain a list spearated by whitespace(s).
      * @param \DOMElement $oXMLElement
      * @param string $strName
-     * @return array
+     * @return array<string>
      */
     static protected function getAttribStringArray(\DOMElement $oXMLElement, string $strName) : array
     {
@@ -110,7 +110,7 @@ trait XMLHelper
      * The attrib must contain a list spearated by comma.
      * @param \DOMElement $oXMLElement
      * @param string $strName
-     * @return array
+     * @return array<int>
      */
     static protected function getAttribIntArray(\DOMElement $oXMLElement, string $strName) : array
     {
@@ -151,6 +151,8 @@ trait XMLHelper
     /**
      * Read all known attributes that don't need any further processing.
      * @param \DOMElement $oXMLElement
+     * @param array<string,string> $aAttributes
+     * @return array<string,string>
      */
     protected function readElementAttributes(\DOMElement $oXMLElement, ?array $aAttributes) : array
     {

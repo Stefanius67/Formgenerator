@@ -62,7 +62,7 @@ class FormButtonBox extends FormElement
 
     /** @var integer Buttons, the box containing     */
     protected int $iBtns = 0;
-    /** @var array user defined button(s)     */
+    /** @var array<mixed> user defined button(s)     */
     protected array $aCustomButtons = [];
 
     /**
@@ -167,7 +167,7 @@ class FormButtonBox extends FormElement
 
     /**
      * Build the markup for the button.
-     * @param array $aBtn
+     * @param array<string> $aBtn
      * @return string
      */
     protected function getButton(array $aBtn) : string
@@ -220,7 +220,7 @@ class FormButtonBox extends FormElement
      * Get Textlabels for all buttons.
      * Default they are initialized with the english Text.
      * Configuration can contain localization.
-     * @return array
+     * @return array<mixed>
      */
     protected function loadButtonDef() : array
     {

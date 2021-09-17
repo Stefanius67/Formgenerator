@@ -12,7 +12,7 @@ namespace SKien\Config;
  */
 abstract class AbstractConfig implements ConfigInterface
 {
-    /** @var array holding the config data    */
+    /** @var array<mixed> holding the config data    */
     protected ?array $aConfig = null;
     /** @var string format for date parameters (default: 'Y-m-d')    */
     protected string $strDateFormat = 'Y-m-d';
@@ -104,7 +104,7 @@ abstract class AbstractConfig implements ConfigInterface
      */
     public function getString(string $strPath, string $strDefault = '') : string
     {
-        return (string)$this->getValue($strPath, $strDefault);
+        return (string) $this->getValue($strPath, $strDefault);
     }
 
     /**
@@ -139,7 +139,7 @@ abstract class AbstractConfig implements ConfigInterface
     {
         $value = $this->getValue($strPath, $bDefault);
         if (!is_bool($value)) {
-            $value = $this->boolFromString((string)$value, $bDefault);
+            $value = $this->boolFromString((string) $value, $bDefault);
         }
         return $value;
     }
@@ -155,7 +155,7 @@ abstract class AbstractConfig implements ConfigInterface
      */
     public function getDate(string $strPath, int $default = 0) : int
     {
-        $date = (string)$this->getValue($strPath, $default);
+        $date = (string) $this->getValue($strPath, $default);
         if (!ctype_digit($date)) {
             $dt = \DateTime::createFromFormat($this->strDateFormat, $date);
             $date = $default;
@@ -183,7 +183,7 @@ abstract class AbstractConfig implements ConfigInterface
      */
     public function getDateTime(string $strPath, int $default = 0) : int
     {
-        $date = (string)$this->getValue($strPath, $default);
+        $date = (string) $this->getValue($strPath, $default);
         if (!ctype_digit($date)) {
             $dt = \DateTime::createFromFormat($this->strDateTimeFormat, $date);
             $date = $default;
@@ -202,8 +202,8 @@ abstract class AbstractConfig implements ConfigInterface
     /**
      * Get the array specified by path.
      * @param string $strPath
-     * @param array $aDefault
-     * @return array
+     * @param array<mixed> $aDefault
+     * @return array<mixed>
      */
     public function getArray(string $strPath, array $aDefault = []) : array
     {
@@ -216,7 +216,7 @@ abstract class AbstractConfig implements ConfigInterface
 
     /**
      * Returns the internal array.
-     * @return array
+     * @return array<mixed>
      */
     public function getConfig() : array
     {
@@ -226,7 +226,7 @@ abstract class AbstractConfig implements ConfigInterface
     /**
      * Split the given path in its components.
      * @param string $strPath
-     * @return array
+     * @return array<string>
      */
     protected function splitPath(string $strPath) : array
     {
@@ -321,8 +321,9 @@ abstract class AbstractConfig implements ConfigInterface
      *      $a3 = ["a" => ["c1" => red, "c2" => ["green", "blue"], "c3" => "yellow"]]</pre>
      * => [a][c2] changes from string to an array ["green", "blue"]!
      * </li></ol>
-     * @param array $aBase
-     * @param array $aMerge
+     * @param array<mixed> $aBase
+     * @param array<mixed> $aMerge
+     * @return array<mixed>
      */
     protected function mergeArrays(array $aBase, array $aMerge) : array
     {
@@ -347,7 +348,7 @@ abstract class AbstractConfig implements ConfigInterface
      * Check if given array is associative.
      * Only if the array exactly has sequential numeric keys, starting from 0, the
      * array is NOT associative.
-     * @param array $a
+     * @param array<mixed> $a
      * @return bool
      */
     protected function isAssoc(array $a) : bool

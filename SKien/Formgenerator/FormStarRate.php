@@ -37,7 +37,7 @@ class FormStarRate extends FormInput
     /** default titles for the stars */
     protected const STAR_TITELS = ['terrible', 'not good', 'average', 'good', 'verry good'];
 
-    /** @var array titles for the stars (from 0 ... n-1) */
+    /** @var array<string> titles for the stars (from 0 ... n-1) */
     protected ?array $aTitles = null;
     /** @var bool $bSubmitTitle submit the title of the selected star instead of index */
     protected bool $bSubmitTitle = false;
@@ -149,7 +149,7 @@ class FormStarRate extends FormInput
     /**
      * Set the titles for the stars.
      * The count of titles also results in the number of stars!
-     * @param array $aTitles    [0]: lowest [n-1]: highest
+     * @param array<string> $aTitles    [0]: lowest [n-1]: highest
      */
     public function setTitles(array $aTitles) : void
     {

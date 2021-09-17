@@ -71,8 +71,8 @@ interface ConfigInterface
     /**
      * Get the array specified by path.
      * @param string $strPath
-     * @param array $aDefault
-     * @return array
+     * @param array<mixed> $aDefault
+     * @return array<mixed>
      */
     public function getArray(string $strPath, array $aDefault = []) : array;
 }

@@ -12,8 +12,8 @@ class ArrayFormData extends AbstractFormData
 {
     /**
      * Creating an ArrayFormData instance.
-     * @param array $aData  associative array 'name' => value
-     * @param array $aSelectOptions associative array 'name' => selectoptions-array
+     * @param array<string,mixed> $aData  associative array 'name' => value
+     * @param array<string,array<int|string,string>> $aSelectOptions associative array 'name' => selectoptions-array
      */
     public function __construct(array $aData, array $aSelectOptions = [])
     {

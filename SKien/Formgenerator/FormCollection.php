@@ -14,7 +14,7 @@ abstract class FormCollection extends FormElement
 {
     /** @var FormElementInterface[] all direct child elements     */
     protected array $aChild = [];
-    /** @var array the width information for the cols inside this element     */
+    /** @var array<int> the width information for the cols inside this element     */
     protected ?array $aColWidth = null;
     /** @var string dimension of the width values ('%', 'px', 'em')     */
     protected string $strWidthDim = '%';
@@ -66,7 +66,7 @@ abstract class FormCollection extends FormElement
      *   these settings from its parent element. If no colwidth is set there,
      *   the system continues with the next parent element until the property
      *   is set or the form generator element is reached.
-     * @param array $aColWidth  numeric array of width for each col
+     * @param array<int> $aColWidth  numeric array of width for each col
      * @param string $strDim    dimension of the width values ('%', 'px', 'em')
      */
     public function setColWidth(array $aColWidth, string $strDim = '%') : void

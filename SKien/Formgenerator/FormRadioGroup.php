@@ -12,7 +12,7 @@ namespace SKien\Formgenerator;
  */
 class FormRadioGroup extends FormInput
 {
-    /** @var array available select option */
+    /** @var array<string,string> available select option */
     protected ?array $aOptions = null;
 
     /**
@@ -111,7 +111,7 @@ class FormRadioGroup extends FormInput
      * Set the select options for the element.
      * If no selection options are passed to the element via this method, an
      * attempt is made to determine an assigned list via the data provider.
-     * @param array $aOptions
+     * @param array<string,string> $aOptions
      */
     public function setSelectOptions(array $aOptions) : void
     {

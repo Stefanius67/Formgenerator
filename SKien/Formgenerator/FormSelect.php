@@ -12,7 +12,7 @@ namespace SKien\Formgenerator;
  */
 class FormSelect extends FormInput
 {
-    /** @var array available select option */
+    /** @var array<string,string> available select option */
     protected ?array $aOptions = null;
     /** @var string text for selectbutton     */
     protected string $strSelectBtnText;
@@ -152,7 +152,7 @@ class FormSelect extends FormInput
      * attempt is made in the getHTML () method to determine an assigned list
      * via the data provider.
      * @see AbstractFormData::getSelectOptions()
-     * @param array $aOptions
+     * @param array<string,string> $aOptions
      */
     public function setSelectOptions(array $aOptions) : void
     {
