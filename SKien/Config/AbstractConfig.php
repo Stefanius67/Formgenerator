@@ -104,7 +104,7 @@ abstract class AbstractConfig implements ConfigInterface
      */
     public function getString(string $strPath, string $strDefault = '') : string
     {
-        return (string) $this->getValue($strPath, $strDefault);
+        return (string)$this->getValue($strPath, $strDefault);
     }
 
     /**
@@ -139,7 +139,7 @@ abstract class AbstractConfig implements ConfigInterface
     {
         $value = $this->getValue($strPath, $bDefault);
         if (!is_bool($value)) {
-            $value = $this->boolFromString((string) $value, $bDefault);
+            $value = $this->boolFromString((string)$value, $bDefault);
         }
         return $value;
     }
@@ -155,7 +155,7 @@ abstract class AbstractConfig implements ConfigInterface
      */
     public function getDate(string $strPath, int $default = 0) : int
     {
-        $date = (string) $this->getValue($strPath, $default);
+        $date = (string)$this->getValue($strPath, $default);
         if (!ctype_digit($date)) {
             $dt = \DateTime::createFromFormat($this->strDateFormat, $date);
             $date = $default;
@@ -183,7 +183,7 @@ abstract class AbstractConfig implements ConfigInterface
      */
     public function getDateTime(string $strPath, int $default = 0) : int
     {
-        $date = (string) $this->getValue($strPath, $default);
+        $date = (string)$this->getValue($strPath, $default);
         if (!ctype_digit($date)) {
             $dt = \DateTime::createFromFormat($this->strDateTimeFormat, $date);
             $date = $default;
