@@ -79,6 +79,8 @@ class FormCKEdit extends FormTextArea
     protected string $strBrowseFolderImageURL = '';
     /** @var string initial folder to expand in filemanager for image links   */
     protected string $strBrowseFolderImageLinkURL = '';
+    /** @var boolean connect to this filemanger     */
+    protected string $strConnectToFilemanager = '';
 
     /**
      * Creates a WYSIWYG editor.
@@ -219,6 +221,7 @@ class FormCKEdit extends FormTextArea
 
         $strRfmPath = $this->oFG->getConfig()->getString('RichFilemanager.Path');
         if ($strRfmPath != '') {
+            $this->strConnectToFilemanager = 'RichFilemanager';
             if (!file_exists($_SERVER['DOCUMENT_ROOT'] . $strRfmPath)) {
                 if ($this->oFG->getDebugMode()) {
                     trigger_error('Can not find Rich Filemanager at [' . $_SERVER['DOCUMENT_ROOT'] . $strRfmPath . ']', E_USER_WARNING);
@@ -228,7 +231,7 @@ class FormCKEdit extends FormTextArea
             $strBrowseFolderLinkURL = $this->getBrowseFolder($this->strBrowseFolderLinkURL, 'RichFilemanager.expandFolder.browseLinkURL');
             $strBrowseFolderImageURL = $this->getBrowseFolder($this->strBrowseFolderImageURL, 'RichFilemanager.expandFolder.browseImageURL');
             $strBrowseFolderImageLinkURL = $this->getBrowseFolder($this->strBrowseFolderImageLinkURL, 'RichFilemanager.expandFolder.browseImageLinkURL');
-            $aRFN = [
+            $aRFM = [
                 'Path' => $strRfmPath,
                 'language' => $this->oFG->getConfig()->getString('RichFilemanager.language'),
                 'expandFolder' => [
@@ -237,12 +240,36 @@ class FormCKEdit extends FormTextArea
                     'browseImageLinkURL' => $strBrowseFolderImageLinkURL ?: $strBrowseFolderLinkURL
                 ]
             ];
-            $this->oFG->addConfigForJS('RichFilemanager', $aRFN);
+            $this->oFG->addConfigForJS('RichFilemanager', $aRFM);
+        }
+        $strElfPath = $this->oFG->getConfig()->getString('elFinder.Path');
+        if ($strElfPath != '') {
+            $this->strConnectToFilemanager = 'elFinder';
+            if (!file_exists($_SERVER['DOCUMENT_ROOT'] . $strElfPath)) {
+                if ($this->oFG->getDebugMode()) {
+                    trigger_error('Can not find elFinder at [' . $_SERVER['DOCUMENT_ROOT'] . $strElfPath . ']', E_USER_WARNING);
+                }
+            }
+
+            $strBrowseFolderLinkURL = $this->getBrowseFolder($this->strBrowseFolderLinkURL, 'elFinder.expandFolder.browseLinkURL');
+            $strBrowseFolderImageURL = $this->getBrowseFolder($this->strBrowseFolderImageURL, 'elFinder.expandFolder.browseImageURL');
+            $strBrowseFolderImageLinkURL = $this->getBrowseFolder($this->strBrowseFolderImageLinkURL, 'elFinder.expandFolder.browseImageLinkURL');
+            $aELF = [
+                'Path' => $strElfPath,
+                'language' => $this->oFG->getConfig()->getString('elFinder.language'),
+                'expandFolder' => [
+                    'browseLinkURL' => $strBrowseFolderLinkURL,
+                    'browseImageURL' => $strBrowseFolderImageURL,
+                    'browseImageLinkURL' => $strBrowseFolderImageLinkURL ?: $strBrowseFolderLinkURL
+                ]
+            ];
+            $this->oFG->addConfigForJS('elFinder', $aELF);
         }
     }
 
     /**
-     * Get the startfolder for different purposes.
+     * Gets the startfolder for different purposes.
+     * Only read sttings from the config, if no folder has been set so far.
      * @param string $strFolder
      * @param string $strConfig
      * @return string
@@ -272,7 +299,7 @@ class FormCKEdit extends FormTextArea
             $strStyle .= '.cke_button__' . $strBtn . '_label { display: ' . $strDisplayLabel . ' !important; }' . PHP_EOL;
         }
 
-        if ($this->oFG->getConfig()->getString('RichFilemanager.Path')) {
+        if (!empty($this->strConnectToFilemanager)) {
             $strStyle .= PHP_EOL .
                 ".fm-modal {" . PHP_EOL .
                 "    z-index: 10011; /** Because CKEditor image dialog was at 10010 */" . PHP_EOL .

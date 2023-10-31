@@ -33,6 +33,8 @@ class FormCKEditor
         }
         if (this.config.RichFilemanager !== undefined) {
             this.editor.on('dialogDefinition', (event) => {this.connectRichFilemanager(event);});
+        } else if (this.config.elFinder !== undefined) {
+            this.editor.on('dialogDefinition', (event) => {this.connectElFinder(event);});
         }
     }
     
@@ -136,6 +138,60 @@ class FormCKEditor
                     oIFrame.id = 'fm-iframeCKE';
                     oIFrame.className = 'fm-modal';
                     oIFrame.src = dialog.sender.filebrowser.rfm_path;
+                    document.body.append(oIFrame);
+                    document.body.style.overflowY = 'hidden';
+                }
+            }
+        }
+    }
+
+    /**
+     * Connect to elFinder.
+     */
+    connectElFinder(event)
+    {
+        var editor = event.editor;
+        var dialogDefinition = event.data.definition;
+        var dialogName = event.data.name;
+        var cleanUpFuncRef = this.editor.tools.addFunction(function () {
+            let oIFrame = document.getElementById('fm-iframeCKE');
+            if (oIFrame) {
+                oIFrame.remove();
+            }
+            document.body.style.overflowY = 'scroll';
+        });
+            
+        var tabCount = dialogDefinition.contents.length;
+        for (var i = 0; i < tabCount; i++) {
+            var dialogTab = dialogDefinition.contents[i];
+            if (!(dialogTab && typeof dialogTab.get === 'function')) {
+                continue;
+            }
+                
+            var browseButton = dialogTab.get('browse');
+            if (browseButton !== null) {
+                browseButton.hidden = false;
+                var params = 
+                    '?CKEditorFuncNum=' + this.editor.instances[event.editor.name]._.filebrowserFn +
+                    '&CKEditorCleanUpFuncNum=' + cleanUpFuncRef +
+                    '&langCode=' + this.config.elFinder.language +
+                    '&CKEditor=' + event.editor.name;
+                    
+                if (dialogName == 'link') {
+                    params += '&expandedFolder=' + this.config.elFinder.expandFolder.browseLinkURL;
+                } else if (dialogTab.id == 'info') {
+                    params += '&expandedFolder=' + this.config.elFinder.expandFolder.browseImageURL;
+                } else {
+                    params += '&expandedFolder=' + this.config.elFinder.expandFolder.browseImageLinkURL;
+                }
+                browseButton.filebrowser.elf_path = this.config.elFinder.Path + params;
+                browseButton.onClick = function (dialog) {
+                    editor._.filebrowserSe = this;
+                    
+                    let oIFrame = document.createElement('iframe');
+                    oIFrame.id = 'fm-iframeCKE';
+                    oIFrame.className = 'fm-modal';
+                    oIFrame.src = dialog.sender.filebrowser.elf_path;
                     document.body.append(oIFrame);
                     document.body.style.overflowY = 'hidden';
                 }

@@ -26,10 +26,11 @@ $oFG->setAction('formaction.php');
 $oFG->setTarget('_blank');
 $oFG->setConfig($oConfig);
 
-$oFG->add(new FormHeader('CFKEditor connected with Rich-Filemanager', 1));
+// $oFG->add(new FormHeader('CKEditor connected with Rich-Filemanager', 1));
+$oFG->add(new FormHeader('CKEditor connected with elFinder', 1));
 $oFG->setColWidth([100], '%');
 $oEditor = new FormCKEdit('strText', 20, '100%', FormFlags::SET_JSON_DATA);
-$oEditor->setContentsCss('../style/FormGenerator.css');
+$oEditor->setContentsCss('FormGenerator.css');
 $oEditor->setToolbar(FormCKEdit::TB_FULL | FormCKEdit::TB_SOURCE);
 $oEditor->setBrowseFolderImageURL('images/news/2020-21/');
 $oEditor->addCustomButton('H1-Header', 'InsertH1');

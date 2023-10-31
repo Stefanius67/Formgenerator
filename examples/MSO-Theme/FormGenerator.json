@@ -77,7 +77,7 @@
 	"CKEditor": {
         "Path": "/packages/Formgenerator/ckeditor/",
 		"uiColor": "#DDDDDD",
-        "skin": "moono-lisa",
+        "skin": "moonocolor",
 		"pasteFilter": "p; h1; h2; h3; ul; ol; li; a[!href]",
 		"colorbutton": {
 			"enableAutomatic": false,
@@ -100,7 +100,7 @@
 			"PH2"
 		]
 	},
-	"RichFilemanager": {
+	"RichFilemanagerX": {
 		"//1": "Note: since this path is used from javascript, it should be absolute from the DOCUMENT - Root",
 		"Path": "/packages/Formgenerator/richfilemanager/custom.html",
 		"language" : "de",
@@ -112,6 +112,18 @@
 		"//2": "possible values are 'modal' or 'window'",
         "browseServer": "modal"
 	},
+    "elFinder": {
+        "//1": "Note: since this path is used from javascript, it should be absolute from the DOCUMENT - Root",
+        "Path": "/packages/Formgenerator/elFinder/elfinder.html",
+        "language" : "de",
+        "expandFolder": {
+            "browseLinkURL" : "files/",
+            "browseImageURL" : "images/",
+            "browseImageLinkURL" : ""
+        },
+        "//2": "possible values are 'modal' or 'window'",
+        "browseServer": "modal"
+    },
     "JavaScript": {
         "Path": "/packages/Formgenerator/script/"
     }
