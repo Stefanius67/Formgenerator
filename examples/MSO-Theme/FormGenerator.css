@@ -357,6 +357,7 @@ form .slider_label
 form input[type=range]
 {
     -webkit-appearance: none;
+    appearance: none;
     width: 100%;
     background: transparent;
     border: unset;
@@ -425,6 +426,7 @@ form meter[value]
     --color-bad: #d6471e;
 
     -moz-appearance: none;	
+    appearance: none;  
     border: 1px solid var(--theme-border-medium);
 	border-radius: var(--radius-medium);
     background: none;
@@ -636,7 +638,7 @@ form .starrate input:checked:disabled~label:before
     -moz-user-select: none;
     -ms-user-select: none;
     -o-user-select: none;
-    /* user-select: none; */
+    user-select: none;
 }
 
 .date-selector-wrapper .cal-header
@@ -811,6 +813,7 @@ form .starrate input:checked:disabled~label:before
 .date-selector-wrapper .cal-time-slider input[type=range]
 {
     -webkit-appearance: none;
+    appearance: none;  
     width: 100%;
     background: transparent;
 }
@@ -833,6 +836,7 @@ form .starrate input:checked:disabled~label:before
 {
     width: 100%;
     -webkit-appearance: none;
+    appearance: none;  
     background: 0 0;
     cursor: pointer;
     height: 100%;
@@ -873,4 +877,141 @@ form .starrate input:checked:disabled~label:before
     border-radius: 7px;
     background: var(--theme-bkg-medium);
     cursor: pointer;
+}
+
+.dropfile 
+{
+    background-color: var(--theme-bkg-light);
+    outline: 1px solid var(--theme-border-medium);
+    display: flex;
+    flex-direction: column;
+    font-size: var(--theme-size-std);
+	padding: 4px;
+}
+
+.dropfile.dragover 
+{
+    background-color: var(--theme-bkg-medium);
+}
+
+.dropfile label
+{
+	padding: 2px 6px;
+}
+
+.dropfile .fileselect 
+{
+    color: blue;
+    cursor: pointer;
+}
+
+.dropfile .fileselect:hover 
+{
+    text-decoration: underline;
+}
+
+.dropfile input 
+{
+    display: none;
+}
+
+.dropfile .selectedfiles ul
+{
+    list-style-image: url(deletefile.png);
+}
+
+.dropfile .selectedfiles
+{
+    display: block;
+    box-sizing: border-box;
+	padding-top: 5px;
+	overflow-y: auto;
+}
+
+.dropfile .selectedfiles .dropfileitem
+{
+    display: flex;
+    box-sizing: border-box;
+	width: 25%;
+	float: left;
+	padding: 1px 3px;
+}
+
+.dropfile .selectedfiles .dropedfile
+{
+    display: block;
+    box-sizing: border-box;
+	width: 100%;
+	border: 1px solid var(--theme-border-medium);
+    border-radius: var(--radius-small);
+}
+
+.dropfile .selectedfiles .dropedname
+{
+    display: block;
+    box-sizing: border-box;
+	width: calc(100% - 22px);
+	float: left;
+}
+
+.dropfile .selectedfiles .dropeddelete
+{
+    display: block;
+    box-sizing: border-box;
+	width: 22px;
+	height: 22px;
+	float: right;
+    background: var(--theme-bkg-disabled) url(deletefile.png) no-repeat center center;
+	cursor: pointer;
+}
+
+.dropfile .selectedfiles .file 
+{
+    display: block;
+    height: 22px;
+    background: transparent url(file.png) no-repeat 4px center;
+    padding-left: 25px;
+    white-space: nowrap;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+}
+
+.dropfile .selectedfiles .imgfile 
+{
+    background-image: url(imgfile.png);
+}
+
+.dropfile .selectedfiles .pdffile 
+{
+    background-image: url(pdffile.png);
+}
+
+.dropfile .selectedfiles .csvfile 
+{
+    background-image: url(csvfile.png);
+}
+
+.dropfile .selectedfiles .xlsfile 
+{
+    background-image: url(xlsfile.png);
+}
+
+.dropfile .selectedfiles .docfile 
+{
+    background-image: url(docfile.png);
+}
+
+.dropfile .selectedfiles .txtfile 
+{
+    background-image: url(txtfile.png);
+}
+
+.dropfile .selectedfiles .vcard 
+{
+    background-image: url(vcffile.png);
+}
+
+.dropfile .selectedfiles .ical
+{
+    background-image: url(icsfile.png);
 }

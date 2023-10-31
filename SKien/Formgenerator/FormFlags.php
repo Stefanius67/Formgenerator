@@ -64,6 +64,8 @@ class FormFlags
     const   REPLACE_BR_CR           = 0x0800000;
     /** arrange radio - buttons horizontal in a row */
     const   HORZ_ARRANGE            = 0x1000000;
+    /** allow multi selection */
+    const   MULTI_SELECT            = 0x0200000;
 
     /** @var integer the flags specified     */
     protected int $wFlags = 0;
