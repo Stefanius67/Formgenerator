@@ -201,6 +201,14 @@ class FormGenerator extends FormCollection
     }
 
     /**
+     * @param string $strOnSubmit
+     */
+    public function setOnSubmit(string $strOnSubmit) : void
+    {
+        $this->strOnSubmit = $strOnSubmit;
+    }
+
+    /**
      * Set explicit width of the form.
      * @param int $iWidth    width (-1 for default)
      */
