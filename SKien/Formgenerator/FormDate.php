@@ -98,13 +98,13 @@ class FormDate extends FormInput
         $strValue = '';
         if (is_object($date) && get_class($date) == 'DateTime') {
             // DateTime-object
-            $strValue = strftime($this->strDateFormat, $date->getTimestamp());
+            $strValue = date($this->strDateFormat, $date->getTimestamp());
         } else if (is_numeric($date)) {
-            $strValue = strftime($this->strDateFormat, intval($date));
+            $strValue = date($this->strDateFormat, intval($date));
         } else if ($date != '0000-00-00 00:00:00' && $date != '0000-00-00' && $date != '00:00:00') {
             $unixtime = strtotime($date);
             if ($unixtime !== false) {
-                $strValue = strftime($this->strDateFormat, $unixtime);
+                $strValue = date($this->strDateFormat, $unixtime);
             }
         }
 
