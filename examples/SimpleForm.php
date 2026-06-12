@@ -5,19 +5,18 @@ require_once '../autoloader.php';
 
 use SKien\Config\JSONConfig;
 use SKien\Formgenerator\ArrayFormData;
-use SKien\Formgenerator\FormGenerator;
-use SKien\Formgenerator\FormInput;
+use SKien\Formgenerator\FormButtonBox;
+use SKien\Formgenerator\FormColor;
+use SKien\Formgenerator\FormCur;
+use SKien\Formgenerator\FormDate;
 use SKien\Formgenerator\FormFlags;
+use SKien\Formgenerator\FormFloat;
+use SKien\Formgenerator\FormGenerator;
+use SKien\Formgenerator\FormHeader;
+use SKien\Formgenerator\FormInput;
+use SKien\Formgenerator\FormRange;
 use SKien\Formgenerator\FormSelect;
 use SKien\Formgenerator\FormStatic;
-use SKien\Formgenerator\FormDate;
-use SKien\Formgenerator\FormTime;
-use SKien\Formgenerator\FormButtonBox;
-use SKien\Formgenerator\FormCur;
-use SKien\Formgenerator\FormColor;
-use SKien\Formgenerator\FormHeader;
-use SKien\Formgenerator\FormFloat;
-use SKien\Formgenerator\FormRange;
 
 // $strTheme = './MSO-Theme/';
 $strTheme = './';
@@ -86,10 +85,12 @@ $oFL = $oFS->addLine('Gender:');
 $oFL->add(new FormSelect('strGender', 1, FormFlags::MANDATORY));
 $oFL->add(new FormStatic('Date of Birth:'));
 $oFL->add(new FormDate('dateDoB', FormFlags::NO_ZERO | FormFlags::ADD_DATE_PICKER));
+/*
 $oFL = $oFS->addLine('Available from:');
 $oFL->add(new FormTime('timeAvailableFrom', FormFlags::ADD_TIME_PICKER));
 $oFL->add(new FormStatic('to:'));
 $oFL->add(new FormTime('timeAvailableTo', FormFlags::ADD_TIME_PICKER));
+*/
 $oFL = $oFS->addLine('Member due:');
 $oFL->add(new FormCur('fltDue', 10, FormFlags::ADD_CUR));
 $oFL->add(new FormStatic('extra fee:'));
